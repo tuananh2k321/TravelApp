@@ -2,6 +2,7 @@ export const COLOR = {
     primary: '#0FA3E2',
     title: '#333',
     detail: '#9098B1',
+    white: '#ffffff'
 }
 
 export const SIZES = {
