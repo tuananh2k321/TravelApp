@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Image, View, Text } from 'react-native';
 import { COLOR, ICON } from "../constant/Themes";
-import Favorite from "./TabApp/Favorite";
-import Home from "./TabApp/Home";
-import Notification from "./TabApp/Notification";
-import Profile from "./TabApp/Profile";
+import Favorite from "./tab_app/Favorite";
+import Home from "./tab_app/Home";
+import Notification from "./tab_app/Notification";
+import Profile from "./tab_app/Profile";
 
 const Tab = createBottomTabNavigator();
 
