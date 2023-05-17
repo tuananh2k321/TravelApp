@@ -21,7 +21,7 @@ const BottomTab = () => {
               iconName = ICON.home
               label = 'Home'
             } else if (route.name === 'Favorite') {
-              iconName = ICON.heart_d;
+              iconName = ICON.heart;
               label = 'Favorite'
             } else if (route.name === 'Notification') {
               iconName = ICON.notification_d;
