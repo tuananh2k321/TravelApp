@@ -167,8 +167,8 @@ export default Register = (props) => {
         </Text>
           </View>
         
-        <View style={{marginTop: 30}}>
-          <UIButtonPrimary text="Tạo tài khoản mới" />
+        <View style={{marginTop: 30}} >
+          <UIButtonPrimary text="Tạo tài khoản mới" onPress= {() => navigation.navigate('VerifyCode')}/>
         </View>
 
         <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>

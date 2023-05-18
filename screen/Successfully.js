@@ -35,7 +35,7 @@ export default Successfully = () => {
           }}>
           Thành Công
         </Text>
-        <Text
+        {/* <Text
           style={{
             fontSize: 24,
             fontWeight: 'bold',
@@ -44,7 +44,7 @@ export default Successfully = () => {
             textAlign: 'center',
           }}>
           Đã tạo tài khoản
-        </Text>
+        </Text> */}
 
         <View style={{width: 300, alignSelf: 'center'}}>
           <Text
