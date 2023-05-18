@@ -12,7 +12,8 @@ import UITextInput from '../component/UITextInput';
 import UIButtonPrimary from '../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export default NewPassword = () => {
+export default NewPassword = (props) => {
+  const {navigation} = props
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -70,10 +71,10 @@ export default NewPassword = () => {
           New Password
         </Text>
 
-        <UITextInput hintText="Mật khẩu mới" isTextEntry={true} />
+        <UITextInput hintText="Mật khẩu mới" isTextEntry={true} isIconRight = {true} icon = {ICON.eye}/>
 
         <View style={{marginTop: 30}}>
-          <UIButtonPrimary text="Yêu cầu mã" />
+          <UIButtonPrimary text="Xác Nhận" onPress={() => navigation.navigate('Successfully')}/>
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>

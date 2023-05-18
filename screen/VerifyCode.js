@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   Image,
@@ -11,8 +11,12 @@ import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
 import UITextInput from '../component/UITextInput';
 import UIButtonPrimary from '../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 
-export default VerifyCode = () => {
+export default VerifyCode = (props) => {
+  const {navigation} = props
+  const [otpCode, setOtpCode] = useState('');
+
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -23,7 +27,7 @@ export default VerifyCode = () => {
           height: SIZES.height,
           justifyContent: 'center',
         }}>
-        <TouchableOpacity style={{position: 'absolute', top: 15, left: 10}}>
+        <TouchableOpacity style={{position: 'absolute', top: 15, left: 10}} onPress={() => navigation.goBack()}>
           <Image
             source={ICON.left}
             style={{
@@ -42,7 +46,7 @@ export default VerifyCode = () => {
             marginTop: 20,
             textAlign: 'center',
           }}>
-          Tạo mật khẩu mới
+          Xác nhận OTP
         </Text>
 
         <View style={{width: 300, alignSelf: 'center'}}>
@@ -54,25 +58,41 @@ export default VerifyCode = () => {
               color: COLOR.detail,
               marginTop: 15,
             }}>
-            Giữ an toàn cho tài khoản của bạn bằng cách tạo một mật khẩu mạnh
+            Nhập OTP để xác của bạn để xác thực tài khoản
           </Text>
         </View>
 
         
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: '400',
-            color: COLOR.detail,
-            marginTop: 20,
-          }}>
-          New Password
-        </Text>
+        
 
-        <UITextInput hintText="Mật khẩu mới"  isTextEntry = {true}/>
+        <OTPInputView
+            style={{ width: '80%', height: 50, alignSelf: 'center' }}
+            pinCount={6}
+            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+            // onCodeChanged = {code => { this.setState({code})}}
+            autoFocusOnLoad
+            codeInputFieldStyle={{
+              width: 30,
+              height: 45,
+              borderWidth: 0,
+              borderBottomWidth: 2,
+              fontSize: 20,
+              fontWeight: '600',
+              color: COLOR.primary,
+              borderBottomColor: COLOR.border,
+            }}
+            codeInputHighlightStyle={{
+              borderBottomColor: COLOR.primary,
+              borderBottomWidth: 3,
+            }}
+            placeholderTextColor={{ backgroundColor: 'red' }}
+            onCodeFilled={(otpCode) => {
+              
+            }}
+          />
 
-        <View style={{marginTop: 30}}>
-          <UIButtonPrimary text="Yêu cầu mã" />
+        <View style={{marginTop: 50, justifyContent: 'flex-end'}}>
+          <UIButtonPrimary text="Xác Minh" onPress={() => navigation.navigate('Successfully')}/>
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>
