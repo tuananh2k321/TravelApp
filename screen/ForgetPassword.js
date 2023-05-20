@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   Image,
@@ -11,9 +11,12 @@ import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
 import UITextInput from '../component/UITextInput';
 import UIButtonPrimary from '../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {validateEmail, validatePhoneNumber} from '../constant/Validation';
 
-export default ForgetPassword = (props) => {
-    const {navigation} = props
+export default ForgetPassword = props => {
+  const {navigation} = props;
+  const [errorEmail, setErrorEmail] = useState(true);
+  const [errorPhone, setErrorPhone] = useState(true);
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -24,7 +27,9 @@ export default ForgetPassword = (props) => {
           height: SIZES.height,
           justifyContent: 'center',
         }}>
-        <TouchableOpacity style={{position: 'absolute', top: 15, left: 10}} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={{position: 'absolute', top: 15, left: 10}}
+          onPress={() => navigation.navigate('Login')}>
           <Image
             source={ICON.left}
             style={{
@@ -70,7 +75,24 @@ export default ForgetPassword = (props) => {
           Email
         </Text>
 
-        <UITextInput hintText="jonhn.ux@gmail.com" />
+        <UITextInput
+          hintText="jonhn.ux@gmail.com"
+          borderError={errorEmail}
+          onChangeText={text => {
+            setErrorEmail(validateEmail(text));
+          }}
+        />
+
+        {!errorEmail && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Email không hợp lệ !
+          </Text>
+        )}
 
         <Text
           style={{
@@ -82,10 +104,31 @@ export default ForgetPassword = (props) => {
           Phone Number
         </Text>
 
-        <UITextInput hintText="Nhập sổ điện thoại của bạn" keyboardType="numeric" />
+        <UITextInput
+          hintText="Nhập sổ điện thoại của bạn"
+          keyboardType="numeric"
+          borderError={errorPhone}
+          onChangeText={text => {
+            setErrorPhone(validatePhoneNumber(text));
+          }}
+        />
 
-        <View style={{marginTop: 30}} >
-          <UIButtonPrimary text="Yêu cầu mã" onPress = {() => navigation.navigate('VerifyCode2')}/>
+        {!errorPhone && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Số điện thoại không hợp lệ !
+          </Text>
+        )}
+
+        <View style={{marginTop: 30}}>
+          <UIButtonPrimary
+            text="Yêu cầu mã"
+            onPress={() => navigation.navigate('VerifyCode2')}
+          />
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>
