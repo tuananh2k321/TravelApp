@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   Image,
@@ -11,9 +11,12 @@ import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
 import UITextInput from '../component/UITextInput';
 import UIButtonPrimary from '../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { validatePassword } from '../constant/Validation';
 
 export default NewPassword = (props) => {
   const {navigation} = props
+  const [isHidePassword, setIsHidePassword] = useState(true);
+  const [errorPassword, setErrorPassword] = useState(true);
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -71,7 +74,25 @@ export default NewPassword = (props) => {
           New Password
         </Text>
 
-        <UITextInput hintText="Mật khẩu mới" isTextEntry={true} isIconRight = {true} icon = {ICON.eye}/>
+        <UITextInput hintText="Mật khẩu mới"  isIconRight = {true} icon = {ICON.eye}
+          isTextEntry={isHidePassword}
+          onPress={() => setIsHidePassword(!isHidePassword)}
+          borderError={errorPassword}
+          onChangeText={text => {
+            setErrorPassword(validatePassword(text));
+          }}
+        />
+
+{!errorPassword && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            ít nhất 8 ký tự, ít nhất một chữ cái viết hoa, viết thường,  một số!
+          </Text>
+        )}
 
         <View style={{marginTop: 30}}>
           <UIButtonPrimary text="Xác Nhận" onPress={() => navigation.navigate('Successfully')}/>

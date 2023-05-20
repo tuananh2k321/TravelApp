@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   Image,
@@ -12,11 +12,32 @@ import UITextInput from '../component/UITextInput';
 import UIButtonPrimary from '../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CheckBox from '@react-native-community/checkbox';
+import {
+  isValidEmpty,
+  validateDateOfBirth,
+  validateEmail,
+  validatePassword,
+  validatePhoneNumber,
+} from '../constant/Validation';
+import DatePicker from 'react-native-date-picker';
 
-export default Register = (props) => {
-  const {navigation} = props
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
+export default Register = props => {
+  const {navigation} = props;
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
+  const [isHidePassword, setIsHidePassword] = useState(true);
+  const [isHidePassword2, setIsHidePassword2] = useState(true);
+  const [errorName, setErrorName] = useState(true);
+  const [errorLastName, setErrorLastName] = useState(true);
+  const [errorPhone, setErrorPhone] = useState(true);
+  const [errorBirthday, setErrorBirthday] = useState(true);
+  const [errorEmail, setErrorEmail] = useState(true);
+  const [errorPassword, setErrorPassword] = useState(true);
+  const [errorPassword2, setErrorPassword2] = useState(true);
+
+  const [date, setDate] = useState('');
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -25,10 +46,10 @@ export default Register = (props) => {
           padding: 15,
           width: SIZES.width,
         }}>
-        <TouchableOpacity style={{position: 'absolute', top: 15, left: 10}}
-        
-        onPress={() => navigation.navigate('Login')}>
-          <Image 
+        <TouchableOpacity
+          style={{position: 'absolute', top: 15, left: 10}}
+          onPress={() => navigation.navigate('Login')}>
+          <Image
             source={ICON.left}
             style={{
               width: 17,
@@ -61,7 +82,6 @@ export default Register = (props) => {
           </Text>
         </View>
 
-        
         <Text
           style={{
             fontSize: 16,
@@ -69,10 +89,27 @@ export default Register = (props) => {
             color: COLOR.detail,
             marginTop: 20,
           }}>
-          Tên 
+          Tên
         </Text>
 
-        <UITextInput hintText="Tuấn Anh"  />
+        <UITextInput
+          hintText="Tuấn Anh"
+          borderError={errorName}
+          onChangeText={text => {
+            setErrorName(isValidEmpty(text));
+          }}
+        />
+
+        {!errorName && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Không được để trống !
+          </Text>
+        )}
 
         <Text
           style={{
@@ -81,11 +118,27 @@ export default Register = (props) => {
             color: COLOR.detail,
             marginTop: 20,
           }}>
-          Họ 
+          Họ
         </Text>
 
-        <UITextInput hintText="Trần" />
+        <UITextInput
+          hintText="Trần"
+          borderError={errorLastName}
+          onChangeText={text => {
+            setErrorLastName(isValidEmpty(text));
+          }}
+        />
 
+        {!errorLastName && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Không được để trống !
+          </Text>
+        )}
         <Text
           style={{
             fontSize: 16,
@@ -96,7 +149,25 @@ export default Register = (props) => {
           Số điện thoại
         </Text>
 
-        <UITextInput hintText=""  keyboardType="numeric" />
+        <UITextInput
+          hintText=""
+          keyboardType="numeric"
+          borderError={errorPhone}
+          onChangeText={text => {
+            setErrorPhone(validatePhoneNumber(text));
+          }}
+        />
+
+        {!errorPhone && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Số điện thoại không hợp lệ !
+          </Text>
+        )}
 
         <Text
           style={{
@@ -108,7 +179,28 @@ export default Register = (props) => {
           Ngày sinh
         </Text>
 
-        <UITextInput hintText=""   isIconRight={true} icon={ICON.calendar}/>
+        <UITextInput
+          hintText="01/05/2003"
+          isIconRight={true}
+          icon={ICON.calendar}
+          defaultValue={date.toString()}
+          onPress={() => setOpen(true)}
+          borderError={errorBirthday}
+          onChangeText={text => {
+            setErrorBirthday(validateDateOfBirth(text));
+          }}
+        />
+
+        {!errorBirthday && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Ngày sinh không hợp lệ !
+          </Text>
+        )}
 
         <Text
           style={{
@@ -120,7 +212,24 @@ export default Register = (props) => {
           Email
         </Text>
 
-        <UITextInput hintText="tuananh123@gmail.com"/>
+        <UITextInput
+          hintText="tuananh123@gmail.com"
+          borderError={errorEmail}
+          onChangeText={text => {
+            setErrorEmail(validateEmail(text));
+          }}
+        />
+
+        {!errorEmail && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Email không hợp lệ !
+          </Text>
+        )}
 
         <Text
           style={{
@@ -132,7 +241,28 @@ export default Register = (props) => {
           Mật khẩu
         </Text>
 
-        <UITextInput hintText="" isTextEntry={true} isIconRight={true} icon = {ICON.eye}/>
+        <UITextInput
+          hintText=""
+          isTextEntry={isHidePassword}
+          onPress={() => setIsHidePassword(!isHidePassword)}
+          isIconRight={true}
+          icon={ICON.eye}
+          borderError={errorPassword}
+          onChangeText={text => {
+            setErrorPassword(validatePassword(text));
+          }}
+        />
+
+        {!errorPassword && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            ít nhất 8 ký tự, ít nhất một chữ cái viết hoa, viết thường, một số!
+          </Text>
+        )}
 
         <Text
           style={{
@@ -144,48 +274,92 @@ export default Register = (props) => {
           Nhập lại Mật khẩu
         </Text>
 
-        <UITextInput hintText="" isTextEntry={true} isIconRight={true} icon = {ICON.eye}/>
+        <UITextInput
+          hintText=""
+          isIconRight={true}
+          isTextEntry={isHidePassword2}
+          onPress={() => setIsHidePassword2(!isHidePassword2)}
+          icon={ICON.eye}
+          borderError={errorPassword2}
+          onChangeText={text => {
+            setErrorPassword2(isValidEmpty(text));
+          }}
+        />
 
-          <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-          <CheckBox
-    disabled={false}
-    value={toggleCheckBox}
-    tintColors={{ true: COLOR.primary }}
-    onValueChange={(value) => setToggleCheckBox(value)}
-          
-    
-  />
-            
-            <Text
-          style={{
-            fontSize: 16,
-            fontWeight: '400',
-            color: COLOR.detail,
-            textDecorationLine: 'underline'
-          }}>
-          Tôi chấp nhận những điều khoản và quy định
-        </Text>
-          </View>
-        
-        <View style={{marginTop: 30}} >
-          <UIButtonPrimary text="Tạo tài khoản mới" onPress= {() => navigation.navigate('VerifyCode')}/>
-        </View>
-
-        <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
-        <Text>Already have an account?</Text>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          
+        {!errorPassword2 && (
           <Text
             style={{
-              color: COLOR.primary,
-              fontWeight: 'bold',
-              marginLeft: 5,
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
             }}>
-             Login
+            Không được để trống !
           </Text>
-        </TouchableOpacity>
-      </View>
+        )}
+
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+          <CheckBox
+            disabled={false}
+            value={toggleCheckBox}
+            tintColors={{true: COLOR.primary}}
+            onValueChange={value => setToggleCheckBox(value)}
+          />
+
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '400',
+              color: COLOR.detail,
+              textDecorationLine: 'underline',
+            }}>
+            Tôi chấp nhận những điều khoản và quy định
+          </Text>
+        </View>
+
+        <View style={{marginTop: 30}}>
+          <UIButtonPrimary
+            text="Tạo tài khoản mới"
+            onPress={() => navigation.navigate('VerifyCode')}
+          />
+        </View>
+
+        <View
+          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+          <Text>Already have an account?</Text>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text
+              style={{
+                color: COLOR.primary,
+                fontWeight: 'bold',
+                marginLeft: 5,
+              }}>
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <DatePicker
+          modal
+          open={open}
+          androidVariant="iosClone"
+          mode="date"
+          minimumDate={new Date('1950-12-31')}
+          maximumDate={new Date('2005-12-31')}
+          date={currentDate}
+          onConfirm={date => {
+            setOpen(false);
+            var day = date.getDate().toString().padStart(2, '0');
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var year = date.getFullYear();
+            setDate(day + '/' + month + '/' + year);
+            console.log(day + '/' + month + '/' + year);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
       </SafeAreaView>
     </KeyboardAwareScrollView>
   );
