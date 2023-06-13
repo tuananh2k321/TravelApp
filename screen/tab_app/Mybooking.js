@@ -1,15 +1,17 @@
-import { StyleSheet, Text, View,FlatList } from 'react-native'
+import { StyleSheet, Text, View,FlatList,TouchableOpacity,Image } from 'react-native'
+import { SwipeListView } from 'react-native-swipe-list-view'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Item_wishlist from '../Tab_item/Item_wishlist'
+import { COLOR, SIZES } from '../../constant/Themes'
 
 const Favorite = (props) => {
     const {navigation} = props;
   return (
     <SafeAreaView style={styles.container}>
-        <Text style={styles.wishlist}>Yeu thich</Text>
+        <Text style={styles.wishlist}>My booking</Text>
         <View style={styles.wishlist_list}>
-            <FlatList style={{height:500,bottom:20}}
+            {/* <FlatList style={{bottom:20}}
         data={data}
         contentContainerStyle={{ flexGrow: 1 }}
         renderItem={({item}) => <Item_wishlist dulieu={item} navigation={navigation}/>}
@@ -17,7 +19,37 @@ const Favorite = (props) => {
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
       >
-      </FlatList>
+      </FlatList> */}
+      <SwipeListView style={{bottom:20}}
+          showsVerticalScrollIndicator={false}
+          data={data}
+          renderItem={({ item }) => <Item_wishlist dulieu={item}/>}
+          renderHiddenItem={(data, rowMap) => (
+            <TouchableOpacity
+              style={{
+                height: 80,
+                backgroundColor: '#FFFFFF',
+                marginTop: 10,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}>
+              <Image
+                    source={require('../../assets/icon/icon-recycle.png')}
+                    style={{
+                    width: 20,
+                    height: 20,
+                    marginRight: 30,
+                    alignItems: 'center',
+                    bottom: 0,
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    }}
+                />
+            </TouchableOpacity>
+          )}
+          rightOpenValue={-75}
+        />
+      
         </View>
     </SafeAreaView>
   )
@@ -27,10 +59,11 @@ export default Favorite
 
 const styles = StyleSheet.create({
     container:{
-        marginStart:20,
-        marginEnd:20,
-        marginTop:40,
+        padding:15,
+        width:SIZES.width,
         flexDirection:'column',
+        backgroundColor:COLOR.white,
+        justifyContent:'center'
     },
     wishlist:{
         fontStyle:'normal',
