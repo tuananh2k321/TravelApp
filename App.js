@@ -7,13 +7,14 @@ import ForgetPassword from './screen/ForgetPassword';
 import NewPassword from './screen/NewPassword';
 import VerifyCode from './screen/VerifyCode';
 import Successfully from './screen/Successfully';
+import ItemPopular from './screen/ItemPopular';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Successfully"
+        initialRouteName="BottomTab"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="BottomTab" component={BottomTab} />
       </Stack.Navigator>
     </NavigationContainer>
+    // <ItemPopular/>
   );
 };
 
