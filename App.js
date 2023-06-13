@@ -14,6 +14,7 @@ import Payment from './screen/Payment';
 import Payment_Method from './screen/Payment_Method';
 import Available_Date from './screen/Available_Date';
 
+import ItemPopular from './screen/ItemPopular';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -38,6 +39,20 @@ const App = () => {
     //   </Stack.Navigator>
     // </NavigationContainer>
     <Available_Date/>
+    // <NavigationContainer>
+    //   <Stack.Navigator
+    //     initialRouteName="BottomTab"
+    //     screenOptions={{headerShown: false}}>
+    //     <Stack.Screen name="Login" component={Login} />
+    //     <Stack.Screen name="Register" component={Register} />
+    //     <Stack.Screen name="ForgetPassword" component={ForgetPassword}/>
+    //     <Stack.Screen name="NewPassword" component={NewPassword}/>
+    //     <Stack.Screen name="VerifyCode" component={VerifyCode}/>
+    //     <Stack.Screen name="Successfully" component={Successfully}/>
+    //     <Stack.Screen name="BottomTab" component={BottomTab} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+    // <ItemPopular/>
   );
 };
 
