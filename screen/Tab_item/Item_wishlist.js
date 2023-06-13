@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,Image } from 'react-native'
 import React from 'react'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const Item_wishlist = (props) => {
     const {dulieu} = props;
@@ -10,11 +10,13 @@ const Item_wishlist = (props) => {
         <View style={styles.item_right}>
             <Text numberOfLines={2} style={styles.item_title}>{dulieu.title}</Text>
             <View style={styles.item_start_view}>
+                <Image style={{fontSize:13,marginRight:5}}  source={require('../../assets/icon/ic_star.png')}></Image>
                 <Text style={styles.item_start}>{dulieu.start}</Text>
                 <Text style={styles.item_view}>{dulieu.view} reviews</Text>
             </View>
             <Text style={styles.item_address}>{dulieu.address}</Text>
             <View style={{flexDirection:'row'}}>
+            
                 <Text style={styles.item_price}>from ${dulieu.price}</Text>
                 <Text  style={styles.person}>/person</Text>
             </View>
@@ -58,6 +60,11 @@ const styles = StyleSheet.create({
     },
     item_start:{
         alignItems:'flex-start',
+        marginRight:10,
+        fontWeight:'400',
+        fontSize:12,
+        lineHeight:18,
+        color:'#000000'
     },
     item_view:{
         fontWeight:'400',

@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View,Image,FlatList } from 'react-native'
+import { SwipeListView } from 'react-native-swipe-list-view'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native'
 import Item_notification from '../Tab_item/Item_notification'
+import { COLOR, SIZES } from '../../constant/Themes'
 
 const Notification = (props) => {
     const {navigation} = props;
@@ -20,6 +22,32 @@ const Notification = (props) => {
         removeClippedSubviews={true}
       >
       </FlatList>
+      {/* <SwipeListView
+          showsVerticalScrollIndicator={false}
+          data={data}
+          renderItem={({ item }) => <Item_notification dulieu={item}/>}
+          renderHiddenItem={(data, rowMap) => (
+            <TouchableOpacity
+              style={{
+                height: 80,
+                backgroundColor: '#FFFFFF',
+                marginTop: 10,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}>
+              <Image
+                source={require('../../assets/icon/icon-recycle.png')}
+                style={{
+                  width: 20,
+                  height: 20,
+                  tintColor: '#000000',
+                  marginRight: 30,
+                }}
+              />
+            </TouchableOpacity>
+          )}
+          rightOpenValue={-75}
+        /> */}
         </View>
     </SafeAreaView>
   )
@@ -29,10 +57,11 @@ export default Notification
 
 const styles = StyleSheet.create({
     container:{
-        marginStart:20,
-        marginEnd:20,
-        marginTop:40,
-        flexDirection:'column',
+        marginTop:15,
+        padding:15,
+        width:SIZES.width,
+        backgroundColor:COLOR.white,
+        justifyContent:'center'
     },
     notification:{
         fontStyle:'normal',
