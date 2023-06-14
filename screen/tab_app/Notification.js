@@ -3,7 +3,7 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native'
-import Item_notification from '../Tab_item/Item_notification'
+import Item_notification from '../../component/Tab_item/Item_notification'
 import { COLOR, SIZES } from '../../constant/Themes'
 
 const Notification = (props) => {

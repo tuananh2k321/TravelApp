@@ -16,12 +16,33 @@ import {
   validateEmail,
   validatePassword,
 } from '../constant/Validation';
+import AxiosIntance from '../constant/AxiosIntance';
+import BottomTab from './BottomTab';
 
 export default Login = props => {
   const {navigation} = props;
   const [isHidePassword, setIsHidePassword] = useState(true);
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
+
+  const [email, setEmail] = useState(true);
+  const [password, setPassword] = useState(true);
+
+  const btnLogin = async () => {
+    try {
+      const res = await AxiosIntance().post("user/api/login", {
+        password: password,
+        email: email
+      })
+      if (res.result == true) {
+        console.log(res.user)
+        navigation.navigate("BottomTab")
+      }
+    } catch (error) {
+      
+    }
+    
+  }
 
   return (
     <KeyboardAwareScrollView>
@@ -73,6 +94,7 @@ export default Login = props => {
           hintText="Nhập địa chỉ email của bạn"
           borderError={errorEmail}
           onChangeText={text => {
+            setEmail(text)
             setErrorEmail(validateEmail(text));
           }}
         />
@@ -105,6 +127,7 @@ export default Login = props => {
           onPress={() => setIsHidePassword(!isHidePassword)}
           borderError={errorPassword}
           onChangeText={text => {
+            setPassword(text)
             setErrorPassword(isValidEmpty(text));
             console.log(errorPassword)
           }}
@@ -134,7 +157,9 @@ export default Login = props => {
         </TouchableOpacity>
 
         <View style={{marginTop: 30}}>
-          <UIButtonPrimary text="Login" />
+          <UIButtonPrimary text="Đăng Nhập" 
+            onPress = {() => btnLogin()}
+          />
         </View>
 
         <View

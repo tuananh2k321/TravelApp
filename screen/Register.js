@@ -20,6 +20,7 @@ import {
   validatePhoneNumber,
 } from '../constant/Validation';
 import DatePicker from 'react-native-date-picker';
+import AxiosIntance from '../constant/AxiosIntance';
 
 export default Register = props => {
   const {navigation} = props;
@@ -35,9 +36,46 @@ export default Register = props => {
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorPassword2, setErrorPassword2] = useState(true);
 
+  const [notifyPassword, setNotifyPassword] = useState("")
+
+  const [name, setName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [email, setEmail] = useState("")
+  const [dob, setDob] = useState("")
+  const [password, setPassword] = useState("")
+  const [rePassword, setRePassword] = useState("")
+
   const [date, setDate] = useState('');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  
+  const checkPasswordRepeat = (rePassword, password) => {
+    if (password === rePassword) {
+      setErrorPassword2(true)
+      console.log(rePassword)
+    } else {
+      setErrorPassword2(false)
+      setNotifyPassword("Không trùng mật khẩu")
+    }
+  }
+
+  const btnRegister = async () => {
+    const res = await AxiosIntance().post("api/user/", {
+      name: name,
+      lastName: lastName,
+      phoneNumber: phoneNumber,
+      password: password,
+      dob: dob,
+      email: email
+    })
+    if (res.result == true) {
+      console.log(res.user)
+      navigation.navigate('VerifyCode')
+    }
+  }
+
+
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -96,6 +134,7 @@ export default Register = props => {
           hintText="Tuấn Anh"
           borderError={errorName}
           onChangeText={text => {
+            setName(text)
             setErrorName(isValidEmpty(text));
           }}
         />
@@ -125,6 +164,7 @@ export default Register = props => {
           hintText="Trần"
           borderError={errorLastName}
           onChangeText={text => {
+            setLastName(text)
             setErrorLastName(isValidEmpty(text));
           }}
         />
@@ -154,6 +194,7 @@ export default Register = props => {
           keyboardType="numeric"
           borderError={errorPhone}
           onChangeText={text => {
+            setPhoneNumber(text)
             setErrorPhone(validatePhoneNumber(text));
           }}
         />
@@ -187,6 +228,7 @@ export default Register = props => {
           onPress={() => setOpen(true)}
           borderError={errorBirthday}
           onChangeText={text => {
+            setDob(text)
             setErrorBirthday(validateDateOfBirth(text));
           }}
         />
@@ -216,6 +258,7 @@ export default Register = props => {
           hintText="tuananh123@gmail.com"
           borderError={errorEmail}
           onChangeText={text => {
+            setEmail(text)
             setErrorEmail(validateEmail(text));
           }}
         />
@@ -249,6 +292,7 @@ export default Register = props => {
           icon={ICON.eye}
           borderError={errorPassword}
           onChangeText={text => {
+            setPassword(text)
             setErrorPassword(validatePassword(text));
           }}
         />
@@ -282,7 +326,13 @@ export default Register = props => {
           icon={ICON.eye}
           borderError={errorPassword2}
           onChangeText={text => {
-            setErrorPassword2(isValidEmpty(text));
+            setRePassword(text)
+            setErrorPassword2(
+              isValidEmpty(text),
+            )
+            if (isValidEmpty(text)) {
+              setNotifyPassword("Không được để trống")
+            }
           }}
         />
 
@@ -293,9 +343,11 @@ export default Register = props => {
               fontWeight: '400',
               color: 'red',
             }}>
-            Không được để trống !
+            {notifyPassword}
           </Text>
         )}
+
+        
 
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
@@ -320,7 +372,7 @@ export default Register = props => {
         <View style={{marginTop: 30}}>
           <UIButtonPrimary
             text="Tạo tài khoản mới"
-            onPress={() => navigation.navigate('VerifyCode')}
+            onPress={() => checkPasswordRepeat(rePassword, password)}
           />
         </View>
 
