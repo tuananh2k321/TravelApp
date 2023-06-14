@@ -6,6 +6,8 @@ import HomeScreen from '../HomeScreen'
 import AppLoader from '../AppLoader'
 import SplashScreen from '../SplashScreen'
 import OnboardingStart from '../OnboardingStart'
+import Swiper from '../swiper/Swiper'
+import Home from '../tab_app/Home'
 
 const Stack = createNativeStackNavigator();
 const screenOptionStyle = {
@@ -24,7 +26,7 @@ const screenOptionStyle = {
             component={SplashScreen}
           />
           <Stack.Screen
-            name="Home"
+            name="HomeScreen"
             options={{
               animationEnabled: true,
               header: () => null,
@@ -32,10 +34,17 @@ const screenOptionStyle = {
             }}
             component={HomeScreen}
           />
+       
+
           <Stack.Screen
-            name="Onboarding"
+            name="Swiper"
             options={{animationEnabled: true, header: () => null}}
-            component={OnboardingStart}
+            component={Swiper}
+          />
+             <Stack.Screen
+            name="Home"
+            options={{animationEnabled: true, header: () => null}}
+            component={Home}
           />
      
         </Stack.Navigator>

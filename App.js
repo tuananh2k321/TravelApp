@@ -12,6 +12,9 @@ import MainNavigator from './screen/main_navigator/MainNavigator';
 import React from 'react';
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import OnboardingStart from './screen/OnboardingStart';
+import Slider from './screen/swiper/Slider';
+import Swiper from './screen/swiper/Swiper';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -47,6 +50,8 @@ const App = () => {
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <MainNavigator />
+      {/* <OnboardingStart/> */}
+      {/* <Swiper/> */}
     </SafeAreaView>
   );
 };

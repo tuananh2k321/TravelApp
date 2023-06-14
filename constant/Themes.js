@@ -20,7 +20,22 @@ export const SIZES = {
     width: width,
     height: height
 }
-
+export const SIZE = {
+    width,
+    height,
+    title: 32,
+    h2: 24,
+    h3: 18,
+    body: 14,
+    caption: 12,
+    radius: 16,
+  }
+  export const SPACING = {
+    s: 8,
+    m: 18,
+    l: 24,
+    xl: 40,
+  }
 export const ICON = {
     // home: require('../assets/icon/icons8-home-50.png'),
     home: require('../assets/icon/home.png'),

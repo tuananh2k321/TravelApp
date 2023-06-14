@@ -21,7 +21,7 @@ const SplashScreen = props => {
 
   useEffect(() => {
     if (authLoaded && animationLoaded) {
-      props.navigation.replace('Home');
+      props.navigation.replace('HomeScreen',);
     }
   }, [authLoaded, animationLoaded, props.navigation]);
 
