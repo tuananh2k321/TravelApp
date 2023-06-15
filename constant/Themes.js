@@ -7,14 +7,17 @@ export const COLOR = {
     title: '#333',
     detail: '#00000099',
     white: '#fff',
-    border: "#bdbdbd"
+    border: "#bdbdbd",
+    black: '#000000',
+    lightBlack1: 'rgba(0,0,0,0.6)',
+    lightGray1: 'rgba(82,82,82,0.8)'
 }
 
 export const SIZES = {
     // global sizes
     radius: 12,
     padding: 24,
-    base: 6,
+    base: 10,
 
     // font sizes
     largeTitle: 40,
@@ -50,9 +53,17 @@ export const ICON = {
     eyeClose: require('../assets/icon/icons8-closed-eye-50.png'),
     left: require('../assets/icon/icons8-left-50.png'),
     calendar: require('../assets/icon/icons8-calendar-50.png'),
+    arrow_back: require('../assets/icon/arrow-back.png'),
+    arrow_right: require('../assets/icon/arrow-right.png'),
+    arrow_right: require('../assets/icon/arrow-right.png'),
+    share: require('../assets/icon/share.png'),
+    saved_product: require('../assets/icon/saved-product.png'),
+    star_yellow: require('../assets/icon/star-yellow.png'),
+    vote_up: require('../assets/icon/vote-up.png'),
 }
 
 export const IMAGES = {
     logo: require('../assets/image/logo.png'),
     logoWhite: require('../assets/image/logoWhite.png'),
+    tour_detail_bg: require('../assets/image/detail-background.png'),
 }

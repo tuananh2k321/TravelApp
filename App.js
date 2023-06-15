@@ -22,6 +22,7 @@ import Profile from './screen/tab_app/Profile';
 import Notification from './screen/tab_app/Notification';
 import Favorite from './screen/tab_app/Favorite';
 import Mybooking from './screen/tab_app/Mybooking';
+import TourDetail from './screen/TourDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,11 +31,12 @@ const App = () => {
 
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="TourDetail"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgetPassword" component={ForgetPassword}/>
+        <Stack.Screen name="TourDetail" component={TourDetail}/>
         <Stack.Screen name="NewPassword" component={NewPassword}/>
         <Stack.Screen name="VerifyCode" component={VerifyCode}/>
         <Stack.Screen name="VerifyCode2" component={Verifycode2}/>
