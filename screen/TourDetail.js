@@ -57,7 +57,12 @@ const TourDetail = () => {
             <TouchableOpacity
                 disabled={disabled}
                 onPress={onPress}
-                style={[{ justifyContent: 'center', alignItems: 'center' }, containerStyle]}>
+                style={[{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingHorizontal: SIZES.base,
+                }, containerStyle]}>
                 <Text style={[FONTS.h3, labelStyle]}>{label}</Text>
             </TouchableOpacity>
         )
@@ -123,7 +128,7 @@ const TourDetail = () => {
                     <Text style={{ ...FONTS.h2, color: COLOR.white }}>Koh Rong Samloem</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <RowStar numberOfStar={5} />
-                        <Text style={{ ...FONTS.body4, color: COLOR.white }}>. 100 reviews</Text>
+                        <Text style={{ ...FONTS.body4, color: COLOR.white }}>. 100 đánh giá</Text>
                     </View>
                 </View>
                 {/* box number of image */}
@@ -146,7 +151,7 @@ const TourDetail = () => {
                 containerStyle={{
                     marginTop: 20,
                 }}
-                title={"About"}
+                title={"Giới thiệu"}
             >
                 <Text
                     style={{
@@ -163,7 +168,7 @@ const TourDetail = () => {
                                 color: COLOR.black,
                                 ...FONTS.body4,
                                 fontWeight: 'bold',
-                            }}>Read all</Text>
+                            }}>Xem tất cả</Text>
                     </TouchableOpacity>
                 </Text>
             </Section>
@@ -183,7 +188,7 @@ const TourDetail = () => {
                     // paddingHorizontal: 15,
                     borderColor: COLOR.lightGray2,
                     borderWidth: 1,
-                    marginBottom: 10
+                    marginBottom: 10,
                 }}
             >
                 <Image
@@ -213,7 +218,7 @@ const TourDetail = () => {
     const WhatIsIncluded = () => {
         return (
             <Section
-                title={"What is included"}
+                title={"Những gì được bao gồm"}
             >
                 <View
                     style={{
@@ -223,16 +228,16 @@ const TourDetail = () => {
                     }}>
                     <FeaturedItem
                         icon={ICON.bus}
-                        title={'Bus'}
-                        subtitle={'Transportaion'} />
+                        title={'Xe buýt'}
+                        subtitle={'Di chuyển'} />
                     <FeaturedItem
                         icon={ICON.clock}
-                        title={'2 day 1 night'}
-                        subtitle={'Duration'} />
+                        title={'2 ngày 1 đêm'}
+                        subtitle={'Thời gian'} />
                     <FeaturedItem
                         icon={ICON.qr_code}
                         title={'TAC200812'}
-                        subtitle={'Product code'} />
+                        subtitle={'Mã sản phẩm'} />
                 </View>
             </Section>
         )
@@ -240,8 +245,8 @@ const TourDetail = () => {
     const WhereWillYouStay = () => {
         return (
             <Section
-                title={"Where Will You Stay"}
-                subtitle={"View the location on map"}
+                title={"Bạn sẽ ở đâu"}
+                subtitle={"Xem vị trí trên bản đồ"}
             >
                 <View
                     style={{
@@ -285,7 +290,7 @@ const TourDetail = () => {
                 }}>
                     <View>
                         <Image
-                            source={{uri: PHOTO_REVIEW[0]}}
+                            source={{ uri: PHOTO_REVIEW[0] }}
                             style={{
                                 width: (SIZES.width - 2 * SIZES.padding - 10) / 2,
                                 height: 320 / 2,
@@ -293,7 +298,7 @@ const TourDetail = () => {
                                 marginBottom: 5
                             }} />
                         <Image
-                            source={{uri: PHOTO_REVIEW[1]}}
+                            source={{ uri: PHOTO_REVIEW[1] }}
                             style={{
                                 width: (SIZES.width - 2 * SIZES.padding - 10) / 2,
                                 height: 320 / 2,
@@ -302,7 +307,7 @@ const TourDetail = () => {
                     </View>
                     <View>
                         <Image
-                            source={{uri: PHOTO_REVIEW[2]}}
+                            source={{ uri: PHOTO_REVIEW[2] }}
                             style={{
                                 width: (SIZES.width - 2 * SIZES.padding - 10) / 2,
                                 height: 320 + 5,
@@ -316,10 +321,10 @@ const TourDetail = () => {
                         marginHorizontal: SIZES.padding,
                         marginBottom: 40,
                         marginTop: 20,
-                        width: (SIZES.width - 2 * SIZES.padding - 10) / 2,
                         height: 42,
                         borderRadius: 6,
                         borderColor: COLOR.black,
+                        alignSelf: 'flex-start',
                         borderWidth: 1
                     }}
                     labelStyle={{
@@ -328,7 +333,7 @@ const TourDetail = () => {
                         fontWeight: 'bold'
                     }}
                     onPress={() => console.log("show all")}
-                    label={'See all +20 photos'}
+                    label={'Xem tất cả +20 ảnh'}
                 />
             </>
         )
@@ -374,7 +379,7 @@ const TourDetail = () => {
                                 style={{
                                     color: COLOR.black,
                                     ...FONTS.h4
-                                }}>. 16 Dec 2021</Text>
+                                }}>. 16/12/2021</Text>
                         </View>
                     </View>
                 </View>
@@ -397,8 +402,8 @@ const TourDetail = () => {
                         right: 16
                     }}>
                     <View>
-                        <Text style={{ color: COLOR.lightBlack1, ...FONTS.h5 }}>Visited date</Text>
-                        <Text style={{ color: COLOR.lightBlack1, ...FONTS.h5 }}>Dec 2021</Text>
+                        <Text style={{ color: COLOR.lightBlack1, ...FONTS.h5 }}>Ngày du lịch</Text>
+                        <Text style={{ color: COLOR.lightBlack1, ...FONTS.h5 }}>12/2021</Text>
                     </View>
                     <TouchableOpacity>
                         <Image style={styles.icon_24} resizeMode='contain' source={ICON.vote_up} />
@@ -410,8 +415,8 @@ const TourDetail = () => {
     const Review = () => {
         return (
             <Section
-                title={"Reviews"}
-                subtitle={"4.5 (100 reviews)"}>
+                title={"Đánh giá"}
+                subtitle={"4.5 (100 đánh giá)"}>
                 <ReviewItem
                     comment={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tellus in pretium dignissim '}
                     userName={"Jack Daniel"}
@@ -436,7 +441,7 @@ const TourDetail = () => {
 
                 <ButtonText
                     containerStyle={{
-                        width: (SIZES.width - 2 * SIZES.padding - 10) / 2,
+                        alignSelf: 'flex-start',
                         height: 42,
                         borderRadius: 6,
                         borderColor: COLOR.black,
@@ -448,7 +453,7 @@ const TourDetail = () => {
                         fontWeight: 'bold'
                     }}
                     onPress={() => console.log("show all")}
-                    label={'See all +93 reviews'}
+                    label={'Xem tất cả +93 đánh giá'}
                 />
             </Section>
         )
@@ -491,21 +496,21 @@ const TourDetail = () => {
                 containerStyle={{
                     marginTop: 40
                 }}
-                title={"People frequently ask"}
+                title={"Mọi người thường hỏi"}
             >
                 <FrequentlyAskItem
                     containerStyle={{ marginBottom: 20 }}
-                    title={'About this place'}
+                    title={'Về nơi này'}
                     subtitle={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}
                 />
                 <FrequentlyAskItem
                     containerStyle={{ marginBottom: 20 }}
-                    title={'Term and condition'}
+                    title={'Điều khoản và điều kiện'}
                     subtitle={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}
                 />
                 <FrequentlyAskItem
                     containerStyle={{ marginBottom: 20 }}
-                    title={'Cancellation Policy'}
+                    title={'Chính sách hủy bỏ'}
                     subtitle={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}
                 />
 
@@ -541,11 +546,11 @@ const TourDetail = () => {
                                     ...FONTS.h2,
                                 }}
                             >$600</Text>
-                            /Person
+                            /Người
                         </Text>
                     </View>
                     <ButtonText
-                        label={"Book Now"}
+                        label={"Đặt ngay"}
                         labelStyle={{
                             color: COLOR.white,
                             ...FONTS.h3,
