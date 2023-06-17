@@ -19,7 +19,7 @@ this.state ={
 
 
 export default function Home(props) {
-
+    const { navigation } = props;
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -39,10 +39,10 @@ export default function Home(props) {
                         />
                     </View>
                 </View>
-                <View style={styles.slider}>
-                    {/* <SliderBox
-                        images={this.state.images}/> */}
-                </View>
+                {/* <View style={styles.slider}>
+                    <SliderBox
+                        images={this.state.images}/>
+                </View> */}
 
                 <View style={styles.txtpack1}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -55,7 +55,7 @@ export default function Home(props) {
                     <FlatList style={{ marginTop: 7 }}
                         horizontal
                         data={popular}
-                        renderItem={({ item }) => <ItemPopular dulieu={item} />}
+                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
                     />
@@ -72,7 +72,7 @@ export default function Home(props) {
                     <FlatList style={{ marginTop: 7 }}
                         horizontal
                         data={explore}
-                        renderItem={({ item }) => <ItemPopular dulieu={item} />}
+                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
                     />

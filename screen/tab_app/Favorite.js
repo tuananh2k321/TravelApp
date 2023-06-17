@@ -12,13 +12,13 @@ const Favorite = (props) => {
     const {navigation} = props;
   return (
     <SafeAreaView style={styles.container}>
-        <Text style={styles.wishlist}>Yeu thich</Text>
+        <Text style={styles.wishlist}>Yêu thích</Text>
         <View style={styles.wishlist_list}>
             <FlatList style={{bottom:20}}
         data={data}
         contentContainerStyle={{ flexGrow: 1 }}
         renderItem={({item}) => <Item_wishlist dulieu={item} navigation={navigation}/>}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
       >
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
 
 const data = [
     {
+        id: '1',
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
         start:4.8,
         view:100,
@@ -91,6 +92,7 @@ const data = [
         address:'songlong'
     },
     {
+        id: '2',
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
         start:4.8,
         view:100,
@@ -100,6 +102,7 @@ const data = [
         address:'songlong'
     },
     {
+        id: '3',
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
         start:4.8,
         view:100,
@@ -109,6 +112,7 @@ const data = [
         address:'songlong'
     },
     {
+        id: '4',
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
         start:4.8,
         view:100,
@@ -118,6 +122,7 @@ const data = [
         address:'songlong'
     },
     {
+        id: '5',
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
         start:4.8,
         view:100,

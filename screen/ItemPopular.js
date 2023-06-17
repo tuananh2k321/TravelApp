@@ -2,10 +2,13 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 const ItemPopular = (props) => {
-
-    const {dulieu} = props;
+    const {dulieu, navigation} = props;
+    const clickItem = () => {
+      console.log("Click Item");
+      navigation.navigate('Detail_Booking', { id: dulieu._id });
+  }
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={clickItem}>
       <Image style={styles.image} source={{uri: dulieu.image}}/>
       <Text style={{fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4}}>{dulieu.title}</Text>
       <View style={styles.review}>

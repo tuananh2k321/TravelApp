@@ -61,13 +61,13 @@ export default Register = props => {
   }
 
   const btnRegister = async () => {
-    const res = await AxiosIntance().post("api/user/", {
+    const res = await AxiosIntance().post("user/api/register", {
       name: name,
       lastName: lastName,
       phoneNumber: phoneNumber,
-      password: password,
       dob: dob,
-      email: email
+      email: email,
+      password: password,
     })
     if (res.result == true) {
       console.log(res.user)
@@ -372,7 +372,9 @@ export default Register = props => {
         <View style={{marginTop: 30}}>
           <UIButtonPrimary
             text="Tạo tài khoản mới"
-            onPress={() => checkPasswordRepeat(rePassword, password)}
+            // onPress={() => checkPasswordRepeat(rePassword, password)}
+            onPress={() => btnRegister()}
+
           />
         </View>
 

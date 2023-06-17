@@ -12,7 +12,8 @@ import UITextInput from '../component/UITextInput';
 import UIButtonPrimary from '../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export default Successfully = () => {
+export default Successfully = (props) => {
+  const {navigation} = props;
   return (
       <SafeAreaView
         style={{
@@ -68,8 +69,9 @@ export default Successfully = () => {
         justifyContent: 'center',
         
         width: SIZES.width - 20,
-        
-        }}>
+        }}
+        onPress={() => navigation.navigate('BottomTab')}
+        >
        <Text
           style={{
             fontSize: 20,
