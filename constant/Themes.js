@@ -7,14 +7,19 @@ export const COLOR = {
     title: '#333',
     detail: '#00000099',
     white: '#fff',
-    border: "#bdbdbd"
+    border: "#bdbdbd",
+    black: '#000000',
+    lightBlack1: 'rgba(0,0,0,0.6)',
+    lightBlack2: 'rgba(0,0,0,0.1)',
+    lightGray1: 'rgba(82,82,82,0.8)',
+    lightGray2: 'rgba(82,82,82,0.1)'
 }
 
 export const SIZES = {
     // global sizes
     radius: 12,
     padding: 24,
-    base: 6,
+    base: 10,
 
     // font sizes
     largeTitle: 40,
@@ -50,9 +55,19 @@ export const ICON = {
     eyeClose: require('../assets/icon/icons8-closed-eye-50.png'),
     left: require('../assets/icon/icons8-left-50.png'),
     calendar: require('../assets/icon/icons8-calendar-50.png'),
+    arrow_back: require('../assets/icon/arrow-back.png'),
+    arrow_right: require('../assets/icon/arrow-right.png'),
+    share: require('../assets/icon/share.png'),
+    saved_product: require('../assets/icon/saved-product.png'),
+    star_yellow: require('../assets/icon/star-yellow.png'),
+    vote_up: require('../assets/icon/vote-up.png'),
+    qr_code: require('../assets/icon/qr_code_FILL1_wght400_GRAD0_opsz48.png'),
+    bus: require('../assets/icon/directions_bus_FILL1_wght400_GRAD0_opsz48.png'),
+    clock: require('../assets/icon/schedule_FILL1_wght400_GRAD0_opsz48.png'),
 }
 
 export const IMAGES = {
     logo: require('../assets/image/logo.png'),
     logoWhite: require('../assets/image/logoWhite.png'),
+    tour_detail_bg: require('../assets/image/detail-background.png'),
 }
