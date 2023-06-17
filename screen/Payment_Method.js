@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import LinearGradient from 'react-native-linear-gradient';
 
-const Payment_Method = () => {
-
+const Payment_Method = (props) => {
+    const {navigation} = props;
     const chooses = [
         {
             id: 1,
@@ -25,7 +25,9 @@ const Payment_Method = () => {
     return (
         <View style={styles.container}>
             <View style={styles.groupHeader}>
-                <Ionicons name="chevron-back" size={20} color="#000000" />
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Ionicons name="chevron-back" size={20} color="#000000" />
+                </TouchableOpacity>
                 <Text style={styles.header}>Xác nhận và trả tiền</Text>
             </View>
             <View style={styles.groupName}>
@@ -65,7 +67,7 @@ const Payment_Method = () => {
             }
 
             <View style={styles.groupButton}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Payment')}>
                     <Text style={styles.textButton}>Quy trình thanh toán</Text>
                 </TouchableOpacity>
             </View>

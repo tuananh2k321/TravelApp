@@ -61,7 +61,8 @@ export default Register = props => {
   }
 
   const btnRegister = async () => {
-    const res = await AxiosIntance().post("user/api/register", {
+    const res = await AxiosIntance()
+    .post("user/api/register", {
       name: name,
       lastName: lastName,
       phoneNumber: phoneNumber,

@@ -7,7 +7,8 @@ import {
   isValidCVV,
 } from '../utilies/Validations';
 
-const Payment = () => {
+const Payment = (props) => {
+    const {navigation} = props;
     const [numberID, setNumberID] = useState('');
     const [CVV, setCVV] = useState('');
     // error
@@ -18,7 +19,9 @@ const Payment = () => {
     return (
         <View style={styles.container}>
             <View style={styles.groupHeader}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={20} color="#000000" />
+              </TouchableOpacity>
                 <Text style={styles.header}>Sự chi trả</Text>
             </View>
             <LinearGradient start={{x: 1.5, y: 0}} end={{x: 0, y: 0}} colors={['#1F4352', '#227092',]} style={styles.card}>
@@ -65,9 +68,7 @@ const Payment = () => {
         <TouchableOpacity style={[styles.button,
         {backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray'}]}
         disabled = {isValidOK() == false}
-        onPress={() => {
-          alert(`Số thẻ: ${numberID}, CVV: ${CVV}`);
-        }}>
+        onPress={() => navigation.navigate('Booking_Successfully')}>
           <Text style={styles.textButton}>Xác nhận</Text>
         </TouchableOpacity>
       </View>

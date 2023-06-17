@@ -10,6 +10,7 @@ import {
 } from '../utilies/Validations';
 
 const Detail_Booking = (props) => {
+  const {navigation} = props;
   //State for validating
   const [errorName, setErrorName] = useState('');
   const [errorQuantity, setErrorQuantity] = useState('');
@@ -29,7 +30,9 @@ const Detail_Booking = (props) => {
   && isValidQuantity(quantity) == true
   return (
     <View style={styles.container}>
-      <Ionicons name="chevron-back-sharp" size={20} color="#000000" />
+      <TouchableOpacity  onPress={() => navigation.goBack()}>
+        <Ionicons name="chevron-back-sharp" size={20} color="#000000" />
+      </TouchableOpacity>
       <Text style={styles.title}>Chi tiết đặt phòng</Text>
       <Text style={styles.content}>Tận dụng tốt nhất tình yêu bằng cách tạo một tài khoản</Text>
       <View style={styles.groupForm}>
@@ -101,10 +104,7 @@ const Detail_Booking = (props) => {
         <TouchableOpacity style={[styles.button,
         {backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray'}]}
         disabled = {isValidOK() == false}
-        onPress={() => {
-          alert(`Name: ${name}, Quantity: ${quantity}, Email: ${email}, 
-          Phone: ${phoneNumber}, ID: ${numberId}`);
-        }}>
+        onPress={() => navigation.navigate('Payment_Method')}>
           <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>

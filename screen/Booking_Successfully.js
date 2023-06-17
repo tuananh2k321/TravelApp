@@ -2,7 +2,8 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient';
 
-const Booking_Successfully = () => {
+const Booking_Successfully = (props) => {
+    const {navigation} = props;
     return (
         <View style={styles.container}>
             <LinearGradient colors={['#0FA3E2', '#49C9FF']} style={{ flex: 2 }}>
@@ -13,7 +14,7 @@ const Booking_Successfully = () => {
                     <Text style={styles.content}>Chuẩn bị sẵn sàng mọi thứ trước ngày đi của bạn</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BottomTab')}>
                     <Text style={styles.textButton}>Quay lại trang chủ</Text>
                 </TouchableOpacity>
             </LinearGradient>

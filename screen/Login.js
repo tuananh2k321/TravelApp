@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ToastAndroid
 } from 'react-native';
 import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
 import UITextInput from '../component/UITextInput';
@@ -28,6 +29,9 @@ export default Login = props => {
   const [email, setEmail] = useState(true);
   const [password, setPassword] = useState(true);
 
+  const isValidOK = () => email.length > 0 && isHidePassword.length && validateEmail(email) == true
+  && validatePassword(isHidePassword) == true
+
   const btnLogin = async () => {
     try {
       const res = await AxiosIntance().post("user/api/login", {
@@ -37,8 +41,12 @@ export default Login = props => {
       if (res.result == true) {
         console.log(res.user)
         navigation.navigate("BottomTab")
+        ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+        
       }
     } catch (error) {
+      console.log(error);
+      ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
       
     }
     
@@ -156,8 +164,8 @@ export default Login = props => {
           </Text>
         </TouchableOpacity>
 
-        <View style={{marginTop: 30}}>
-          <UIButtonPrimary text="Đăng Nhập" 
+        <View style={{marginTop: 30,}}>
+          <UIButtonPrimary text="Đăng Nhập"
             onPress = {() => btnLogin()}
           />
         </View>

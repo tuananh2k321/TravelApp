@@ -5,13 +5,15 @@ import { CalendarList } from 'react-native-calendars';
 import { MaterialDatetimePickerAndroid } from 'react-native-material-datetime-picker';
 import RNMaterialDatetimePicker from 'react-native-material-datetime-picker';
 import Calendar from "react-native-calendar-range-picker";
-const Available_Date = () => {
-
+const Available_Date = (props) => {
+    const {navigation} = props;
 
     return (
         <View style={styles.container}>
             <View style={styles.groupHeader}>
-                <Ionicons name="arrow-back" size={20} color="#000000" />
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Ionicons name="arrow-back" size={20} color="#000000" />
+                </TouchableOpacity>
                 <Text style={styles.header}>Ngày có sẵn</Text>
             </View>
             <Text style={styles.title}>Chọn đặt phòng của bạn</Text>
@@ -26,10 +28,11 @@ const Available_Date = () => {
             />
 
             <View style={styles.groupButton}>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#F3F3F3' }]}>
+                <TouchableOpacity style={[styles.button, { backgroundColor: '#F3F3F3' }]}
+                                    onPress={() => navigation.goBack()}>
                     <Text style={[styles.textButton, { color: '#797979' }]}>Quay lại</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Detail_Booking')}>
                     <Text style={styles.textButton}>Tiếp theo</Text>
                 </TouchableOpacity>
             </View>

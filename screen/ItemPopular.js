@@ -5,7 +5,7 @@ const ItemPopular = (props) => {
     const {dulieu, navigation} = props;
     const clickItem = () => {
       console.log("Click Item");
-      navigation.navigate('Detail_Booking', { id: dulieu._id });
+      navigation.navigate('TourDetail', { id: dulieu._id });
   }
   return (
     <TouchableOpacity style={styles.container} onPress={clickItem}>

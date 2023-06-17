@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View,Image, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,Image, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLOR, SIZES } from '../../constant/Themes'
 
-const Profile = () => {
+const Profile = (props) => {
+    const {navigation} = props;
   return (
     <ScrollView>
         <SafeAreaView style={styles.container}>
@@ -108,7 +109,7 @@ const Profile = () => {
             
         </View>
 
-             <TouchableOpacity>
+             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <View style={styles.button_logout}>
                         <Text style={styles.button_logout_text}>Logout</Text>
                 </View>

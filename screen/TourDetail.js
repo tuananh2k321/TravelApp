@@ -13,7 +13,8 @@ const PHOTO_REVIEW = [
     'https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=468&q=80'
 ]
 const PROFILE_IMAGE = 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
-const TourDetail = () => {
+const TourDetail = (props) => {
+    const {navigation} = props;
     const Section = ({ title, subtitle, containerStyle, children }) => {
         return (
             <View
@@ -71,10 +72,12 @@ const TourDetail = () => {
     const HeaderNavigation = () => {
         return (
             <View style={styles.navigationContainer}>
-                <Image
-                    style={styles.icon_36}
-                    source={ICON.arrow_back}
-                    resizeMode='contain' />
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image
+                        style={styles.icon_36}
+                        source={ICON.arrow_back}
+                        resizeMode='contain' />
+                </TouchableOpacity>
                 <View
                     style={{
                         flexDirection: 'row'
@@ -550,6 +553,7 @@ const TourDetail = () => {
                         </Text>
                     </View>
                     <ButtonText
+                    onPress={() => navigation.navigate('Available_Date')}
                         label={"Đặt ngay"}
                         labelStyle={{
                             color: COLOR.white,
