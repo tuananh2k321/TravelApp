@@ -18,7 +18,6 @@ import {
   validatePassword,
 } from '../constant/Validation';
 import AxiosIntance from '../constant/AxiosIntance';
-import BottomTab from './BottomTab';
 
 export default Login = props => {
   const {navigation} = props;
@@ -26,29 +25,66 @@ export default Login = props => {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
 
-  const [email, setEmail] = useState(true);
-  const [password, setPassword] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const isValidOK = () => email.length > 0 && isHidePassword.length && validateEmail(email) == true
-  && validatePassword(isHidePassword) == true
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isValid, setIsvalid] = useState(false);
+
+  
+  // Sử dụng hàm getIPv4Address để lấy địa chỉ IPv4
+  
+
+  const checkForm = (email, password) => {
+    if (email.length === 0  ) {
+      console.log('email emty')
+      setErrorEmail(false)
+      setIsvalid(false)
+      setErrorMessage("Không được để trống!")
+      
+    }  
+    
+    if (password.length === 0) {
+      console.log('password emty')
+      setErrorPassword(false)
+      setIsvalid(false)
+      setErrorMessage("Không được để trống!")
+    } 
+  }
 
   const btnLogin = async () => {
-    try {
-      const res = await AxiosIntance().post("user/api/login", {
-        password: password,
-        email: email
-      })
-      if (res.result == true) {
-        console.log(res.user)
-        navigation.navigate("BottomTab")
-        ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
-        
-      }
-    } catch (error) {
-      console.log(error);
-      ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
-      
+    
+    
+
+    const res = await AxiosIntance().post("user/api/login", {
+      password: password,
+      email: email
+    })
+    if (res.result == true) {
+      console.log(res.user)
+      navigation.navigate("BottomTab")
+      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
     }
+
+    // console.log('btnLogin')
+    // try {
+    //   if (errorEmail == true && errorPassword == true && isValid == true) {
+    //     console.log('valid')
+    //     const res = await AxiosIntance().post("user/api/login", {
+    //       password: password,
+    //       email: email
+    //     })
+    //     if (res.result == true) {
+    //       console.log(res.user)
+    //       navigation.navigate("BottomTab")
+    //       ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+    //   }
+    // }
+    // } catch (error) {
+    //   console.log(error);
+    //   ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+    // }
+    
     
   }
 
@@ -103,7 +139,10 @@ export default Login = props => {
           borderError={errorEmail}
           onChangeText={text => {
             setEmail(text)
-            setErrorEmail(validateEmail(text));
+            setErrorEmail(validateEmail(text))
+            setIsvalid(true)
+            console.log(errorEmail)
+            setErrorMessage("Email không hợp lệ!")
           }}
         />
         {!errorEmail && (
@@ -113,7 +152,7 @@ export default Login = props => {
               fontWeight: '400',
               color: 'red',
             }}>
-            Email không hợp lệ !
+            {errorMessage}
           </Text>
         )}
 
@@ -136,7 +175,8 @@ export default Login = props => {
           borderError={errorPassword}
           onChangeText={text => {
             setPassword(text)
-            setErrorPassword(isValidEmpty(text));
+            setErrorPassword(isValidEmpty(text))
+            setIsvalid(true)
             console.log(errorPassword)
           }}
         />
@@ -148,7 +188,7 @@ export default Login = props => {
               fontWeight: '400',
               color: 'red',
             }}>
-            Không được để trống !
+            Không được để trống!
           </Text>
         )}
         <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}>
@@ -166,7 +206,10 @@ export default Login = props => {
 
         <View style={{marginTop: 30,}}>
           <UIButtonPrimary text="Đăng Nhập"
-            onPress = {() => btnLogin()}
+            onPress = {() => {
+              checkForm(email, password) 
+              btnLogin()
+            }}
           />
         </View>
 

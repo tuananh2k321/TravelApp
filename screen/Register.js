@@ -54,6 +54,7 @@ export default Register = props => {
     if (password === rePassword) {
       setErrorPassword2(true)
       console.log(rePassword)
+      btnRegister()
     } else {
       setErrorPassword2(false)
       setNotifyPassword("Không trùng mật khẩu")
@@ -374,7 +375,7 @@ export default Register = props => {
           <UIButtonPrimary
             text="Tạo tài khoản mới"
             // onPress={() => checkPasswordRepeat(rePassword, password)}
-            onPress={() => btnRegister()}
+            onPress={() => checkPasswordRepeat(rePassword, password)}
 
           />
         </View>
