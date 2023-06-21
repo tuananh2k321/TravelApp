@@ -20,7 +20,6 @@ import {
   validatePhoneNumber,
 } from '../constant/Validation';
 import DatePicker from 'react-native-date-picker';
-import AxiosIntance from '../constant/AxiosIntance';
 
 export default Register = props => {
   const {navigation} = props;
@@ -35,6 +34,7 @@ export default Register = props => {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorPassword2, setErrorPassword2] = useState(true);
+  const [errorCheckbox, setErrorCheckbox] = useState(false)
 
   const [notifyPassword, setNotifyPassword] = useState("")
 
@@ -46,34 +46,88 @@ export default Register = props => {
   const [password, setPassword] = useState("")
   const [rePassword, setRePassword] = useState("")
 
+  const [isValid, setIsvalid] = useState(false);
+
   const [date, setDate] = useState('');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  
-  const checkPasswordRepeat = (rePassword, password) => {
-    if (password === rePassword) {
-      setErrorPassword2(true)
-      console.log(rePassword)
-      btnRegister()
-    } else {
-      setErrorPassword2(false)
-      setNotifyPassword("Không trùng mật khẩu")
-    }
-  }
 
+
+  const checkForm = (name, lastName, phoneNumber, dob, email, password, rePassword) => {
+    if (name.length === 0  ) {
+      console.log('name emty')
+      setErrorName(false)
+      setIsvalid(false)
+    }
+    
+    if (lastName.length === 0  ) {
+      console.log('last name emty')
+      setErrorLastName(false)
+      setIsvalid(false)
+    }  
+
+    if (phoneNumber.length === 0  ) {
+      console.log('phone number emty')
+      setErrorPhone(false)
+      setIsvalid(false)
+    }  
+
+    if (dob.length === 0  ) {
+      console.log('dob emty')
+      setErrorBirthday(false)
+      setIsvalid(false)
+    } 
+
+    if (email.length === 0  ) {
+      console.log('email emty')
+      setErrorEmail(false)
+      setIsvalid(false)
+    }  
+    
+    if (password.length === 0) {
+      console.log('password emty')
+      setErrorPassword(false)
+      setIsvalid(false)
+    } 
+
+    if (rePassword.length === 0) {
+      console.log('password emty')
+      setErrorPassword2(false)
+      setIsvalid(false)
+    } 
+  }
+  
   const btnRegister = async () => {
-    const res = await AxiosIntance()
-    .post("user/api/register", {
-      name: name,
-      lastName: lastName,
-      phoneNumber: phoneNumber,
-      dob: dob,
-      email: email,
-      password: password,
-    })
-    if (res.result == true) {
-      console.log(res.user)
-      navigation.navigate('VerifyCode')
+    // const res = await AxiosIntance()
+    // .post("user/api/register", {
+    //   name: name,
+    //   lastName: lastName,
+    //   phoneNumber: phoneNumber,
+    //   dob: dob,
+    //   email: email,
+    //   password: password,
+    // })
+    // if (res.result == true) {
+    //   console.log(res.user)
+    //   navigation.navigate('VerifyCode')
+    // }
+    console.log('register')
+    console.log(errorPassword)
+    console.log(errorPassword2)
+    console.log(isValid)
+    if (errorName == true && errorLastName == true && errorPhone == true 
+      && errorEmail == true && errorPassword == true && isValid == true
+      && errorBirthday == true && errorPassword2 == true && errorCheckbox == true) {
+        console.log("valid")
+        if (password === rePassword) {
+          console.log("valid password repeat")
+          setErrorPassword2(true)
+          console.log(rePassword)
+          navigation.navigate("VerifyCode")
+        } else {
+          setErrorPassword2(false)
+          setNotifyPassword("Không trùng mật khẩu")
+        }
     }
   }
 
@@ -138,6 +192,7 @@ export default Register = props => {
           onChangeText={text => {
             setName(text)
             setErrorName(isValidEmpty(text));
+            setIsvalid(true)
           }}
         />
 
@@ -168,6 +223,7 @@ export default Register = props => {
           onChangeText={text => {
             setLastName(text)
             setErrorLastName(isValidEmpty(text));
+            setIsvalid(true)
           }}
         />
 
@@ -198,6 +254,7 @@ export default Register = props => {
           onChangeText={text => {
             setPhoneNumber(text)
             setErrorPhone(validatePhoneNumber(text));
+            setIsvalid(true)
           }}
         />
 
@@ -230,8 +287,10 @@ export default Register = props => {
           onPress={() => setOpen(true)}
           borderError={errorBirthday}
           onChangeText={text => {
+            console.log(text)
             setDob(text)
             setErrorBirthday(validateDateOfBirth(text));
+            setIsvalid(true)
           }}
         />
 
@@ -262,6 +321,7 @@ export default Register = props => {
           onChangeText={text => {
             setEmail(text)
             setErrorEmail(validateEmail(text));
+            setIsvalid(true)
           }}
         />
 
@@ -296,6 +356,7 @@ export default Register = props => {
           onChangeText={text => {
             setPassword(text)
             setErrorPassword(validatePassword(text));
+            setIsvalid(true)
           }}
         />
 
@@ -331,6 +392,7 @@ export default Register = props => {
             setRePassword(text)
             setErrorPassword2(
               isValidEmpty(text),
+            
             )
             if (isValidEmpty(text)) {
               setNotifyPassword("Không được để trống")
@@ -357,14 +419,18 @@ export default Register = props => {
             disabled={false}
             value={toggleCheckBox}
             tintColors={{true: COLOR.primary}}
-            onValueChange={value => setToggleCheckBox(value)}
+            onValueChange={value => {
+              setToggleCheckBox(value)
+              setErrorCheckbox(value)
+            }
+            }
           />
 
           <Text
             style={{
               fontSize: 16,
               fontWeight: '400',
-              color: COLOR.detail,
+              color: errorCheckbox ? COLOR.detail : "red",
               textDecorationLine: 'underline',
             }}>
             Tôi chấp nhận những điều khoản và quy định
@@ -375,7 +441,10 @@ export default Register = props => {
           <UIButtonPrimary
             text="Tạo tài khoản mới"
             // onPress={() => checkPasswordRepeat(rePassword, password)}
-            onPress={() => checkPasswordRepeat(rePassword, password)}
+            onPress={() => {
+              checkForm(name, lastName, phoneNumber, dob, email, password, rePassword)
+              btnRegister()
+            }}
 
           />
         </View>
@@ -410,7 +479,9 @@ export default Register = props => {
             var month = (date.getMonth() + 1).toString().padStart(2, '0');
             var year = date.getFullYear();
             setDate(day + '/' + month + '/' + year);
-            console.log(day + '/' + month + '/' + year);
+            setDob(day + '/' + month + '/' + year);
+            setErrorBirthday(validateDateOfBirth(day + '/' + month + '/' + year))
+            // console.log(day + '/' + month + '/' + year);
           }}
           onCancel={() => {
             setOpen(false);

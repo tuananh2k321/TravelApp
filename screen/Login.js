@@ -53,39 +53,24 @@ export default Login = props => {
   }
 
   const btnLogin = async () => {
-    
-    
-
-    const res = await AxiosIntance().post("user/api/login", {
-      password: password,
-      email: email
-    })
-    if (res.result == true) {
-      console.log(res.user)
-      navigation.navigate("BottomTab")
-      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+    console.log('btnLogin')
+    try {
+      if (errorEmail == true && errorPassword == true && isValid == true) {
+        console.log('valid')
+        const res = await AxiosIntance().post("user/api/login", {
+          password: password,
+          email: email
+        })
+        if (res.result == true) {
+          console.log(res.user)
+          navigation.navigate("BottomTab")
+          ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+      }
     }
-
-    // console.log('btnLogin')
-    // try {
-    //   if (errorEmail == true && errorPassword == true && isValid == true) {
-    //     console.log('valid')
-    //     const res = await AxiosIntance().post("user/api/login", {
-    //       password: password,
-    //       email: email
-    //     })
-    //     if (res.result == true) {
-    //       console.log(res.user)
-    //       navigation.navigate("BottomTab")
-    //       ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
-    //   }
-    // }
-    // } catch (error) {
-    //   console.log(error);
-    //   ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
-    // }
-    
-    
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+    }
   }
 
   return (
