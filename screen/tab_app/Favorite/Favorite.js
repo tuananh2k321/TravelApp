@@ -2,9 +2,9 @@ import { StyleSheet, Text, View,FlatList,TouchableOpacity,Image } from 'react-na
 import { SwipeListView } from 'react-native-swipe-list-view'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLOR, SIZES } from '../../constant/Themes'
+import { COLOR, SIZES } from '../../../constant/Themes'
 
-import Item_wishlist from '../../component/Tab_item/Item_wishlist'
+import Item_wishlist from '../../../component/Tab_item/Item_wishlist'
 
 
 

@@ -2,12 +2,48 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Image, View, Text } from 'react-native';
 import { COLOR, ICON } from "../constant/Themes";
-import Favorite from "./tab_app/Favorite";
-import Home from "./tab_app/Home";
-import Notification from "./tab_app/Notification";
-import Profile from "./tab_app/Profile";
+import Favorite from "./tab_app/Favorite/Favorite";
+import Home from "./tab_app/Home/Home";
+import Notification from "./tab_app/Notification/Notification";
+import Profile from "./tab_app/Profile/Profile";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const StackHomes = () => {
+  return (
+    <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
+  )
+}
+
+const StackFavorites = () => {
+  return (
+    <Stack.Navigator initialRouteName="Favorite" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Favorite" component={Favorite} />
+    </Stack.Navigator>
+  )
+}
+
+
+const StackNotification = () => {
+  return (
+    <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Notification" component={Notification} />
+    </Stack.Navigator>
+  )
+}
+
+const StackProfile = () => {
+  return (
+    <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Profile" component={Profile} />
+    </Stack.Navigator>
+  )
+}
 
 const BottomTab = () => {
   return (
@@ -67,10 +103,10 @@ const BottomTab = () => {
           },
         })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Favorite" component={Favorite} />
-      <Tab.Screen name="Notification" component={Notification} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Home" component={StackHomes} />
+      <Tab.Screen name="Favorite" component={StackFavorites} />
+      <Tab.Screen name="Notification" component={StackNotification} />
+      <Tab.Screen name="Profile" component={StackProfile} />
     </Tab.Navigator>
   );
 }

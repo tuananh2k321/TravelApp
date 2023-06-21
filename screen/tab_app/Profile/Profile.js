@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,Image, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLOR, SIZES } from '../../constant/Themes'
+import { COLOR, SIZES } from '../../../constant/Themes'
 
 const Profile = (props) => {
     const {navigation} = props;
@@ -9,7 +9,7 @@ const Profile = (props) => {
     <ScrollView>
         <SafeAreaView style={styles.container}>
         <View style={styles.infomation}>
-            <Image style={styles.image} source={require('../../assets/images/profile.png')}></Image>
+            <Image style={styles.image} source={require('../../../assets/images/profile.png')}></Image>
             <View style={styles.info}>
                 <Text style={styles.name}>Van A</Text>
                 <Text style={styles.address}>Quan 8, Go Vap</Text>
@@ -25,7 +25,7 @@ const Profile = (props) => {
                         <Text style={styles.booking}>
                             Đặt trước
                         </Text>
-                        <Image  source={require('../../assets/icon/icon-arrow-right.png')}></Image>
+                        <Image  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity>
@@ -33,7 +33,7 @@ const Profile = (props) => {
                         <Text style={styles.booking}>
                             Danh sách mong muốn
                         </Text>
-                        <Image  source={require('../../assets/icon/icon-arrow-right.png')}></Image>
+                        <Image  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
                     </View>
                 </TouchableOpacity>
                 
@@ -47,11 +47,11 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../assets/icon/icon-user-circle.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-user-circle.png')}></Image>
                         <Text style={styles.button_setting_text}>Chỉnh sửa hồ sơ</Text>
                     </View>
                     <View>
-                        <Image source={require('../../assets/icon/icon-arrow-right.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -59,11 +59,11 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../assets/icon/icon-translate.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-translate.png')}></Image>
                         <Text style={styles.button_setting_text}>Thay đổi ngôn ngữ</Text>
                     </View>
                     <View>
-                        <Image source={require('../../assets/icon/icon-arrow-right.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -71,11 +71,11 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../assets/icon/icon-moon.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-moon.png')}></Image>
                         <Text style={styles.button_setting_text}>Chế độ màu</Text>
                     </View>
                     <View>
-                        <Image source={require('../../assets/icon/icon-arrow-right.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -88,11 +88,11 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting_2}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../assets/icon/icon-reader-mode.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-reader-mode.png')}></Image>
                         <Text style={styles.button_setting_text}>Điều khoản và điều kiện</Text>
                     </View>
                     
-                        <Image style={{marginLeft:10,marginTop:-10}} source={require('../../assets/icon/icon-link.png')}></Image>
+                        <Image style={{marginLeft:10,marginTop:-10}} source={require('../../../assets/icon/icon-link.png')}></Image>
                     
                 </View>
             </TouchableOpacity>
@@ -100,10 +100,10 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting_2}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../assets/icon/icon-shield.png')}></Image>
+                        <Image source={require('../../../assets/icon/icon-shield.png')}></Image>
                         <Text style={styles.button_setting_text}>Chính sách bảo mật</Text>
                     </View>
-                        <Image style={{marginLeft:10,marginTop:-10}} source={require('../../assets/icon/icon-link.png')}></Image>
+                        <Image style={{marginLeft:10,marginTop:-10}} source={require('../../../assets/icon/icon-link.png')}></Image>
                 </View>
             </TouchableOpacity>
             

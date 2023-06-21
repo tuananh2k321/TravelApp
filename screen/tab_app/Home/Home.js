@@ -1,11 +1,12 @@
 import { FlatList, ScrollView, TouchableOpacity, } from "react-native"
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, Image, StyleSheet, TextInput } from "react-native"
-import { SIZES } from "../../constant/Themes";
-import ItemPopular from "../ItemPopular";
-import ItemMenu from "../ItemMenu";
-import { SliderBox } from "react-native-image-slider-box";
+import { SIZES } from "../../../constant/Themes";
 
+
+import { SliderBox } from "react-native-image-slider-box";
+import ItemPopular from "../../../component/Tab_item/ItemPopular";
+import ItemMenu from "../../../component/Tab_item/ItemMenu";
 
 this.state ={
     images : [
@@ -25,7 +26,7 @@ export default function Home(props) {
         <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={{ flex: 1 }}>
                 <View>
-                    <Image style={styles.image_logo} source={require('../../assets/image/anhbien.jpg')} />
+                    <Image style={styles.image_logo} source={require('../../../assets/image/anhbien.jpg')} />
                     <Text style={styles.txt1}>Khám phá thế giới {"\n"}hôm nay</Text>
                     <Text style={styles.txt2}>{<Text style={{ fontWeight: 'bold' }}>Khám phá</Text>} - du lịch đến muôn nơi</Text>
                     <TextInput style={styles.txtsearch}></TextInput>

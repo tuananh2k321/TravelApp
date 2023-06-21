@@ -12,7 +12,7 @@ const ItemPopular = (props) => {
       <Image style={styles.image} source={{uri: dulieu.image}}/>
       <Text style={{fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4}}>{dulieu.title}</Text>
       <View style={styles.review}>
-        <Image style={{width: 25, height: 25}} source={require('../assets/icon/iconflight.png')}/>
+        <Image style={{width: 25, height: 25}} source={require('../../assets/icon/iconflight.png')}/>
         <Text style={{color: 'black', fontSize: 14}}>{dulieu.review} review</Text>
       </View>
       <Text style={{color: 'black', fontSize: 14}}>{dulieu.detail} ...</Text>
