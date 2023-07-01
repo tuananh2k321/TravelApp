@@ -18,6 +18,7 @@ import {
   validatePassword,
 } from '../constant/Validation';
 import AxiosIntance from '../constant/AxiosIntance';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default Login = props => {
   const {navigation} = props;
@@ -31,6 +32,8 @@ export default Login = props => {
   const [errorMessage, setErrorMessage] = useState("")
   const [isValid, setIsvalid] = useState(false);
 
+  const disPath = useDispatch()
+  const user = useSelector((state) => state.user.user)
   
   // Sử dụng hàm getIPv4Address để lấy địa chỉ IPv4
   
@@ -61,14 +64,19 @@ export default Login = props => {
           password: password,
           email: email
         })
-        if (res.result == true) {
+        // disPath({
+        //   type: "LOGIN",
+        //   email: email,
+        //   password: password
+        // })
+        if (user.result == true) {
           console.log(res.user)
           navigation.navigate("BottomTab")
           ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
       }
     }
     } catch (error) {
-      console.log(error);
+      console.log("AxiosIntance",error);
       ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
     }
   }

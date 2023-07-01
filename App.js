@@ -8,30 +8,29 @@ import NewPassword from './screen/NewPassword';
 import VerifyCode from './screen/VerifyCode';
 import Successfully from './screen/Successfully';
 import Verifycode2 from './screen/Verifycode2';
-
-import TestPhone from './screen/TestPhone';
-
+import {Provider} from 'react-redux';
+import {Store} from './redux/Store';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="ForgetPassword" component={ForgetPassword}/>
-        <Stack.Screen name="NewPassword" component={NewPassword}/>
-        <Stack.Screen name="VerifyCode" component={VerifyCode}/>
-        <Stack.Screen name="VerifyCode2" component={Verifycode2}/>
-        <Stack.Screen name="Successfully" component={Successfully}/>
-        <Stack.Screen name="TestPhone" component={TestPhone}/>
-        <Stack.Screen name="BottomTab" component={BottomTab} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={Store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="TestPhone"
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="NewPassword" component={NewPassword} />
+          <Stack.Screen name="VerifyCode" component={VerifyCode} />
+          <Stack.Screen name="VerifyCode2" component={Verifycode2} />
+          <Stack.Screen name="Successfully" component={Successfully} />
+          <Stack.Screen name="BottomTab" component={BottomTab} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

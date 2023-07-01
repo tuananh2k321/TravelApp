@@ -20,6 +20,8 @@ import {
   validatePhoneNumber,
 } from '../constant/Validation';
 import DatePicker from 'react-native-date-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser } from '../redux/reducer/UserSlice';
 
 export default Register = props => {
   const {navigation} = props;
@@ -51,6 +53,9 @@ export default Register = props => {
   const [date, setDate] = useState('');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
+  const disPath = useDispatch()
+  const user = useSelector((state) => state.user.user)
 
 
   const checkForm = (name, lastName, phoneNumber, dob, email, password, rePassword) => {
@@ -112,9 +117,6 @@ export default Register = props => {
     //   navigation.navigate('VerifyCode')
     // }
     console.log('register')
-    console.log(errorPassword)
-    console.log(errorPassword2)
-    console.log(isValid)
     if (errorName == true && errorLastName == true && errorPhone == true 
       && errorEmail == true && errorPassword == true && isValid == true
       && errorBirthday == true && errorPassword2 == true && errorCheckbox == true) {
@@ -123,7 +125,19 @@ export default Register = props => {
           console.log("valid password repeat")
           setErrorPassword2(true)
           console.log(rePassword)
-          navigation.navigate("VerifyCode")
+          disPath({
+            type: "ADD_USER",
+            payload: {
+                name: name,
+                lastName: lastName,
+                dob: dob,
+                phoneNumber: phoneNumber,
+                email: email,
+                password: password
+              }
+            })
+          console.log("user: ",user)
+          //navigation.navigate("VerifyCode")
         } else {
           setErrorPassword2(false)
           setNotifyPassword("Không trùng mật khẩu")
