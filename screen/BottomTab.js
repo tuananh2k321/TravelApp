@@ -8,22 +8,24 @@ import Notification from "./tab_app/Notification/Notification";
 import Profile from "./tab_app/Profile/Profile";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TourDetail from './tab_app/Home/TourDetail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const StackHomes = () => {
   return (
-    <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
+    <Stack.Navigator initialRouteName="TourDetail" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
     </Stack.Navigator>
   )
 }
 
 const StackFavorites = () => {
   return (
-    <Stack.Navigator initialRouteName="Favorite" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Favorite" component={Favorite} />
+    <Stack.Navigator initialRouteName="FavoriteMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="FavoriteMain" component={Favorite} />
     </Stack.Navigator>
   )
 }
@@ -31,16 +33,16 @@ const StackFavorites = () => {
 
 const StackNotification = () => {
   return (
-    <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Notification" component={Notification} />
+    <Stack.Navigator initialRouteName="NotificationMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="NotificationMain" component={Notification} />
     </Stack.Navigator>
   )
 }
 
 const StackProfile = () => {
   return (
-    <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProfileMain" component={Profile} />
     </Stack.Navigator>
   )
 }
