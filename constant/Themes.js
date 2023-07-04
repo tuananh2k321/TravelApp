@@ -64,6 +64,7 @@ export const ICON = {
     qr_code: require('../assets/icon/qr_code_FILL1_wght400_GRAD0_opsz48.png'),
     bus: require('../assets/icon/directions_bus_FILL1_wght400_GRAD0_opsz48.png'),
     clock: require('../assets/icon/schedule_FILL1_wght400_GRAD0_opsz48.png'),
+    star: require('../assets/icon/ic_star.png'),
 }
 
 export const IMAGES = {
