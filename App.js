@@ -11,6 +11,7 @@ import Verifycode2 from './screen/Verifycode2';
 import {Provider} from 'react-redux';
 import {Store} from './redux/Store';
 
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
