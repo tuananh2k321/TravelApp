@@ -80,7 +80,7 @@ const BottomTab = () => {
             }}>
               <Image source={iconName}
                 style={{
-                  width: 30, height: 30, resizeMode: 'stretch',
+                  width: 25, height: 25, resizeMode: 'stretch',
                   tintColor: focused ? COLOR.primary : COLOR.detail
                 }} />
               <Text style={{

@@ -19,6 +19,8 @@ import {
 } from '../constant/Validation';
 import AxiosIntance from '../constant/AxiosIntance';
 import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default Login = props => {
   const {navigation} = props;
@@ -33,9 +35,9 @@ export default Login = props => {
   const [isValid, setIsvalid] = useState(false);
 
   const disPath = useDispatch()
-  const user = useSelector((state) => state.user.user)
-  
-  // Sử dụng hàm getIPv4Address để lấy địa chỉ IPv4
+  const user = useSelector((state) => state.user)
+
+
   
 
   const checkForm = (email, password) => {
@@ -60,20 +62,23 @@ export default Login = props => {
     try {
       if (errorEmail == true && errorPassword == true && isValid == true) {
         console.log('valid')
-        const res = await AxiosIntance().post("user/api/login", {
-          password: password,
-          email: email
-        })
-        // disPath({
-        //   type: "LOGIN",
-        //   email: email,
-        //   password: password
+        // const res = await AxiosIntance().post("user/api/login", {
+        //   password: password,
+        //   email: email
         // })
-        if (user.result == true) {
-          console.log(res.user)
+        disPath({
+          type: "LOGIN",
+          payload: [email, password]
+        })
+        if (user.token) {
+          console.log("Login token: "+user.token)
+          // Lưu token vào AsyncStorage
+          AsyncStorage.setItem('token', user.token);
           navigation.navigate("BottomTab")
           ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
-      }
+        } else {
+          ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+        }
     }
     } catch (error) {
       console.log("AxiosIntance",error);

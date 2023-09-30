@@ -270,13 +270,23 @@ dependencies {
     // Import the Firebase BoM
     implementation platform ( 'com.google.firebase:firebase-bom:32.1.0' )
 
-
-
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    // react native map
+    // implementation(project(':react-native-onesignal')){
+    //   exclude group: 'com.google.android.gms'
+    // }
 
+    // implementation(project(':react-native-maps')){
+    //     exclude group: 'com.google.android.gms'
+    // }
+    // implementation 'com.google.android.gms:play-services-base:18.0.1'
+    // implementation 'com.google.android.gms:play-services-location:19.0.1'
+    // implementation 'com.google.android.gms:play-services-maps:18.0.2'
+
+    //
 
     implementation project(':react-native-vector-icons')
     
