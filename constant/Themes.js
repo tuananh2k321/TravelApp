@@ -44,6 +44,7 @@ export const ICON = {
     home: require('../assets/icon/home.png'),
     home_d: require('../assets/icon/icons8-home-50_d.png'),
     heart: require('../assets/icon/heart.png'),
+    heartt: require('../assets/icon/icons8-heart-50.png'),
     heart_d: require('../assets/icon/icons8-heart-50_d.png'),
     notification: require('../assets/icon/notification.png'),
     notification_d: require('../assets/icon/icons8-notification-50_d.png'),
@@ -60,15 +61,15 @@ export const ICON = {
     share: require('../assets/icon/share.png'),
     saved_product: require('../assets/icon/saved-product.png'),
     star_yellow: require('../assets/icon/star-yellow.png'),
+    star: require('../assets/icon/icons8-star-24.png'),
     vote_up: require('../assets/icon/vote-up.png'),
     qr_code: require('../assets/icon/qr_code_FILL1_wght400_GRAD0_opsz48.png'),
     bus: require('../assets/icon/directions_bus_FILL1_wght400_GRAD0_opsz48.png'),
     clock: require('../assets/icon/schedule_FILL1_wght400_GRAD0_opsz48.png'),
-    star: require('../assets/icon/ic_star.png'),
+    camera: require('../assets/icon/icons8-camera-50.png'),
 }
 
 export const IMAGES = {
     logo: require('../assets/image/logo.png'),
     logoWhite: require('../assets/image/logoWhite.png'),
-    tour_detail_bg: require('../assets/image/detail-background.png'),
 }

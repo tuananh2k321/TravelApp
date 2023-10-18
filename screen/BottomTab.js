@@ -8,22 +8,51 @@ import Notification from "./tab_app/Notification/Notification";
 import Profile from "./tab_app/Profile/Profile";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TourDetail from './tab_app/Home/TourDetail';
+import * as Animatable from 'react-native-animatable';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// animated
+const fadeIn = {
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+};
+
+const zoomOut = {
+  0: {
+    opacity: 1,
+    scale: 1,
+  },
+  0.5: {
+    opacity: 1,
+    scale: 0.3,
+  },
+  1: {
+    opacity: 0,
+    scale: 0,
+  },
+};
+
 const StackHomes = () => {
   return (
-    <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
+    <Stack.Navigator initialRouteName="TourDetail" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
     </Stack.Navigator>
   )
 }
 
 const StackFavorites = () => {
   return (
-    <Stack.Navigator initialRouteName="Favorite" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Favorite" component={Favorite} />
+    <Stack.Navigator initialRouteName="FavoriteMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="FavoriteMain" component={Favorite} />
     </Stack.Navigator>
   )
 }
@@ -31,16 +60,16 @@ const StackFavorites = () => {
 
 const StackNotification = () => {
   return (
-    <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Notification" component={Notification} />
+    <Stack.Navigator initialRouteName="NotificationMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="NotificationMain" component={Notification} />
     </Stack.Navigator>
   )
 }
 
 const StackProfile = () => {
   return (
-    <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProfileMain" component={Profile} />
     </Stack.Navigator>
   )
 }
@@ -72,27 +101,58 @@ const BottomTab = () => {
               flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
-              width: 80,
-              position: 'absolute',
-              bottom: 0
+              width: '100%',
+              borderBottomColor: focused ? COLOR.primary : 'white',
+              borderRightColor: 'white',
+              borderLeftColor: 'white',
+              borderTopColor: 'white',
+              borderWidth: focused ? 4 : 0,
+              backgroundColor: 'white'
+              // position: 'absolute',
+              // bottom: 0
             }}>
-              <Image source={iconName}
+              {
+                focused ? <Animatable.Image 
+                animation={'slideInUp'}
+                source={iconName}
                 style={{
-                  width: 30, height: 30, resizeMode: 'stretch',
+                  width: 25, height: 25, resizeMode: 'stretch',
                   tintColor: focused ? COLOR.primary : COLOR.detail
                 }} />
-              <Text style={{
-                color: focused ? COLOR.primary : COLOR.detail,
+                :
+                <Image 
+                
+                source={iconName}
+                style={{
+                  width: 25, height: 25, resizeMode: 'stretch',
+                  tintColor: focused ? COLOR.primary : COLOR.detail
+                }} />
+              }
+                
+              {
+                  focused ? <Animatable.Text 
+                    animation={'slideInUp'}
+                    style={{
+                      color: focused ? COLOR.primary : COLOR.detail,
+                      fontWeight: 'bold',
+                    }}>{label}</Animatable.Text>
+                  : 
+                  <Text 
+                    style={{
+                      color: focused ? COLOR.primary : COLOR.detail,
+                      display: 'none'
+                    }}>{label}</Text>
 
-              }}>{label}</Text>
+              }
+              
 
-              <View style={{
+              {/* <View style={{
                 width: '80%',
                 height: 4,
-                marginTop: 5,
+                
                 borderRadius: 48,
                 backgroundColor: focused ? COLOR.primary : null
-              }} />
+              }} /> */}
 
             </View>;
           },
