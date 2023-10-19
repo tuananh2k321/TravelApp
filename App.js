@@ -10,27 +10,30 @@ import Successfully from './screen/Successfully';
 import Verifycode2 from './screen/Verifycode2';
 import {Provider} from 'react-redux';
 import {Store} from './redux/Store';
+import Payment_Method from './screen/Payment_Method';
+import Available_Date from './screen/Available_Date';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <Provider store={Store}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="BottomTab"
-          screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="NewPassword" component={NewPassword} />
-          <Stack.Screen name="VerifyCode" component={VerifyCode} />
-          <Stack.Screen name="VerifyCode2" component={Verifycode2} />
-          <Stack.Screen name="Successfully" component={Successfully} />
-          <Stack.Screen name="BottomTab" component={BottomTab} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <Available_Date/>
+    // <Provider store={Store}>
+    //   <NavigationContainer>
+    //     <Stack.Navigator
+    //       initialRouteName="BottomTab"
+    //       screenOptions={{headerShown: false}}>
+    //       <Stack.Screen name="Login" component={Login} />
+    //       <Stack.Screen name="Register" component={Register} />
+    //       <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+    //       <Stack.Screen name="NewPassword" component={NewPassword} />
+    //       <Stack.Screen name="VerifyCode" component={VerifyCode} />
+    //       <Stack.Screen name="VerifyCode2" component={Verifycode2} />
+    //       <Stack.Screen name="Successfully" component={Successfully} />
+    //       <Stack.Screen name="BottomTab" component={BottomTab} />
+    //     </Stack.Navigator>
+    //   </NavigationContainer>
+    // </Provider>
   );
 };
 

@@ -26,7 +26,7 @@ const Payment_Method = (props) => {
         <View style={styles.container}>
             <View style={styles.groupHeader}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={20} color="#000000" />
+                    <Ionicons name="chevron-back" size={24} color="#000000" />
                 </TouchableOpacity>
                 <Text style={styles.header}>Xác nhận và trả tiền</Text>
             </View>
@@ -53,7 +53,7 @@ const Payment_Method = (props) => {
             {
                 chooses.map((item, index)=> <TouchableOpacity 
                 key = {index}
-                style={styles.card} onPress={() => setSelectedRadio(item.id)}>
+                style={[styles.card,{borderColor: selectedRadio == item.id ? '#000000' : '#00000026'}]} onPress={() => setSelectedRadio(item.id)}>
                 <View style={styles.groupCardLeft}>
                     <Image style={styles.imageCard} source={{uri: item.image}} />
                     <Text style={styles.creditCard}>{item.name}</Text>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     header: {
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: '600',
         lineHeight: 18,
         color: '#000000',

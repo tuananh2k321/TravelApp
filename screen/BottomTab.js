@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 
 const StackHomes = () => {
   return (
-    <Stack.Navigator initialRouteName="TourDetail" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="HomeMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
     </Stack.Navigator>
