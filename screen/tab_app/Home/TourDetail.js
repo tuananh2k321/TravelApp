@@ -1,4 +1,11 @@
-import {SafeAreaView, Image, View, ImageBackground, Text} from 'react-native';
+import {
+  SafeAreaView,
+  Image,
+  View,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import {SIZES, COLOR, ICON} from '../../../constant/Themes';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -9,8 +16,7 @@ export default TourDetail = () => {
       <SafeAreaView
         style={{
           width: SIZES.width,
-          backgroundColor: COLOR.white,
-          paddingBottom: 30,
+          backgroundColor: COLOR.backgroundColor,
         }}>
         <ImageBackground
           source={{
@@ -188,6 +194,7 @@ export default TourDetail = () => {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                backgroundColor: 'white',
               }}>
               <Image
                 source={ICON.bus}
@@ -215,6 +222,7 @@ export default TourDetail = () => {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                backgroundColor: 'white',
               }}>
               <Image
                 source={ICON.clock}
@@ -244,8 +252,50 @@ export default TourDetail = () => {
               marginBottom: 10,
               marginTop: 30,
             }}>
-            Địa điểm
+            Địa điểm khách sạn
           </Text>
+
+          <Image
+            style={{
+              width: '100%',
+              height: 300,
+              marginTop: 10,
+            }}
+            source={{
+              uri: 'https://www.google.com/maps/d/thumbnail?mid=1sTvpmQyZI2YRtqSyEdCJeBS9KQU&hl=en_US',
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: COLOR.detail,
+              marginBottom: 10,
+              marginTop: 30,
+            }}>
+            Đ. Xuân Thủy, Hàm Thuận Bắc, Bình Thuận 77157, Việt Nam
+          </Text>
+
+          <TouchableOpacity
+            style={{
+              width: 100,
+              height: 50,
+              borderRadius: 20,
+              marginTop: 10,
+              backgroundColor: COLOR.primary,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'white',
+              }}>
+              chi tiết
+            </Text>
+          </TouchableOpacity>
 
           <View
             style={{
@@ -354,7 +404,8 @@ export default TourDetail = () => {
               borderWidth: 0.5,
               borderColor: COLOR.detail,
               padding: 15,
-              marginBottom: 20
+              marginBottom: 20,
+              backgroundColor: 'white',
             }}>
             <View style={{flexDirection: 'row'}}>
               <Image
@@ -510,7 +561,7 @@ export default TourDetail = () => {
               borderWidth: 0.5,
               borderColor: COLOR.detail,
               padding: 15,
-              
+              backgroundColor: 'white',
             }}>
             <View style={{flexDirection: 'row'}}>
               <Image
@@ -658,15 +709,13 @@ export default TourDetail = () => {
                 }}
               />
               </View> */}
-
-              
           </View>
 
           <View
             style={{
               flexDirection: 'row',
-              width: 100,
-              height: 50,
+              padding: 10,
+              width: 200,
               borderRadius: 20,
               marginTop: 10,
               backgroundColor: COLOR.primary,
@@ -684,15 +733,21 @@ export default TourDetail = () => {
                 fontWeight: 'bold',
                 color: 'white',
               }}>
-              +20
+              +20 đánh giá
             </Text>
           </View>
 
           <View
-            style={{borderWidth: 0.2, width: SIZES.width, borderColor: 'gray', marginTop: 30, marginBottom: 30}}
+            style={{
+              borderWidth: 0.2,
+              width: SIZES.width,
+              borderColor: 'gray',
+              marginTop: 30,
+              marginBottom: 30,
+            }}
           />
 
-<Text
+          <Text
             style={{
               fontSize: 18,
               fontWeight: 'bold',
@@ -702,8 +757,55 @@ export default TourDetail = () => {
             Các Tour du lịch khác
           </Text>
         </View>
-
-        
+        <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: 'white',
+            paddingVertical: 20,
+            paddingHorizontal: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: COLOR.primary,
+              }}>
+              $ 600
+            </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                color: COLOR.primary,
+              }}>
+              /Person
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              backgroundColor: COLOR.primary,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 10,
+              padding: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'white',
+              }}>
+              Book Now
+            </Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>
   );

@@ -9,9 +9,36 @@ import Profile from "./tab_app/Profile/Profile";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TourDetail from './tab_app/Home/TourDetail';
+import * as Animatable from 'react-native-animatable';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+// animated
+const fadeIn = {
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+};
+
+const zoomOut = {
+  0: {
+    opacity: 1,
+    scale: 1,
+  },
+  0.5: {
+    opacity: 1,
+    scale: 0.3,
+  },
+  1: {
+    opacity: 0,
+    scale: 0,
+  },
+};
 
 const StackHomes = () => {
   return (
@@ -74,27 +101,58 @@ const BottomTab = () => {
               flex: 1,
               alignItems: 'center',
               justifyContent: 'center',
-              width: 80,
-              position: 'absolute',
-              bottom: 0
+              width: '100%',
+              borderBottomColor: focused ? COLOR.primary : 'white',
+              borderRightColor: 'white',
+              borderLeftColor: 'white',
+              borderTopColor: 'white',
+              borderWidth: focused ? 4 : 0,
+              backgroundColor: 'white'
+              // position: 'absolute',
+              // bottom: 0
             }}>
-              <Image source={iconName}
+              {
+                focused ? <Animatable.Image 
+                animation={'slideInUp'}
+                source={iconName}
                 style={{
-                  width: 30, height: 30, resizeMode: 'stretch',
+                  width: 25, height: 25, resizeMode: 'stretch',
                   tintColor: focused ? COLOR.primary : COLOR.detail
                 }} />
-              <Text style={{
-                color: focused ? COLOR.primary : COLOR.detail,
+                :
+                <Image 
+                
+                source={iconName}
+                style={{
+                  width: 25, height: 25, resizeMode: 'stretch',
+                  tintColor: focused ? COLOR.primary : COLOR.detail
+                }} />
+              }
+                
+              {
+                  focused ? <Animatable.Text 
+                    animation={'slideInUp'}
+                    style={{
+                      color: focused ? COLOR.primary : COLOR.detail,
+                      fontWeight: 'bold',
+                    }}>{label}</Animatable.Text>
+                  : 
+                  <Text 
+                    style={{
+                      color: focused ? COLOR.primary : COLOR.detail,
+                      display: 'none'
+                    }}>{label}</Text>
 
-              }}>{label}</Text>
+              }
+              
 
-              <View style={{
+              {/* <View style={{
                 width: '80%',
                 height: 4,
-                marginTop: 5,
+                
                 borderRadius: 48,
                 backgroundColor: focused ? COLOR.primary : null
-              }} />
+              }} /> */}
 
             </View>;
           },

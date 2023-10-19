@@ -72,5 +72,4 @@ export const ICON = {
 export const IMAGES = {
     logo: require('../assets/image/logo.png'),
     logoWhite: require('../assets/image/logoWhite.png'),
-    tour_detail_bg: require('../assets/image/detail-background.png'),
 }
