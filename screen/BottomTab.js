@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TourDetail from './tab_app/Home/TourDetail';
 import * as Animatable from 'react-native-animatable';
+import HotelDetail from './tab_app/Home/HotelDetail';
 
 
 const Tab = createBottomTabNavigator();
@@ -42,9 +43,10 @@ const zoomOut = {
 
 const StackHomes = () => {
   return (
-    <Stack.Navigator initialRouteName="TourDetail" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="HomeMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
+      <Stack.Screen name="HotelDetail" component={HotelDetail} />
     </Stack.Navigator>
   )
 }
