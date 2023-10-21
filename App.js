@@ -8,6 +8,7 @@ import ForgetPassword from './screen/ForgetPassword';
 import NewPassword from './screen/NewPassword';
 import VerifyCode from './screen/VerifyCode';
 import Successfully from './screen/Successfully';
+import GoToLogin from './screen/auth/GoToLogin';
 import Verifycode2 from './screen/Verifycode2';
 import { Provider } from 'react-redux';
 import { Store } from './redux/Store';
@@ -32,24 +33,42 @@ const App = () => {
   useEffect(() => {
     const checkTokenAndStartApp = async () => {
       try {
-        // Kiểm tra xem có token trong AsyncStorage không
         const token = await AsyncStorage.getItem('token');
         if (token) {
-          // Nếu có token trong AsyncStorage, dispatch action để cập nhật token vào Redux Store
+          const tokenTimestamp = await AsyncStorage.getItem('tokenTimestamp'); // Lấy thời gian lưu token
+          if (tokenTimestamp) {
+            const currentTime = new Date().getTime();
+            const tokenExpirationTime = parseInt(tokenTimestamp, 10) + 2 * 60 * 60 * 1000; // Thời gian hết hạn sau 2 giờ (2 * 60 * 60 * 1000 milliseconds)
+            if (currentTime > tokenExpirationTime) {
+              // Token đã hết hạn, xóa token và thông tin liên quan
+              await AsyncStorage.removeItem('token');
+              await AsyncStorage.removeItem('tokenTimestamp');
+              setTokenChecked(true);
+              return;
+            }
+          }
+  
+          // Token vẫn còn hợp lệ, dispatch action và cập nhật initialRoute
           console.log("App token: " + token);
           Store.dispatch(setToken(token));
-          setInitialRoute('BottomTab'); // Cập nhật initialRoute thành 'BottomTab' nếu có token
+          setInitialRoute('BottomTab');
+  
+          setTokenChecked(true);
+        } else {
+          // Không có token, tiếp tục với quá trình khởi động bình thường
+          setTokenChecked(true);
         }
-        setTokenChecked(true); // Đã kiểm tra xong token
       } catch (error) {
         console.error('Error checking token:', error);
-        setTokenChecked(true); // Đã kiểm tra xong token (có hoặc không)
+        setTokenChecked(true);
       }
     };
-
-    // Gọi hàm kiểm tra token khi ứng dụng khởi động
+  
     checkTokenAndStartApp();
   }, []);
+  
+
+  
 
   // Nếu chưa kiểm tra xong token, bạn có thể hiển thị một màn hình loading
   if (!tokenChecked) {
@@ -60,10 +79,11 @@ const App = () => {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={initialRoute}
+          initialRouteName={'Login'}
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="GoToLogin" component={GoToLogin} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="VerifyCode" component={VerifyCode} />

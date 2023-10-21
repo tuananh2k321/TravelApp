@@ -1,23 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
+    data: {},
+    dataRegister: {},
     user: {},
-    token: "",
-    isLoading: false
+    token: ""
 }
 
 export const UserSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        addUser: (state, action) => {
-            console.log("UserSlice action: ", action.payload)
-            state.user = {...action.payload}
-            console.log("UserSlice user", state.user)
-            state.isLoading = false;
+        addData: (state, action) => {
+            //console.log("addData action: ", action.payload)
+            state.data = {...action.payload}
+            console.log("addData ", state.data)
         },
-        setLoading: (state, action) => {
-            state.isLoading = action.payload
+        addDataRegister: (state, action) => {
+            //console.log("addData action: ", action.payload)
+            state.dataRegister = {...action.payload}
+            console.log("addDataRegister ", state.dataRegister)
+        },
+        addUser: (state, action) => {
+            console.log("addUser action: ", action.payload)
+            state.user = {...action.payload}
+            console.log("addUser ", state.user)
         },
         setToken: (state, action) => {
             state.token = action.payload
@@ -25,6 +32,6 @@ export const UserSlice = createSlice({
     }
 })
 
-export const {addUser, setLoading, setToken} = UserSlice.actions
+export const {addUser, addData, setToken, addDataRegister} = UserSlice.actions
 
 export default UserSlice.reducer

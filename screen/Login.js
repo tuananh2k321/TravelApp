@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   Image,
@@ -6,7 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
 import UITextInput from '../component/UITextInput';
@@ -18,9 +18,8 @@ import {
   validatePassword,
 } from '../constant/Validation';
 import AxiosIntance from '../constant/AxiosIntance';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 export default Login = props => {
   const {navigation} = props;
@@ -31,60 +30,82 @@ export default Login = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState('');
   const [isValid, setIsvalid] = useState(false);
 
-  const disPath = useDispatch()
-  const user = useSelector((state) => state.user)
+  const disPath = useDispatch();
 
+  const [messageLogin, setMessageLogin] = useState('');
 
-  
+  //const [user, setUser] = useState(null)
+  const user = useSelector(state => state.user);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+
+  //       console.log(user);
+  //       setUser(user);
+  //     } catch (e) {
+  //       console.log("error: " + e);
+  //     }
+  //   }
+  //   fetchData();
+  // }, [user]);
 
   const checkForm = (email, password) => {
-    if (email.length === 0  ) {
-      console.log('email emty')
-      setErrorEmail(false)
-      setIsvalid(false)
-      setErrorMessage("Không được để trống!")
-      
-    }  
-    
+    if (email.length === 0) {
+      console.log('email emty');
+      setErrorEmail(false);
+      setIsvalid(false);
+      setErrorMessage('Không được để trống!');
+    }
+
     if (password.length === 0) {
-      console.log('password emty')
-      setErrorPassword(false)
-      setIsvalid(false)
-      setErrorMessage("Không được để trống!")
-    } 
-  }
+      console.log('password emty');
+      setErrorPassword(false);
+      setIsvalid(false);
+      setErrorMessage('Không được để trống!');
+    }
+  };
 
   const btnLogin = async () => {
-    console.log('btnLogin')
+    console.log('btnLogin');
     try {
       if (errorEmail == true && errorPassword == true && isValid == true) {
-        console.log('valid')
-        // const res = await AxiosIntance().post("user/api/login", {
-        //   password: password,
-        //   email: email
-        // })
+        console.log('valid');
+        // Thực hiện dispatch action "LOGIN"
         disPath({
-          type: "LOGIN",
-          payload: [email, password]
-        })
-        if (user.token) {
-          console.log("Login token: "+user.token)
-          // Lưu token vào AsyncStorage
-          AsyncStorage.setItem('token', user.token);
-          navigation.navigate("BottomTab")
-          ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
-        } else {
-          ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
-        }
-    }
+          type: 'LOGIN',
+          payload: [email, password],
+        });
+      }
     } catch (error) {
-      console.log("AxiosIntance",error);
+      console.log('AxiosIntance', error);
       ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
     }
-  }
+  };
+
+  // Sử dụng useEffect để theo dõi thay đổi trong Redux store
+  useEffect(() => {
+    // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
+    if (user.data.result) {
+      console.log('Login user: ' + JSON.stringify(user.user));
+
+      // Lưu token vào AsyncStorage
+      AsyncStorage.setItem('token', user.token);
+
+      // Điều hướng sau khi đăng nhập thành công
+      navigation.navigate('BottomTab');
+
+      // Hiển thị thông báo thành công
+      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+    } else {
+      // Xử lý trường hợp đăng nhập thất bại
+      //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+      setMessageLogin(user.data.message);
+    }
+  }, [user]);
 
   return (
     <KeyboardAwareScrollView>
@@ -93,8 +114,9 @@ export default Login = props => {
           backgroundColor: COLOR.white,
           padding: 15,
           width: SIZES.width,
-          height: SIZES.height,
+          //height: SIZES.height,
           justifyContent: 'center',
+          paddingVertical: 20,
         }}>
         <Image source={IMAGES.logo} style={{alignSelf: 'center'}} />
 
@@ -136,11 +158,11 @@ export default Login = props => {
           hintText="Nhập địa chỉ email của bạn"
           borderError={errorEmail}
           onChangeText={text => {
-            setEmail(text)
-            setErrorEmail(validateEmail(text))
-            setIsvalid(true)
-            console.log(errorEmail)
-            setErrorMessage("Email không hợp lệ!")
+            setEmail(text);
+            setErrorEmail(validateEmail(text));
+            setIsvalid(true);
+            console.log(errorEmail);
+            setErrorMessage('Email không hợp lệ!');
           }}
         />
         {!errorEmail && (
@@ -161,7 +183,7 @@ export default Login = props => {
             color: COLOR.detail,
             marginTop: 20,
           }}>
-          Password
+          Mật khẩu
         </Text>
 
         <UITextInput
@@ -172,10 +194,10 @@ export default Login = props => {
           onPress={() => setIsHidePassword(!isHidePassword)}
           borderError={errorPassword}
           onChangeText={text => {
-            setPassword(text)
-            setErrorPassword(isValidEmpty(text))
-            setIsvalid(true)
-            console.log(errorPassword)
+            setPassword(text);
+            setErrorPassword(isValidEmpty(text));
+            setIsvalid(true);
+            console.log(errorPassword);
           }}
         />
 
@@ -202,19 +224,33 @@ export default Login = props => {
           </Text>
         </TouchableOpacity>
 
-        <View style={{marginTop: 30,}}>
-          <UIButtonPrimary text="Đăng Nhập"
-            onPress = {() => {
-              checkForm(email, password) 
-              btnLogin()
+        <View style={{marginTop: 30}}>
+          <UIButtonPrimary
+            text="Đăng Nhập"
+            onPress={() => {
+              checkForm(email, password);
+              btnLogin();
             }}
           />
         </View>
 
+        {messageLogin !== null && (
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              fontWeight: '400',
+              color: 'red',
+              marginTop: 15,
+            }}>
+            {messageLogin}
+          </Text>
+        )}
+
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
           <View style={{flex: 1, height: 1, backgroundColor: COLOR.border}} />
-          <Text style={{paddingHorizontal: 10}}>Or login with</Text>
+          <Text style={{paddingHorizontal: 10}}>Hoặc đăng nhập với</Text>
           <View style={{flex: 1, height: 1, backgroundColor: COLOR.border}} />
         </View>
 
@@ -223,14 +259,14 @@ export default Login = props => {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            marginTop: 20,
+            marginTop: 25,
           }}>
           <TouchableOpacity style={{flex: 1, marginRight: 10}}>
             <View
               style={{
                 flexDirection: 'row',
                 height: 60,
-                justifyContent: 'space-around',
+                justifyContent: 'center',
                 alignItems: 'center',
                 borderWidth: 1,
                 borderColor: COLOR.border,
@@ -243,8 +279,9 @@ export default Login = props => {
                   fontSize: 14,
                   fontWeight: '500',
                   color: COLOR.detail,
+                  marginLeft: 10,
                 }}>
-                Login with Google
+                Google
               </Text>
             </View>
           </TouchableOpacity>
@@ -254,7 +291,7 @@ export default Login = props => {
               style={{
                 flexDirection: 'row',
                 height: 60,
-                justifyContent: 'space-around',
+                justifyContent: 'center',
                 alignItems: 'center',
                 borderWidth: 1,
                 borderColor: COLOR.border,
@@ -267,8 +304,9 @@ export default Login = props => {
                   fontSize: 14,
                   fontWeight: '500',
                   color: COLOR.detail,
+                  marginLeft: 10,
                 }}>
-                Login with Facebook
+                Facebook
               </Text>
             </View>
           </TouchableOpacity>
@@ -276,7 +314,7 @@ export default Login = props => {
 
         <View
           style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
-          <Text>Doesn’t have account on dicover?</Text>
+          <Text>Bạn chưa có tài khoản?</Text>
 
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text
@@ -285,7 +323,7 @@ export default Login = props => {
                 fontWeight: 'bold',
                 marginLeft: 5,
               }}>
-              Create Account
+              Đăng kí
             </Text>
           </TouchableOpacity>
         </View>

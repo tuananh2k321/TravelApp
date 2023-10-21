@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
 import UITextInput from '../component/UITextInput';
@@ -20,8 +21,9 @@ import {
   validatePhoneNumber,
 } from '../constant/Validation';
 import DatePicker from 'react-native-date-picker';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../redux/reducer/UserSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {addUser} from '../redux/reducer/UserSlice';
+import {useEffect} from 'react';
 
 export default Register = props => {
   const {navigation} = props;
@@ -36,17 +38,17 @@ export default Register = props => {
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
   const [errorPassword2, setErrorPassword2] = useState(true);
-  const [errorCheckbox, setErrorCheckbox] = useState(false)
+  const [errorCheckbox, setErrorCheckbox] = useState(false);
 
-  const [notifyPassword, setNotifyPassword] = useState("")
+  const [notifyPassword, setNotifyPassword] = useState('');
 
-  const [name, setName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [email, setEmail] = useState("")
-  const [dob, setDob] = useState("")
-  const [password, setPassword] = useState("")
-  const [rePassword, setRePassword] = useState("")
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
 
   const [isValid, setIsvalid] = useState(false);
 
@@ -54,97 +56,110 @@ export default Register = props => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  const disPath = useDispatch()
-  const user = useSelector((state) => state.user.user)
+  const [messageRegister, setMessageRegister] = useState('');
 
+  const disPath = useDispatch();
+  const user = useSelector(state => state.user);
 
-  const checkForm = (name, lastName, phoneNumber, dob, email, password, rePassword) => {
-    if (name.length === 0  ) {
-      console.log('name emty')
-      setErrorName(false)
-      setIsvalid(false)
+  const checkForm = (
+    name,
+    lastName,
+    phoneNumber,
+    dob,
+    email,
+    password,
+    rePassword,
+  ) => {
+    if (name.length === 0) {
+      console.log('name emty');
+      setErrorName(false);
+      setIsvalid(false);
     }
-    
-    if (lastName.length === 0  ) {
-      console.log('last name emty')
-      setErrorLastName(false)
-      setIsvalid(false)
-    }  
 
-    if (phoneNumber.length === 0  ) {
-      console.log('phone number emty')
-      setErrorPhone(false)
-      setIsvalid(false)
-    }  
+    if (lastName.length === 0) {
+      console.log('last name emty');
+      setErrorLastName(false);
+      setIsvalid(false);
+    }
 
-    if (dob.length === 0  ) {
-      console.log('dob emty')
-      setErrorBirthday(false)
-      setIsvalid(false)
-    } 
+    if (phoneNumber.length === 0) {
+      console.log('phone number emty');
+      setErrorPhone(false);
+      setIsvalid(false);
+    }
 
-    if (email.length === 0  ) {
-      console.log('email emty')
-      setErrorEmail(false)
-      setIsvalid(false)
-    }  
-    
+    if (dob.length === 0) {
+      console.log('dob emty');
+      setErrorBirthday(false);
+      setIsvalid(false);
+    }
+
+    if (email.length === 0) {
+      console.log('email emty');
+      setErrorEmail(false);
+      setIsvalid(false);
+    }
+
     if (password.length === 0) {
-      console.log('password emty')
-      setErrorPassword(false)
-      setIsvalid(false)
-    } 
+      console.log('password emty');
+      setErrorPassword(false);
+      setIsvalid(false);
+    }
 
     if (rePassword.length === 0) {
-      console.log('password emty')
-      setErrorPassword2(false)
-      setIsvalid(false)
-    } 
-  }
-  
-  const btnRegister = async () => {
-    // const res = await AxiosIntance()
-    // .post("user/api/register", {
-    //   name: name,
-    //   lastName: lastName,
-    //   phoneNumber: phoneNumber,
-    //   dob: dob,
-    //   email: email,
-    //   password: password,
-    // })
-    // if (res.result == true) {
-    //   console.log(res.user)
-    //   navigation.navigate('VerifyCode')
-    // }
-    console.log('register')
-    if (errorName == true && errorLastName == true && errorPhone == true 
-      && errorEmail == true && errorPassword == true && isValid == true
-      && errorBirthday == true && errorPassword2 == true && errorCheckbox == true) {
-        console.log("valid")
-        if (password === rePassword) {
-          console.log("valid password repeat")
-          setErrorPassword2(true)
-          console.log(rePassword)
-          disPath({
-            type: "ADD_USER",
-            payload: {
-                name: name,
-                lastName: lastName,
-                dob: dob,
-                phoneNumber: phoneNumber,
-                email: email,
-                password: password
-              }
-            })
-          console.log("user: ",user)
-          //navigation.navigate("VerifyCode")
-        } else {
-          setErrorPassword2(false)
-          setNotifyPassword("Không trùng mật khẩu")
-        }
+      console.log('password emty');
+      setErrorPassword2(false);
+      setIsvalid(false);
     }
-  }
+  };
 
+  const btnRegister = async () => {
+    console.log('register');
+    if (
+      errorName == true &&
+      errorLastName == true &&
+      errorPhone == true &&
+      errorEmail == true &&
+      errorPassword == true &&
+      isValid == true &&
+      errorBirthday == true &&
+      errorPassword2 == true &&
+      errorCheckbox == true
+    ) {
+      console.log('valid');
+      if (password === rePassword) {
+        console.log('valid password repeat');
+        setErrorPassword2(true);
+        console.log(rePassword);
+        disPath({
+          type: 'REGISTER',
+          payload: [name, lastName, dob, phoneNumber, email, password],
+        });
+        disPath({
+          type: 'SENDEMAIL',
+          payload: [email]
+        })
+      } else {
+        setErrorPassword2(false);
+        setNotifyPassword('Không trùng mật khẩu');
+      }
+    }
+  };
+
+  // Sử dụng useEffect để theo dõi thay đổi trong Redux store
+  useEffect(() => {
+    console.log('Register user: ' + JSON.stringify(user));
+    if (user.dataRegister.result) {
+      ToastAndroid.show('Đăng ký thành công', ToastAndroid.LONG);
+      navigation.navigate('GoToLogin');
+      console.log('email: '+user.dataRegister.email)
+      
+    } else {
+      setMessageRegister(user.dataRegister.message);
+      console.log(messageRegister);
+      //ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.LONG);
+    }
+  }, [user]);
 
   return (
     <KeyboardAwareScrollView>
@@ -204,9 +219,9 @@ export default Register = props => {
           hintText="Tuấn Anh"
           borderError={errorName}
           onChangeText={text => {
-            setName(text)
+            setName(text);
             setErrorName(isValidEmpty(text));
-            setIsvalid(true)
+            setIsvalid(true);
           }}
         />
 
@@ -235,9 +250,9 @@ export default Register = props => {
           hintText="Trần"
           borderError={errorLastName}
           onChangeText={text => {
-            setLastName(text)
+            setLastName(text);
             setErrorLastName(isValidEmpty(text));
-            setIsvalid(true)
+            setIsvalid(true);
           }}
         />
 
@@ -266,9 +281,9 @@ export default Register = props => {
           keyboardType="numeric"
           borderError={errorPhone}
           onChangeText={text => {
-            setPhoneNumber(text)
+            setPhoneNumber(text);
             setErrorPhone(validatePhoneNumber(text));
-            setIsvalid(true)
+            setIsvalid(true);
           }}
         />
 
@@ -301,10 +316,10 @@ export default Register = props => {
           onPress={() => setOpen(true)}
           borderError={errorBirthday}
           onChangeText={text => {
-            console.log(text)
-            setDob(text)
+            console.log(text);
+            setDob(text);
             setErrorBirthday(validateDateOfBirth(text));
-            setIsvalid(true)
+            setIsvalid(true);
           }}
         />
 
@@ -333,9 +348,9 @@ export default Register = props => {
           hintText="tuananh123@gmail.com"
           borderError={errorEmail}
           onChangeText={text => {
-            setEmail(text)
+            setEmail(text);
             setErrorEmail(validateEmail(text));
-            setIsvalid(true)
+            setIsvalid(true);
           }}
         />
 
@@ -368,9 +383,9 @@ export default Register = props => {
           icon={ICON.eye}
           borderError={errorPassword}
           onChangeText={text => {
-            setPassword(text)
+            setPassword(text);
             setErrorPassword(validatePassword(text));
-            setIsvalid(true)
+            setIsvalid(true);
           }}
         />
 
@@ -403,13 +418,10 @@ export default Register = props => {
           icon={ICON.eye}
           borderError={errorPassword2}
           onChangeText={text => {
-            setRePassword(text)
-            setErrorPassword2(
-              isValidEmpty(text),
-            
-            )
+            setRePassword(text);
+            setErrorPassword2(isValidEmpty(text));
             if (isValidEmpty(text)) {
-              setNotifyPassword("Không được để trống")
+              setNotifyPassword('Không được để trống');
             }
           }}
         />
@@ -425,8 +437,6 @@ export default Register = props => {
           </Text>
         )}
 
-        
-
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
           <CheckBox
@@ -434,17 +444,16 @@ export default Register = props => {
             value={toggleCheckBox}
             tintColors={{true: COLOR.primary}}
             onValueChange={value => {
-              setToggleCheckBox(value)
-              setErrorCheckbox(value)
-            }
-            }
+              setToggleCheckBox(value);
+              setErrorCheckbox(value);
+            }}
           />
 
           <Text
             style={{
               fontSize: 16,
               fontWeight: '400',
-              color: errorCheckbox ? COLOR.detail : "red",
+              color: errorCheckbox ? COLOR.detail : 'red',
               textDecorationLine: 'underline',
             }}>
             Tôi chấp nhận những điều khoản và quy định
@@ -456,15 +465,33 @@ export default Register = props => {
             text="Tạo tài khoản mới"
             // onPress={() => checkPasswordRepeat(rePassword, password)}
             onPress={() => {
-              checkForm(name, lastName, phoneNumber, dob, email, password, rePassword)
-              btnRegister()
+              checkForm(
+                name,
+                lastName,
+                phoneNumber,
+                dob,
+                email,
+                password,
+                rePassword,
+              );
+              btnRegister();
             }}
-
           />
         </View>
 
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 16,
+            fontWeight: '400',
+            color: 'red',
+            marginTop: 15,
+          }}>
+          {messageRegister}
+        </Text>
+
         <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 15}}>
           <Text>Already have an account?</Text>
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -494,7 +521,9 @@ export default Register = props => {
             var year = date.getFullYear();
             setDate(day + '/' + month + '/' + year);
             setDob(day + '/' + month + '/' + year);
-            setErrorBirthday(validateDateOfBirth(day + '/' + month + '/' + year))
+            setErrorBirthday(
+              validateDateOfBirth(day + '/' + month + '/' + year),
+            );
             // console.log(day + '/' + month + '/' + year);
           }}
           onCancel={() => {
