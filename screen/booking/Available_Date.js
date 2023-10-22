@@ -1,9 +1,6 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, SafeAreaView, Button } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { CalendarList } from 'react-native-calendars';
-import { MaterialDatetimePickerAndroid } from 'react-native-material-datetime-picker';
-import RNMaterialDatetimePicker from 'react-native-material-datetime-picker';
 import Calendar from "react-native-calendar-range-picker";
 
 

@@ -22,6 +22,11 @@ import {
   TouchableOpacity,
   ToastAndroid
 } from 'react-native';
+import AddCard from './screen/booking/AddCard';
+import Payment_Method from './screen/booking/Payment_Method';
+import Item_card from './component/Tab_item/Item_card';
+import Payment from './screen/booking/Payment';
+import Detail_Booking from './screen/booking/Detail_Booking';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +63,7 @@ const App = () => {
 
   return (
     <Provider store={Store}>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator
           initialRouteName={initialRoute}
           screenOptions={{ headerShown: false }}>
@@ -71,7 +76,8 @@ const App = () => {
           <Stack.Screen name="Successfully" component={Successfully} />
           <Stack.Screen name="BottomTab" component={BottomTab} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
+      <Detail_Booking/>
     </Provider>
   );
 };
