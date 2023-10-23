@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const ItemLink = ({icon,tile,name,content,screen}) => {
   const navigation = useNavigation();
     const clickItem = () => {
-      navigation.navigate("HotelDetail");
+      navigation.navigate(screen);
   }
   return (
     <TouchableOpacity onPress={clickItem}>

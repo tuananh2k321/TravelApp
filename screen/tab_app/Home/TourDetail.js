@@ -105,8 +105,8 @@ export default TourDetail = (props) => {
           <Text
             style={{
               fontSize: 24,
-              fontWeight: 'bold',
-              color: COLOR.primary,
+              fontWeight: '600',
+              color: COLOR.title,
               marginTop: 10,
               marginBottom: 10,
             }}>
@@ -222,8 +222,6 @@ export default TourDetail = (props) => {
           </Text>
           {/* Bao gồm */}
           <View style={{flexDirection: 'column'}}>
-            <ItemIncluded icon={"child"} title={"100.000"} content={"Giá tiền đối với trẻ em dưới 15 tuổi"} />
-            <ItemIncluded icon={"child"} title={"200.000"} content={"Giá tiền đối với người lớn 15 tuổi trở lên"} />
             <ItemIncluded icon={"bus-alt"} title={"Xe buýt"} content={"Phương tiện di chuyển"} />
             <ItemIncluded icon={"calendar-alt"} title={"ngày 10 tháng 10 năm 2023"} content={"Ngày khởi hành của tour du lịch"} />
             <ItemIncluded icon={"child"} title={"Ít nhất 10 người"} content={"Tối thiểu người đi tuor"} />
@@ -277,21 +275,8 @@ export default TourDetail = (props) => {
               marginTop: 30,
             }}
           />
-          {/* ItemLink */}
-          <ItemLink screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <ItemLink icon={"location-arrow"} tile={"Điểm đến"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <ItemLink icon={"child"} tile={"Hướng dẫn viên"} name={"Trần Anh Trí"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: COLOR.lightBlack2,
-              marginTop: 30,
-            }}
-          />
-
-          
-            {/* checkin */}
-          <View style={{flexDirection: 'row', marginTop: 20}}>
+                 {/* checkin */}
+                 <View style={{flexDirection: 'row', marginTop: 20}}>
             <View style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
               <Image
                 source={{
@@ -368,7 +353,6 @@ export default TourDetail = (props) => {
               </View>
             </Modal>
           </TouchableOpacity>
-
           <View
             style={{
               borderWidth: 1,
@@ -376,6 +360,22 @@ export default TourDetail = (props) => {
               marginTop: 30,
             }}
           />
+          {/* ItemLink */}
+          <ItemLink screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <ItemLink screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <ItemLink screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={"Trần Anh Trí"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
+              marginTop: 30,
+            }}
+          />
+
+          
+     
+
+          
 
           <Text
             style={{
@@ -497,6 +497,36 @@ export default TourDetail = (props) => {
           
         </View>
         <View
+            style={{
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
+              marginTop: 30,
+              marginHorizontal:15
+            }}
+          />
+          {/* độ tuổi qui định */}
+          <View style={{flexDirection:'column',justifyContent:'flex-start',paddingHorizontal:15,paddingVertical:20}}>
+            <Text style={{fontSize:18,color:COLOR.title,fontWeight:'600'}}>
+              Độ tuổi qui định
+            </Text>
+            <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
+              <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
+                Trẻ em: 7 đến 14 tuổi
+              </Text>
+              <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
+                $100/Trẻ em
+              </Text>
+            </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
+              <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
+                Người lớn: 15 đến 65 tuổi
+              </Text>
+              <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
+                $200/Người lớn
+              </Text>
+            </View>
+          </View>
+        <View
           style={{
             flexDirection: 'row',
             backgroundColor: 'white',
@@ -507,6 +537,7 @@ export default TourDetail = (props) => {
           <TouchableOpacity
             style={{
               flex: 1,
+              height:52,
               backgroundColor: COLOR.primary,
               justifyContent: 'center',
               alignItems: 'center',
@@ -519,7 +550,7 @@ export default TourDetail = (props) => {
                 fontWeight: 'bold',
                 color: 'white',
               }}>
-              Book Now
+              Đặt ngay
             </Text>
           </TouchableOpacity>
         </View>

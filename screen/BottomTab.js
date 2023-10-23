@@ -11,6 +11,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TourDetail from './tab_app/Home/TourDetail';
 import * as Animatable from 'react-native-animatable';
 import HotelDetail from './tab_app/Home/HotelDetail';
+import DestinationDetail from './tab_app/Home/DestinationDetail';
+import TourGuideDetail from './tab_app/Home/TourGuideDetail';
 
 
 const Tab = createBottomTabNavigator();
@@ -47,6 +49,8 @@ const StackHomes = () => {
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
+      <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
+      <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
     </Stack.Navigator>
   )
 }
