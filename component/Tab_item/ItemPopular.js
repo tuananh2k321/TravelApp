@@ -13,7 +13,7 @@ const ItemPopular = (props) => {
 
 
   return (
-    <TouchableOpacity style={styles.container} >
+    <TouchableOpacity style={styles.container} onPress={clickItem}>
       <Image style={styles.image} source={{uri: dulieu.tourImage[0]}}/>
       <Text numberOfLines={1} style={{fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4}}>{dulieu.tourName}</Text>
       <View style={styles.review}>
@@ -26,12 +26,12 @@ const ItemPopular = (props) => {
         jumpValue={0.1}
         imageSize={12}/>
         <View style={styles.review}>
-        <Text numberOfLines={1} style={{color: 'black', fontSize: 14, width: 50}}>100</Text>
+        <Text numberOfLines={1} style={{color: 'black', fontSize: 14, width: 40}}>100</Text>
         <Text numberOfLines={1} style={{color: 'black', fontSize: 14}}> review</Text>
         </View>
         
       </View>
-      <Text numberOfLines={1} style={{color: 'black', fontSize: 14, width: 150}}>{dulieu.description}</Text>
+      <Text numberOfLines={1} style={{color: 'black', fontSize: 14, width: 150, marginStart: 5}}>{dulieu.description}</Text>
     </TouchableOpacity>
   )
 }
@@ -41,18 +41,19 @@ export default ItemPopular
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 5,
-
-        width: 160,
-        height: 'auto'
+        width: 170,
+        height: 225,
+        borderWidth: 0.19,
+        borderRadius: 6,
+        borderColor: 'gray',
     },
     image:{
         width: 150,
         height: 150,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10
     },
      review: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center', 
+        marginStart: 5
      }
 })

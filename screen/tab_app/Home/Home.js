@@ -11,108 +11,100 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
+import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 // const disPath = useDispatch()
 
 
 
-
-
-
-
 export default function Home(props) {
     const { navigation } = props;
 
-
-    const [TourAll, setTourAll] = useState([]);
-    useEffect(() => {
-        try {
-            const getTourAll = async () => {
-            const respone = await AxiosIntance().get("tour/api/get-all-tour");
-            if (respone.result) {
-                setTourAll(respone.tours);
-                
-            } else {
-                ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
-            }
-        }
-        getTourAll();
-
-        return () => { }
-        } catch (error) {
-            console.log('errrrrrrror', error)
-        }
-        
-    }, []);
-
     const [TourRating, setTourRating] = useState([])
+    const [TourBac, setTourBac] = useState([])
+    const [TourTrung, setTourTrung] = useState([])
+    const [TourNam, setTourNam] = useState([])
+
     useEffect(() => {
         try {
-            const getTourRating = async () => {
-            const respone = await AxiosIntance().get("tour/api/tourRating");
-            if (respone.result) {
-                setTourRating(respone.tours);
-                
-            } else {
-                ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
-            }
-        }
-        getTourRating();
+            const getTour = async () => {
+                const respone = await AxiosIntance().get("tour/api/list/tourRating");
+                if (respone.result) {
+                    setTourRating(respone.tours);
 
-        return () => { }
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                }
+                const respone1 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Bac");
+                if (respone1.result) {
+                    setTourBac(respone1.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                } const respone2 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Trung");
+                if (respone2.result) {
+                    setTourTrung(respone2.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                }
+                const respone3 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Nam");
+                if (respone3.result) {
+                    setTourNam(respone3.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                }
+            }
+            getTour();
+
+            return () => { }
         } catch (error) {
             console.log('errrrrrrror', error)
         }
-        
+
     }, []);
+
+
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleSearch = (text) => {
+        setSearchValue(text);
+        // Xử lý tìm kiếm
+    };
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={{ flex: 1 }}>
                 <View>
-                    <Image style={styles.image_logo} source={require('../../../assets/image/anhbien.jpg')} />
+                    <Image style={styles.image_logo} source={require('../../../assets/images/imgstart.jpg')} />
                     <Text style={styles.txt1}>Khám phá thế giới {"\n"}hôm nay</Text>
                     <Text style={styles.txt2}>{<Text style={{ fontWeight: 'bold' }}>Khám phá</Text>} - du lịch đến muôn nơi</Text>
-                    <TextInput style={styles.txtsearch}></TextInput>
-                    <View style={styles.press_menu}>
-                        <FlatList
-                            horizontal
-                            data={menu}
-                            renderItem={({ item }) => <ItemMenu menud={item} />}
-                            keyExtractor={item => item._id}
-                            showsHorizontalScrollIndicator={false}
+
+                    <View style={styles.searchContainer}>
+                        <TextInput
+                            style={styles.searchBar}
+                            placeholder="Nhập từ khóa"
+                            onChangeText={handleSearch}
+                            value={searchValue}
                         />
+                        <Icon name="search" size={20} color="gray" />
                     </View>
                 </View>
+
                 <View style={styles.txtpack1}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Gói phổ biến</Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Tour được yêu thích nhất</Text>
                         <TouchableOpacity>
                             <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>See more</Text>
                         </TouchableOpacity>
                     </View>
 
-                    {/* <FlatList style={{ marginTop: 7 }}
+                    <FlatList style={{ marginTop: 10 }}
                         horizontal
-                        data={popular}
-                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
-                        keyExtractor={item => item._id}
-                        showsHorizontalScrollIndicator={false}
-                    /> */}
-                </View>
-
-                <View style={styles.txtpack1}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Tour đánh giá cao</Text>
-                        <TouchableOpacity>
-                            <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>See more</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <FlatList style={{ marginTop: 7 }}
-                        horizontal
-                        data={TourRating}
+                        data={TourRating.slice(0, 6)}
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
@@ -121,19 +113,72 @@ export default function Home(props) {
 
                 <View style={styles.txtpack1}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Tất cả Tour</Text>
-                        <TouchableOpacity>
-                            <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>See more</Text>
-                        </TouchableOpacity>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Các tour đặc trưng trong khu vực</Text>
                     </View>
-
-                    {/* <FlatList style={{ marginTop: 7 }}
+                    <View style={styles.viewOverlay}>
+                        <ImageOverlay source={require('../../../assets/images/mienbac.png')}
+                            title='Miền Bắc'
+                            overlayAlpha={1}
+                            contentPosition="center"
+                            titleStyle={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}
+                            containerStyle={styles.imgoverlay} />
+                        <View style={{ justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Hà Nội</Text>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Hải phòng</Text>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Quảng Ninh</Text>
+                        </View>
+                    </View>
+                    <FlatList style={{ marginTop: 10 }}
                         horizontal
-                        data={TourAll.slice(0, 6)}
+                        data={TourBac}
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
-                    /> */}
+                    />
+
+
+                    <View style={styles.viewOverlay}>
+                        <View style={{ justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Đà Nẵng</Text>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Nha Trang</Text>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Huế</Text>
+                        </View>
+                        <ImageOverlay source={require('../../../assets/images/mientrung.png')}
+                            title='Miền Trung'
+                            overlayAlpha={1}
+                            contentPosition="center"
+                            titleStyle={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}
+                            containerStyle={styles.imgoverlay} />
+                    </View>
+                    <FlatList style={{ marginTop: 10 }}
+                        horizontal
+                        data={TourTrung}
+                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
+                        keyExtractor={item => item._id}
+                        showsHorizontalScrollIndicator={false}
+                    />
+
+
+                    <View style={styles.viewOverlay}>
+                        <ImageOverlay source={require('../../../assets/images/miennam.png')}
+                            title='Miền Nam'
+                            overlayAlpha={1}
+                            contentPosition="center"
+                            titleStyle={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}
+                            containerStyle={styles.imgoverlay} />
+                        <View style={{ justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Cần Thơ</Text>
+                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Vũng Tàu</Text>
+                        </View>
+                    </View>
+                    <FlatList style={{ marginTop: 10 }}
+                        horizontal
+                        data={TourNam}
+                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
+                        keyExtractor={item => item._id}
+                        showsHorizontalScrollIndicator={false}
+                    />
                 </View>
             </SafeAreaView>
         </ScrollView>
@@ -144,31 +189,8 @@ export default function Home(props) {
 
 
 const styles = StyleSheet.create({
-    slider: {
-        width: SIZES.width,
-        height: SIZES.height * 0.25,
-        padding: 10
-    },
-    reviewImage2: {
-        width: SIZES.width - 20,
-        height: SIZES.height * 0.25 - 10,
-    },
-    slideDot: {
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 10,
-        alignSelf: 'center'
-    },
-    dotActive: {
-        color: 'black',
-        margin: 3
-    },
-    dot: {
-        color: 'white',
-        margin: 3
-    },
     image_logo: {
-        height: SIZES.height * 0.4,
+        height: SIZES.height * 0.3,
         width: SIZES.width
     },
     txt1: {
@@ -185,14 +207,25 @@ const styles = StyleSheet.create({
         top: 120,
         left: 25
     },
-    txtsearch: {
+    searchContainer: {
         width: 350,
         height: 50,
-        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 10,
         position: 'absolute',
-        borderRadius: 20,
-        left: 25,
-        bottom: 90
+        bottom: 20,
+        backgroundColor: 'white',
+        alignSelf:'center',
+    },
+    searchBar: {
+        flex: 1,
+        height: 40,
+        marginLeft: 5,
     },
     press_menu: {
         width: 390,
@@ -204,7 +237,17 @@ const styles = StyleSheet.create({
     },
     txtpack1: {
         margin: 24
+    },
+    viewOverlay: {
+        flexDirection: 'row',
+        marginTop: 30,
+        justifyContent: 'space-evenly'
+    },
+    imgoverlay: {
+        width: 200,
+        height: 200
     }
+
 })
 
 
