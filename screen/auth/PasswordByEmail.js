@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   Image,
@@ -7,16 +7,28 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
-import UITextInput from '../component/UITextInput';
-import UIButtonPrimary from '../component/UIButtonPrimary';
+import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import UITextInput from '../../component/UITextInput';
+import UIButtonPrimary from '../../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import { validatePassword } from '../constant/Validation';
+import {validateEmail, validatePhoneNumber} from '../../constant/Validation';
+import { useDispatch } from 'react-redux';
 
-export default NewPassword = (props) => {
-  const {navigation} = props
-  const [isHidePassword, setIsHidePassword] = useState(true);
-  const [errorPassword, setErrorPassword] = useState(true);
+export default PasswordByEmail = props => {
+  const {navigation} = props;
+  const [errorEmail, setErrorEmail] = useState(true);
+  const [email, setEmail] = useState('');
+  const dispatch = useDispatch()
+
+  const btnSendEmail = () => {
+    console.log('btnSendEmail')
+    dispatch({
+      type: 'SEND-MAIL-CHANGE-PASSWORD',
+      payload: [email]
+    })
+    navigation.replace('Login');
+  }
+
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -29,7 +41,7 @@ export default NewPassword = (props) => {
         }}>
         <TouchableOpacity
           style={{position: 'absolute', top: 15, left: 10}}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.pop()}>
           <Image
             source={ICON.left}
             style={{
@@ -48,7 +60,7 @@ export default NewPassword = (props) => {
             marginTop: 20,
             textAlign: 'center',
           }}>
-          Tạo mật khẩu mới
+          Quên mật khẩu
         </Text>
 
         <View style={{width: 300, alignSelf: 'center'}}>
@@ -60,7 +72,8 @@ export default NewPassword = (props) => {
               color: COLOR.detail,
               marginTop: 15,
             }}>
-            Giữ an toàn cho tài khoản của bạn bằng cách tạo một mật khẩu mạnh
+            Nhập email của bạn, chúng tôi sẽ gửi link để
+            đặt lại mật khẩu của bạn
           </Text>
         </View>
 
@@ -71,31 +84,36 @@ export default NewPassword = (props) => {
             color: COLOR.detail,
             marginTop: 20,
           }}>
-          New Password
+          Email
         </Text>
 
-        <UITextInput hintText="Mật khẩu mới"  isIconRight = {true} icon = {ICON.eye}
-          isTextEntry={isHidePassword}
-          onPress={() => setIsHidePassword(!isHidePassword)}
-          borderError={errorPassword}
+        <UITextInput
+          hintText="jonhn.ux@gmail.com"
+          borderError={errorEmail}
           onChangeText={text => {
-            setErrorPassword(validatePassword(text));
+            setErrorEmail(validateEmail(text));
+            setEmail(text)
           }}
         />
 
-{!errorPassword && (
+        {!errorEmail && (
           <Text
             style={{
               fontSize: 14,
               fontWeight: '400',
               color: 'red',
             }}>
-            ít nhất 8 ký tự, ít nhất một chữ cái viết hoa, viết thường,  một số!
+            Email không hợp lệ !
           </Text>
         )}
 
+      
+
         <View style={{marginTop: 30}}>
-          <UIButtonPrimary text="Xác Nhận" onPress={() => navigation.navigate('Successfully')}/>
+          <UIButtonPrimary
+            text="Gửi Yêu Cầu"
+            onPress={() => btnSendEmail()}
+          />
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>

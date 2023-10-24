@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTab from './screen/BottomTab';
-import Login from './screen/Login';
-import Register from './screen/Register';
-import ForgetPassword from './screen/ForgetPassword';
-import NewPassword from './screen/NewPassword';
-import VerifyCode from './screen/VerifyCode';
+import Login from './screen/auth/Login';
+import Register from './screen/auth/Register';
+import PasswordByEmail from './screen/auth/PasswordByEmail';
+import PasswordByPhoneNumber from './screen/auth/PasswordByPhoneNumber';
+import NewPassword from './screen/auth/NewPassword';
+import VerifyCode from './screen/auth/VerifyCode';
 import Successfully from './screen/Successfully';
 import GoToLogin from './screen/auth/GoToLogin';
 import Verifycode2 from './screen/Verifycode2';
+import SelectOptions from './screen/auth/SelectOptions';
 import { Provider } from 'react-redux';
 import { Store } from './redux/Store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -49,7 +51,7 @@ const App = () => {
           }
   
           // Token vẫn còn hợp lệ, dispatch action và cập nhật initialRoute
-          console.log("App token: " + token);
+          //console.log("App token: " + token);
           Store.dispatch(setToken(token));
           setInitialRoute('BottomTab');
   
@@ -84,9 +86,11 @@ const App = () => {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="GoToLogin" component={GoToLogin} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="NewPassword" component={NewPassword} />
+          <Stack.Screen name="SelectOptions" component={SelectOptions} />
+          <Stack.Screen name="PasswordByEmail" component={PasswordByEmail} />
+          <Stack.Screen name="PasswordByPhoneNumber" component={PasswordByPhoneNumber} />
           <Stack.Screen name="VerifyCode" component={VerifyCode} />
+          <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="VerifyCode2" component={Verifycode2} />
           <Stack.Screen name="Successfully" component={Successfully} />
           <Stack.Screen name="BottomTab" component={BottomTab} />

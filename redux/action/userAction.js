@@ -36,3 +36,47 @@ export const sendEmail = async (email) => {
         throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
     }
 };
+
+export const sendEmailChangePassword = async (email) => {
+    try {
+        const res = await AxiosIntance().get("user/api/send-mail-change-password?email="+email);
+        return res; // Trả về toàn bộ response, bạn có thể xử lý dữ liệu sau này
+    } catch (err) {
+        throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
+    }
+};
+
+
+export const sendOTP = async (phoneNumber) => {
+    try {
+        const res = await AxiosIntance().post("user/api/otp", {
+            phoneNumber: phoneNumber
+        });
+        return res; // Trả về toàn bộ response, bạn có thể xử lý dữ liệu sau này
+    } catch (err) {
+        throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
+    }
+};
+
+export const verifyOTP = async (phoneNumber, otp) => {
+    try {
+        const res = await AxiosIntance().post("user/api/otp/verify?phoneNumber="+phoneNumber, {
+            otpCode: otp
+        });
+        return res; // Trả về toàn bộ response, bạn có thể xử lý dữ liệu sau này
+    } catch (err) {
+        throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
+    }
+};
+
+export const updatePasswordByEmail = async (email, newPassword) => {
+    try {
+        const res = await AxiosIntance().post("user/api/updatePasswordByEmail", {
+            emai: email,
+            password: newPassword
+        });
+        return res; // Trả về toàn bộ response, bạn có thể xử lý dữ liệu sau này
+    } catch (err) {
+        throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
+    }
+};

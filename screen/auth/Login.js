@@ -8,16 +8,16 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
-import UITextInput from '../component/UITextInput';
-import UIButtonPrimary from '../component/UIButtonPrimary';
+import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import UITextInput from '../../component/UITextInput';
+import UIButtonPrimary from '../../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   isValidEmpty,
   validateEmail,
   validatePassword,
-} from '../constant/Validation';
-import AxiosIntance from '../constant/AxiosIntance';
+} from '../../constant/Validation';
+import AxiosIntance from '../../constant/AxiosIntance';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,18 +40,6 @@ export default Login = props => {
   //const [user, setUser] = useState(null)
   const user = useSelector(state => state.user);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-
-  //       console.log(user);
-  //       setUser(user);
-  //     } catch (e) {
-  //       console.log("error: " + e);
-  //     }
-  //   }
-  //   fetchData();
-  // }, [user]);
 
   const checkForm = (email, password) => {
     if (email.length === 0) {
@@ -211,7 +199,7 @@ export default Login = props => {
             Không được để trống!
           </Text>
         )}
-        <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SelectOptions')}>
           <Text
             style={{
               alignSelf: 'flex-end',
@@ -234,7 +222,7 @@ export default Login = props => {
           />
         </View>
 
-        {messageLogin !== null && (
+        
           <Text
             style={{
               textAlign: 'center',
@@ -245,7 +233,7 @@ export default Login = props => {
             }}>
             {messageLogin}
           </Text>
-        )}
+      
 
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>

@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
-import UITextInput from '../component/UITextInput';
-import UIButtonPrimary from '../component/UIButtonPrimary';
+import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import UITextInput from '../../component/UITextInput';
+import UIButtonPrimary from '../../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CheckBox from '@react-native-community/checkbox';
 import {
@@ -19,10 +19,10 @@ import {
   validateEmail,
   validatePassword,
   validatePhoneNumber,
-} from '../constant/Validation';
+} from '../../constant/Validation';
 import DatePicker from 'react-native-date-picker';
 import {useDispatch, useSelector} from 'react-redux';
-import {addUser} from '../redux/reducer/UserSlice';
+import {addUser} from '../../redux/reducer/UserSlice';
 import {useEffect} from 'react';
 
 export default Register = props => {
@@ -136,7 +136,7 @@ export default Register = props => {
           payload: [name, lastName, dob, phoneNumber, email, password],
         });
         disPath({
-          type: 'SENDEMAIL',
+          type: 'SEND-EMAIL',
           payload: [email]
         })
       } else {
@@ -150,7 +150,7 @@ export default Register = props => {
   useEffect(() => {
     console.log('Register user: ' + JSON.stringify(user));
     if (user.dataRegister.result) {
-      ToastAndroid.show('Đăng ký thành công', ToastAndroid.LONG);
+      //ToastAndroid.show('Đăng ký thành công', ToastAndroid.LONG);
       navigation.navigate('GoToLogin');
       console.log('email: '+user.dataRegister.email)
       
