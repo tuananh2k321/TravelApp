@@ -9,38 +9,97 @@ import {
    Modal,
    Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {SIZES, COLOR, ICON} from '../../../constant/Themes';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
+import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 
 export default TourDetail = (props) => {
-  const { navigation} = props;
+  const { navigation,route} = props;
+  const {params} = route;
+  const [tourName, settourName] = useState("")
+  const [adultPrice, setadultPrice] = useState("")
+  const [childrenPrice, setchildrenPrice] = useState("")
+  const [adultAge, setadultAge] = useState("")
+  const [childrenAge, setchildrenAge] = useState("")
+  const [departmentPlace, setdepartmentPlace] = useState("")
+  const [departmentDate, setdepartmentDate] = useState("")
+  const [limitedDay, setlimitedDay] = useState("")
+  const [operatingDay, setoperatingDay] = useState("")
+  const [limitedPerson, setlimitedPerson] = useState("")
+  const [offer, setoffer] = useState("")
+  const [vehicle, setvehicle] = useState("")
+  const [rating, setrating] = useState("")
+  const [isdomain, setisdomain] = useState("")
+  const [hotel_id, sethotel_id] = useState("")
+  const [tourGuide_id, settourGuide_id] = useState("")
+  const [destination_id, setdestination_id] = useState("")
+  const [description, setdescription] = useState("")
+  const [tourImage, settourImage] = useState([])
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-  const sampleText =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis condimentum morbi non egestas enim amet sagittis. Proin sed aliquet rhoncus ut pellentesque ullamcorper sit eget ac.Sit nisi, cras ametvarius eget egestas pellentesque. Cursus gravida euismod non';
-    const images = [
-      { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
-      { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 3, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 4, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 5, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 6, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 7, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 8, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 9, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      { id: 10, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-      // Thêm các hình ảnh khác tại đây
-    ];
+  const sampleText =description;
+  // const images = [
+  //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
+  //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 3, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 4, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 5, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 6, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 7, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 8, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 9, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 10, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     // Thêm các hình ảnh khác tại đây
+  //   ];
+  let images = tourImage;
+    useEffect(() => {
+      try {
+          const getTour = async () => {
+              const response = await AxiosIntance().get("tour/api/"+ params.id +"/detail");
+              if (response.result == true) {
+                settourName(response.tour.tourName)
+                setadultPrice(response.tour.adultPrice)
+                setchildrenPrice(response.tour.childrenPrice)
+                setadultAge(response.tour.adultAge)
+                setchildrenAge(response.tour.childrenAge)
+                setdepartmentPlace(response.tour.departmentPlace)
+                setdepartmentDate(response.tour.departmentDate)
+                setlimitedDay(response.tour.limitedDay)
+                setoperatingDay(response.tour.operatingDay)
+                setlimitedPerson(response.tour.limitedPerson)
+                setoffer(response.tour.offer)
+                setvehicle(response.tour.vehicle)
+                setrating(response.tour.rating)
+                setisdomain(response.tour.isdomain)
+                sethotel_id(response.tour.hotel_id)
+                settourGuide_id(response.tour.tourGuide_id)
+                setdestination_id(response.tour.destination_id)
+                setdescription(response.tour.description)
+                settourImage(response.tour.tourImage)
+
+              } else {
+                  ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+              }
+          }
+          getTour();
+
+          return () => { }
+      } catch (error) {
+          console.log('errrrrrrror', error)
+      }
+
+  }, []);
+  console.log('>>>>>>>', tourImage)
   return (
     <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView
@@ -49,9 +108,7 @@ export default TourDetail = (props) => {
           backgroundColor: COLOR.white,
         }}>
         <ImageBackground
-          source={{
-            uri: 'https://ik.imagekit.io/tvlk/blog/2023/04/go-and-share-bai-bien-viet-nam-5.jpeg',
-          }}
+          source={{uri: tourImage[0] !=="" ? tourImage[0] : undefined}}
           style={{width: SIZES.width, height: 300, padding: 15}}>
           <View
             style={{
@@ -110,7 +167,7 @@ export default TourDetail = (props) => {
               marginTop: 10,
               marginBottom: 10,
             }}>
-            Koh Rong Samloem
+            {tourName}
           </Text>
 
           <View style={{flexDirection: 'row'}}>
@@ -222,11 +279,11 @@ export default TourDetail = (props) => {
           </Text>
           {/* Bao gồm */}
           <View style={{flexDirection: 'column'}}>
-            <ItemIncluded icon={"bus-alt"} title={"Xe buýt"} content={"Phương tiện di chuyển"} />
-            <ItemIncluded icon={"calendar-alt"} title={"ngày 10 tháng 10 năm 2023"} content={"Ngày khởi hành của tour du lịch"} />
-            <ItemIncluded icon={"child"} title={"Ít nhất 10 người"} content={"Tối thiểu người đi tuor"} />
-            <ItemIncluded icon={"clock"} title={"2 ngày 1 đêm"} content={"Thời gian đi của tour du lịch"} />
-            <ItemIncluded icon={"calendar-alt"} title={"Hoạt động vào tháng 10"} content={"Khoản thời gian mà tour còn hoạt động"} />
+            <ItemIncluded icon={"bus-alt"} title={vehicle} content={"Phương tiện di chuyển"} />
+            <ItemIncluded icon={"calendar-alt"} title={departmentDate} content={"Ngày khởi hành của tour du lịch"} />
+            <ItemIncluded icon={"child"} title={limitedPerson} content={"Tối thiểu người đi tuor"} />
+            <ItemIncluded icon={"clock"} title={limitedDay} content={"Thời gian đi của tour du lịch"} />
+            <ItemIncluded icon={"calendar-alt"} title={operatingDay} content={"Khoản thời gian mà tour còn hoạt động"} />
             
           </View>
 
@@ -254,7 +311,7 @@ export default TourDetail = (props) => {
               color: COLOR.detail,
               marginBottom: 10,
             }}>
-            Xe du lịch và hướng dẫn viên sẽ đợi bạn tại Đ. Xuân Thủy, Hàm Thuận Bắc, Bình Thuận 77157, Việt Nam
+            Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
           </Text>
 
           <Image
@@ -279,9 +336,7 @@ export default TourDetail = (props) => {
                  <View style={{flexDirection: 'row', marginTop: 20}}>
             <View style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
               <Image
-                source={{
-                  uri: 'https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg',
-                }}
+                source={{uri: tourImage[0] !=="" ? tourImage[0] : undefined}}
                 style={{
                   height: 200,
                   resizeMode: 'cover',
@@ -291,17 +346,13 @@ export default TourDetail = (props) => {
               />
 
               <Image
-                source={{
-                  uri: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg',
-                }}
+                source={{uri: tourImage[1] !=="" ? tourImage[1] : undefined}}
                 style={{height: 200, resizeMode: 'cover', borderRadius: 10}}
               />
             </View>
 
             <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              }}
+              source={{uri: tourImage[2] !=="" ? tourImage[2] : undefined}}
               style={{
                 height: 410,
                 resizeMode: 'cover',
@@ -341,10 +392,10 @@ export default TourDetail = (props) => {
                 <Button title="Đóng" onPress={() => setModalVisible(false)} />
                 <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.imageContainer}>
-                  {images.map((image) => (
+                  {tourImage.map((image,index) => (
                     <Image
-                      key={image.id}
-                      source={{uri:image.source}}
+                    key={index}
+                      source={{uri: image !=="" ? image : undefined}}
                       style={styles.image}
                     />
                   ))}
@@ -511,18 +562,18 @@ export default TourDetail = (props) => {
             </Text>
             <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
               <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
-                Trẻ em: 7 đến 14 tuổi
+                Trẻ em: {childrenAge} tuổi
               </Text>
               <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
-                $100/Trẻ em
+                {childrenPrice}/Trẻ em
               </Text>
             </View>
             <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
               <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
-                Người lớn: 15 đến 65 tuổi
+                Người lớn: {adultAge} tuổi
               </Text>
               <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
-                $200/Người lớn
+                {adultPrice}/Người lớn
               </Text>
             </View>
           </View>

@@ -30,7 +30,7 @@ const ItemIncluded = ({icon,title,content}) => {
           justifyContent: 'flex-start',
           marginLeft: 20,
         }}>
-        <Text style={{fontSize: 16, fontWeight: '400', color: COLOR.title}}>
+        <Text numberOfLines={1} style={{fontSize: 16, fontWeight: '400', color: COLOR.title}}>
             {title}
         </Text>
         <Text style={{fontSize: 14, fontWeight: '400', color: COLOR.detail}}>
