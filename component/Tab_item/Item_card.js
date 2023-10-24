@@ -1,21 +1,28 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, {useS} from 'react'
 import LinearGradient from 'react-native-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const Item_card = (props) => {
     const {data} = props;
+    var numberCard = `${data.number}`;
+    var numberCardLength = numberCard.length;
+    console.log("Number card: " + numberCard);
+    console.log("Number card length: " + numberCardLength);
     return (
         <TouchableOpacity style = {{paddingHorizontal: 15, paddingVertical: 8}}>
             <LinearGradient start={{ x: 1.5, y: 0 }} end={{ x: 0, y: 0 }} colors={['#1F4352', '#227092',]} style={styles.card}>
                 <Text style={styles.name}>{data.name}</Text>
                 <View style={styles.groupItem}>
                     <Text style={styles.title}>Account Balance</Text>
-                    <Text style={styles.money}>${data.money}</Text>
+                    <Text style={styles.money}>100.000đ</Text>
                 </View>
                 <View style={styles.groupItem}>
                     <Text style={styles.title}>Master Card</Text>
-                    <Text style={styles.cardID}>{data.cardID}</Text>
+                    <Text style={styles.cardID}>
+                        {
+                            numberCardLength > 10 ? numberCard.slice(0,3)+ ' *** *** ' +  numberCard.slice(10,numberCardLength): numberCard
+                        }
+                    </Text>
                 </View>
                 <View style={styles.groupTwoCircle}>
                     <Text style={styles.circle1}></Text>

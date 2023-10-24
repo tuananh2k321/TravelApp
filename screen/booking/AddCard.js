@@ -6,7 +6,8 @@ import {
   isValidCVV,
   isValidName
 } from '../../constant/Validation';
-import Item_card from '../../component/Tab_item/Item_card';
+import AxiosIntance from '../../constant/AxiosIntance';
+
 
 const AddCard = (props) => {
   const { navigation } = props;
@@ -19,7 +20,29 @@ const AddCard = (props) => {
   const [errorName, setErrorName] = useState('');
   const isValidOK = () => numberID.length > 0 && CVV.length > 0 && name.length > 0
     && isValidCVV(CVV) == true && isValidNumberId(numberID) == true && isValidName(name) == true
-  return (
+  
+    const onNewCard = async () => {
+      console.log(name, numberID, CVV);
+      try {
+        const response = await AxiosIntance()
+          // .post("/users/register",
+          //   { email: emailUser, password: passwordUser });
+          .post("/cart/api/addCart",
+            { name: name, number: numberID, cvv: CVV});
+        // if (response.error == false) {
+        //   ToastAndroid.show("Đăng ký thành công!", ToastAndroid.SHORT);
+        //   //navigation.navigate('Login');
+        // } else {
+        //   ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.SHORT);
+        // }
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+        console.log('Sai');
+      }
+  
+    }
+    return (
     <View style={styles.container}>
       <View style={styles.groupHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -65,7 +88,7 @@ const AddCard = (props) => {
         <TouchableOpacity style={[styles.button,
         { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
           disabled={isValidOK() == false}
-          onPress={() => navigation.navigate('Booking_Successfully')}>
+          onPress={onNewCard}>
           <Text style={styles.textButton}>Xác nhận</Text>
         </TouchableOpacity>
       </View>

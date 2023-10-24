@@ -24,10 +24,12 @@ const Detail_Booking = (props) => {
   const [email, setEmail] = useState('');
   const [numberId, setNumberId] = useState('');
 
-  const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0
-    && phoneNumber.length > 0 && numberId.length > 0 && validateEmail(email) == true
-    && isValidName(name) == true && isValidNumberId(numberId) == true && validatePhoneNumber(phoneNumber) == true
-    && isValidQuantity(quantity) == true
+  const isValidOK = () => name.length > 0 && quantity.length > 0
+    && isValidName(name) == true && isValidQuantity(quantity) == true
+  // const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0
+  //   && phoneNumber.length > 0 && numberId.length > 0 && validateEmail(email) == true
+  //   && isValidName(name) == true && isValidNumberId(numberId) == true && validatePhoneNumber(phoneNumber) == true
+  //   && isValidQuantity(quantity) == true
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -73,7 +75,7 @@ const Detail_Booking = (props) => {
           <Text style={styles.error}>{errorQuantity}</Text>
         </View>
       </View>
-      <View style={styles.groupForm}>
+      {/* <View style={styles.groupForm}>
         <Text style={styles.lable}>Số điện thoại</Text>
         <TextInput
           style={styles.input}
@@ -111,7 +113,7 @@ const Detail_Booking = (props) => {
           <Ionicons style={styles.iconEye} name="eye" size={20} color="#000000" />
         </View>
 
-      </View>
+      </View> */}
       <View style={styles.groupButton}>
         <TouchableOpacity style={[styles.button,
         { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}

@@ -1,43 +1,24 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, ToastAndroid, TouchableOpacity, FlatList } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import LinearGradient from 'react-native-linear-gradient';
-import {
-  isValidNumberId,
-  isValidCVV,
-} from '../../constant/Validation';
+
 import Item_card from '../../component/Tab_item/Item_card';
+import AxiosIntance from '../../constant/AxiosIntance';
 
-const dataCard = [
-  {
-    id: "1",
-    name: "TRAN TUAN ANH",
-    money: "500.50",
-    cardID: "828174545",
-  },
-  {
-    id: "2",
-    name: "VO THANH THE",
-    money: "500.50",
-    cardID: "828174546",
-  },
-  {
-    id: "3",
-    name: "TRAN ANH TRI",
-    money: "500.50",
-    cardID: "828174547",
-  },
-
-]
 const Payment = (props) => {
   const { navigation } = props;
-  const [numberID, setNumberID] = useState('');
-  const [CVV, setCVV] = useState('');
-  // error
-  const [errorNumberID, setErrorNumberID] = useState('');
-  const [errorCVV, setErrorCVV] = useState('');
-  const isValidOK = () => numberID.length > 0 && CVV.length > 0
-    && isValidCVV(CVV) == true && isValidNumberId(numberID) == true
+  const [dataCards, setDataCards] = useState([]);
+    useEffect(() => {
+      const getNews = async () => {
+          const response = await AxiosIntance().get("/cart/api/getListCart");
+          console.log(response);
+          setDataCards(response.cart)
+      }
+      getNews();
+      return () => {
+
+      }
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.groupHeader}>
@@ -48,39 +29,12 @@ const Payment = (props) => {
       </View>
       <FlatList
         contentContainerStyle={{ marginBottom: 50 }}
-        data={dataCard}
+        data={dataCards}
         renderItem={({ item }) => <Item_card data={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false} />
-      {/* <View style={styles.groupForm}>
-        <Text style={styles.lable}>Số thẻ</Text>
-        <TextInput style={styles.input}
-          onChangeText={(text) => {
-            setErrorNumberID(isValidNumberId(text) == true ?
-              `` : 'Số thẻ không được trống');
-            setNumberID(text)
-          }} />
-        <Text style={styles.error}>{errorNumberID}</Text>
-      </View>
-      <View style={styles.groupForm}>
-        <Text style={styles.lable}>CVV</Text>
-        <TextInput style={styles.input}
-          onChangeText={(text) => {
-            setErrorCVV(isValidCVV(text) == true ?
-              `` : 'CVV không được trống');
-            setCVV(text)
-          }} />
-        <Text style={styles.error}>{errorCVV}</Text>
-      </View> */}
-
       <View style={styles.groupButton}>
-        <View style={styles.groupPrice}>
-          <Text style={styles.price}>$1200/</Text>
-          <Text style={[styles.price, { fontSize: 12 }]}>2Người</Text>
-        </View>
-        <TouchableOpacity style={[styles.button,
-        { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
-          disabled={isValidOK() == false}
+        <TouchableOpacity style={styles.button}
           onPress={() => navigation.navigate('Booking_Successfully')}>
           <Text style={styles.textButton}>Xác nhận</Text>
         </TouchableOpacity>
@@ -179,7 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   button: {
-    width: 173.5,
+    width: "100%",
     height: 52,
     borderRadius: 15,
     backgroundColor: '#0FA3E2'
