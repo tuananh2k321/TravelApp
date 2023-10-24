@@ -28,44 +28,45 @@ import Item_card from './component/Tab_item/Item_card';
 import Payment from './screen/booking/Payment';
 import Detail_Booking from './screen/booking/Detail_Booking';
 
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [initialRoute, setInitialRoute] = useState('Login'); // Khởi tạo initialRoute là 'Login'
   const [tokenChecked, setTokenChecked] = useState(false); // Khởi tạo biến để kiểm tra token
 
-  useEffect(() => {
-    const checkTokenAndStartApp = async () => {
-      try {
-        // Kiểm tra xem có token trong AsyncStorage không
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-          // Nếu có token trong AsyncStorage, dispatch action để cập nhật token vào Redux Store
-          console.log("App token: " + token);
-          Store.dispatch(setToken(token));
-          setInitialRoute('BottomTab'); // Cập nhật initialRoute thành 'BottomTab' nếu có token
-        }
-        setTokenChecked(true); // Đã kiểm tra xong token
-      } catch (error) {
-        console.error('Error checking token:', error);
-        setTokenChecked(true); // Đã kiểm tra xong token (có hoặc không)
-      }
-    };
+  // useEffect(() => {
+  //   const checkTokenAndStartApp = async () => {
+  //     try {
+  //       // Kiểm tra xem có token trong AsyncStorage không
+  //       const token = await AsyncStorage.getItem('token');
+  //       if (token) {
+  //         // Nếu có token trong AsyncStorage, dispatch action để cập nhật token vào Redux Store
+  //         console.log("App token: " + token);
+  //         Store.dispatch(setToken(token));
+  //         setInitialRoute('BottomTab'); // Cập nhật initialRoute thành 'BottomTab' nếu có token
+  //       }
+  //       setTokenChecked(true); // Đã kiểm tra xong token
+  //     } catch (error) {
+  //       console.error('Error checking token:', error);
+  //       setTokenChecked(true); // Đã kiểm tra xong token (có hoặc không)
+  //     }
+  //   };
 
-    // Gọi hàm kiểm tra token khi ứng dụng khởi động
-    checkTokenAndStartApp();
-  }, []);
+  //   // Gọi hàm kiểm tra token khi ứng dụng khởi động
+  //   checkTokenAndStartApp();
+  // }, []);
 
   // Nếu chưa kiểm tra xong token, bạn có thể hiển thị một màn hình loading
-  if (!tokenChecked) {
-    return <Text>Loading...</Text>; // Replace with your loading component
-  }
+  // if (!tokenChecked) {
+  //   return <Text>Loading...</Text>; // Replace with your loading component
+  // }
 
   return (
     <Provider store={Store}>
       {/* <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={initialRoute}
+          initialRouteName={"BottomTab"}
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
