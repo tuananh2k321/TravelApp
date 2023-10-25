@@ -64,9 +64,9 @@ const App = () => {
 
   return (
     <Provider store={Store}>
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={"BottomTab"}
+          initialRouteName={"Login"}
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
@@ -77,8 +77,7 @@ const App = () => {
           <Stack.Screen name="Successfully" component={Successfully} />
           <Stack.Screen name="BottomTab" component={BottomTab} />
         </Stack.Navigator>
-      </NavigationContainer> */}
-      <Detail_Booking/>
+      </NavigationContainer>
     </Provider>
   );
 };
