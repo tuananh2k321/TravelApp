@@ -36,9 +36,9 @@ export default TourDetail = (props) => {
   const [vehicle, setvehicle] = useState("")
   const [rating, setrating] = useState("")
   const [isdomain, setisdomain] = useState("")
-  const [hotel_id, sethotel_id] = useState("")
-  const [tourGuide_id, settourGuide_id] = useState("")
-  const [destination_id, setdestination_id] = useState("")
+  const [hotel_id, sethotel_id] = useState({})
+  const [tourGuide_id, settourGuide_id] = useState({})
+  const [destination_id, setdestination_id] = useState({})
   const [description, setdescription] = useState("")
   const [tourImage, settourImage] = useState([])
   const [showMore, setShowMore] = useState(false);
@@ -81,9 +81,9 @@ export default TourDetail = (props) => {
                 setvehicle(response.tour.vehicle)
                 setrating(response.tour.rating)
                 setisdomain(response.tour.isdomain)
-                sethotel_id(response.tour.hotel_id)
-                settourGuide_id(response.tour.tourGuide_id)
-                setdestination_id(response.tour.destination_id)
+                sethotel_id(response.datahotel)
+                settourGuide_id(response.dataTourGuide)
+                setdestination_id(response.dataDestination)
                 setdescription(response.tour.description)
                 settourImage(response.tour.tourImage)
 
@@ -99,7 +99,6 @@ export default TourDetail = (props) => {
       }
 
   }, []);
-  console.log('>>>>>>>', tourImage)
   return (
     <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView
@@ -412,9 +411,9 @@ export default TourDetail = (props) => {
             }}
           />
           {/* ItemLink */}
-          <ItemLink screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <ItemLink screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <ItemLink screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={"Trần Anh Trí"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <ItemLink dulieu={hotel_id} screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={hotel_id.hotelName} content={hotel_id.description}/>
+          <ItemLink dulieu={destination_id} screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={destination_id.destinationName} content={destination_id.content}/>
+          <ItemLink dulieu={tourGuide_id} screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={tourGuide_id.name} content={tourGuide_id.phoneNumber}/>
           <View
             style={{
               borderWidth: 1,

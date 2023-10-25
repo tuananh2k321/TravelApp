@@ -15,6 +15,8 @@ import {
   import ImageSlideshow from '../../../component/Tab_item/ImageSlideshow';
   
   const DestinationDetail = props => {
+    const {navigation,route} = props;
+    const {params} = route;
     const [showMore, setShowMore] = useState(false);
     const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
     const toggleShowMore = () => {
@@ -27,12 +29,12 @@ import {
       'https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_640.jpg',
       'https://www.lifegate.com/app/uploads/mare-fa-bene-2.jpg',
     ];
-    const {navigation} = props;
+   
     return (
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <SafeAreaView
           style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
-          <ImageSlideshow images={images} interval={3000} />
+          <ImageSlideshow images={params.dulieu.mainImage} interval={3000} />
           <View
             style={{
               flexDirection: 'row',
@@ -95,50 +97,9 @@ import {
                 marginTop: 10,
                 marginBottom: 10,
               }}>
-              Koh Rong Samloem
+              {params.dulieu.destinationName}
             </Text>
-            {/* đánh giá */}
-            <View style={{flexDirection: 'row'}}>
-              {Array.from({length: 5}).map((_, index) => {
-                if (index < 3) {
-                  return (
-                    <Image
-                      key={`star-${index}`}
-                      source={ICON.star_yellow}
-                      style={{width: 18, height: 18}}
-                    />
-                  );
-                } else {
-                  return (
-                    <Image
-                      key={`star-${index}`}
-                      source={ICON.star}
-                      style={{width: 18, height: 18}}
-                    />
-                  );
-                }
-              })}
-  
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: COLOR.detail,
-                  marginLeft: 10,
-                }}>
-                100 đánh giá
-              </Text>
-  
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: COLOR.detail,
-                  marginLeft: 10,
-                }}>
-                300 lượt đặt
-              </Text>
-            </View>
+            
             {/* Địa chỉ */}
             <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
               <Text
@@ -154,7 +115,7 @@ import {
               <Text
                 numberOfLines={2}
                 style={{fontSize: 16, fontWeight: '600', color: COLOR.detail}}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing
+                {params.dulieu.address}
               </Text>
             </View>
             {/* Khu vực */}
@@ -172,7 +133,7 @@ import {
               <Text
                 numberOfLines={2}
                 style={{fontSize: 16, fontWeight: '600', color: COLOR.detail}}>
-                Hà Nội, Việt Nam
+                {params.dulieu.area}
               </Text>
             </View>
             {/* miêu tả */}
@@ -193,8 +154,8 @@ import {
                   fontWeight: '400',
                   color: COLOR.detail,
                 }}>
-                {showMore ? sampleText : sampleText.slice(0, maxChars)}
-                {!showMore && sampleText.length > maxChars && (
+                {showMore ? params.dulieu.content : params.dulieu.content.slice(0, maxChars)}
+                {!showMore && params.dulieu.content.length > maxChars && (
                   <Text
                     onPress={toggleShowMore}
                     style={{

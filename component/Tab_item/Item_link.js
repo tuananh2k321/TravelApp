@@ -4,10 +4,11 @@ import {SIZES, COLOR, ICON} from '../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 
-const ItemLink = ({icon,tile,name,content,screen}) => {
+const ItemLink = ({icon,tile,name,content,screen,dulieu}) => {
   const navigation = useNavigation();
     const clickItem = () => {
-      navigation.navigate(screen);
+      navigation.navigate(screen, { dulieu: dulieu });
+      console.log("<<<<<<<<<<<<<<<<<",dulieu)
   }
   return (
     <TouchableOpacity onPress={clickItem}>
@@ -21,10 +22,10 @@ const ItemLink = ({icon,tile,name,content,screen}) => {
             <View>
               <View style={{flexDirection:"row",justifyContent:'space-between',alignItems:'center'}}>
                 <View style={{flexDirection:'column',width:280,marginTop:10}}>
-                <Text style={{fontSize:16,fontWeight:'500',color:COLOR.title}}>
+                <Text numberOfLines={1} style={{fontSize:16,fontWeight:'500',color:COLOR.title}}>
                   {name}
                 </Text>
-                <Text style={{fontSize:14,fontWeight:'400',color:COLOR.detail,marginTop:5}}>
+                <Text numberOfLines={3} style={{fontSize:14,fontWeight:'400',color:COLOR.detail,marginTop:5}}>
                   {content}
                 </Text>
                 </View>

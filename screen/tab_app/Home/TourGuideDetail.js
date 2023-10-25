@@ -14,7 +14,9 @@ import {
   import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
   import ImageSlideshow from '../../../component/Tab_item/ImageSlideshow';
   
-  const TourGuideDetail = props => {
+  const TourGuideDetail = (props) => {
+    const {navigation,route} = props;
+  const {params} = route;
     const [showMore, setShowMore] = useState(false);
     const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
     const toggleShowMore = () => {
@@ -27,12 +29,11 @@ import {
       'https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_640.jpg',
       'https://www.lifegate.com/app/uploads/mare-fa-bene-2.jpg',
     ];
-    const {navigation} = props;
     return (
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <SafeAreaView
           style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
-          <ImageSlideshow images={images} interval={3000} />
+          <ImageSlideshow images={params.dulieu.avatar} interval={3000} />
           <View
             style={{
               flexDirection: 'row',
@@ -86,6 +87,7 @@ import {
               flexDirection: 'column',
               justifyContent: 'flex-start',
               paddingHorizontal: 15,
+              marginBottom:10
             }}>
             <Text
               style={{
@@ -95,7 +97,7 @@ import {
                 marginTop: 10,
                 marginBottom: 10,
               }}>
-              Koh Rong Samloem
+              {params.dulieu.name}
             </Text>
             {/* đánh giá */}
             {/* <View style={{flexDirection: 'row'}}>
@@ -154,7 +156,7 @@ import {
               <Text
                 numberOfLines={2}
                 style={{fontSize: 16, fontWeight: '600', color: COLOR.detail}}>
-                10932183
+                {params.dulieu.phoneNumber}
               </Text>
             </View>
             {/* mail*/}
@@ -190,55 +192,10 @@ import {
               <Text
                 numberOfLines={2}
                 style={{fontSize: 16, fontWeight: '600', color: COLOR.detail}}>
-                Miền Tây
+                {params.dulieu.workPlaces}
               </Text>
             </View>
-            {/* miêu tả */}
-            <View style={{flexDirection: 'column', justifyContent: 'flex-start',paddingBottom:20}}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: '600',
-                  color: COLOR.title,
-                  marginTop: 25,
-                  marginBottom: 10,
-                }}>
-                Miêu tả
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: '400',
-                  color: COLOR.detail,
-                }}>
-                {showMore ? sampleText : sampleText.slice(0, maxChars)}
-                {!showMore && sampleText.length > maxChars && (
-                  <Text
-                    onPress={toggleShowMore}
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '600',
-                      color: COLOR.title,
-                      textDecorationLine: 'underline',
-                    }}>
-                    Đọc hết
-                  </Text>
-                )}
-                {showMore && (
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '600',
-                      color: COLOR.title,
-                      textDecorationLine: 'underline',
-                      marginLeft: 10,
-                    }}
-                    onPress={toggleShowMore}>
-                    Đọc ít
-                  </Text>
-                )}
-              </Text>
-            </View>
+            
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
