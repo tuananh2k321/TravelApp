@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import LinearGradient from 'react-native-linear-gradient';
 
 const Payment_Method = (props) => {
     const {navigation} = props;
@@ -26,12 +25,12 @@ const Payment_Method = (props) => {
         <View style={styles.container}>
             <View style={styles.groupHeader}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={20} color="#000000" />
+                    <Ionicons name="chevron-back" size={24} color="#000000" />
                 </TouchableOpacity>
                 <Text style={styles.header}>Xác nhận và trả tiền</Text>
             </View>
             <View style={styles.groupName}>
-                <Image style={styles.image} source={require('../assets/img/img_payment_method.png')} />
+                <Image style={styles.image} source={require('../../assets/img/img_payment_method.png')} />
                 <View style={{ marginStart: 10 }}>
                     <Text style={styles.name}>Koh Rong Samloem</Text>
                     <Text style={styles.order}>Order number #837nx38</Text>
@@ -53,7 +52,7 @@ const Payment_Method = (props) => {
             {
                 chooses.map((item, index)=> <TouchableOpacity 
                 key = {index}
-                style={styles.card} onPress={() => setSelectedRadio(item.id)}>
+                style={[styles.card,{borderColor: selectedRadio == item.id ? '#000000' : '#00000026'}]} onPress={() => setSelectedRadio(item.id)}>
                 <View style={styles.groupCardLeft}>
                     <Image style={styles.imageCard} source={{uri: item.image}} />
                     <Text style={styles.creditCard}>{item.name}</Text>
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     header: {
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: '600',
         lineHeight: 18,
         color: '#000000',
@@ -185,7 +184,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 91,
         borderRadius: 15,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: '#00000026',
         paddingHorizontal: 20,
         paddingVertical: 32,

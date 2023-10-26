@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {
-  isValidEmail,
+  validateEmail,
   isValidName,
   isValidNumberId,
-  isValidPhoneNumber,
+  validatePhoneNumber,
   isValidQuantity,
-} from '../utilies/Validations';
+} from '../../constant/Validation';
 
 const Detail_Booking = (props) => {
-  const {navigation} = props;
+  const { navigation } = props;
   //State for validating
   const [errorName, setErrorName] = useState('');
   const [errorQuantity, setErrorQuantity] = useState('');
@@ -19,18 +19,20 @@ const Detail_Booking = (props) => {
   const [errorNumberId, setErrorNumberId] = useState('');
   //State for store
   const [name, setName] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState('1');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [numberId, setNumberId] = useState('');
 
-  const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0
-  && phoneNumber.length > 0 && numberId.length > 0 && isValidEmail(email) == true
-  && isValidName(name) == true && isValidNumberId(numberId) == true && isValidPhoneNumber(phoneNumber) == true 
-  && isValidQuantity(quantity) == true
+  const isValidOK = () => name.length > 0 && quantity.length > 0
+    && isValidName(name) == true && isValidQuantity(quantity) == true
+  // const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0
+  //   && phoneNumber.length > 0 && numberId.length > 0 && validateEmail(email) == true
+  //   && isValidName(name) == true && isValidNumberId(numberId) == true && validatePhoneNumber(phoneNumber) == true
+  //   && isValidQuantity(quantity) == true
   return (
     <View style={styles.container}>
-      <TouchableOpacity  onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <Ionicons name="chevron-back-sharp" size={20} color="#000000" />
       </TouchableOpacity>
       <Text style={styles.title}>Chi tiết đặt phòng</Text>
@@ -38,73 +40,85 @@ const Detail_Booking = (props) => {
       <View style={styles.groupForm}>
         <Text style={styles.lable}>Tên khách hàng</Text>
 
-        <TextInput 
-        style={styles.input} 
-        onChangeText={(text) => {
-          setErrorName(isValidName(text) == true ?
-                `` : 'Tên khách hàng không được trống');
-          setName(text)
-        }}/>
-        <Text style = {styles.error}>{errorName}</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => {
+            setErrorName(isValidName(text) == true ?
+              `` : 'Tên khách hàng không được trống');
+            setName(text)
+          }} />
+        <Text style={styles.error}>{errorName}</Text>
       </View>
-      <View style={styles.groupForm}>
-        <Text style={styles.lable}>Số khách hàng</Text>
-        <TextInput 
-        style={styles.input} 
-        onChangeText={(text) => {
-          setErrorQuantity(isValidQuantity(text) == true ?
+      <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between" }]}>
+        <View style={{ width: '48%' }}>
+          <Text style={styles.lable}>Số lượng người lớn</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(text) => {
+              setErrorQuantity(isValidQuantity(text) == true ?
                 `` : 'Số khách hàng không được trống');
-          setQuantity(text)
-        }}/>
-        <Text style = {styles.error}>{errorQuantity}</Text>
+              setQuantity(text)
+            }} 
+            value={quantity}/>
+          <Text style={styles.error}>{errorQuantity}</Text>
+        </View>
+        <View style={{ width: '48%' }}>
+          <Text style={styles.lable}>Số lượng trẻ em</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(text) => {
+              setQuantity(text)
+            }} 
+            />
+          <Text style={styles.error}>{errorQuantity}</Text>
+        </View>
       </View>
-      <View style={styles.groupForm}>
+      {/* <View style={styles.groupForm}>
         <Text style={styles.lable}>Số điện thoại</Text>
-        <TextInput 
-        style={styles.input} 
-        onChangeText={(text) => {
-          setErrorPhoneNumber(isValidPhoneNumber(text) == true ?
-                `` : 'Số điện thoại không được trống');
-          setPhoneNumber(text)
-        }}/>
-        <Text style = {styles.error}>{errorPhoneNumber}</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => {
+            setErrorPhoneNumber(validatePhoneNumber(text) == true ?
+              `` : 'Số điện thoại không đúng định dạng');
+            setPhoneNumber(text)
+          }} />
+        <Text style={styles.error}>{errorPhoneNumber}</Text>
       </View>
       <View style={styles.groupForm}>
         <Text style={styles.lable}>Email</Text>
-        <TextInput 
-        style={styles.input} 
-        onChangeText={(text) => {
-          setErrorEmail(isValidEmail(text) == true ?
-                `` : 'Email không hợp lệ');
-          setEmail(text)
-        }}/>
-        <Text style = {styles.error}>{errorEmail}</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => {
+            setErrorEmail(validateEmail(text) == true ?
+              `` : 'Email không hợp lệ');
+            setEmail(text)
+          }} />
+        <Text style={styles.error}>{errorEmail}</Text>
       </View>
       <View style={styles.groupForm}>
         <Text style={styles.lable}>Số ID</Text>
         <View style={styles.groupID}>
-        <TextInput 
-        style={styles.input} 
-        secureTextEntry = {true} 
-        onChangeText={(text) => {
-          setErrorNumberId(isValidNumberId(text) == true ?
-                `` : 'ID không được trống');
-          setNumberId(text)
-        }}/>
-        <Text style = {styles.error}>{errorNumberId}</Text>
-        <Ionicons style={styles.iconEye} name="eye" size={20} color="#000000" />
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(text) => {
+              setErrorNumberId(isValidNumberId(text) == true ?
+                `` : 'Số ID lớn hơn 10 kí tự');
+              setNumberId(text)
+            }} />
+          <Text style={styles.error}>{errorNumberId}</Text>
+          <Ionicons style={styles.iconEye} name="eye" size={20} color="#000000" />
         </View>
-        
-      </View>
+
+      </View> */}
       <View style={styles.groupButton}>
-        <View style={styles.groupPrice}>
-          <Text style={styles.price}>$1200/</Text>
-          <Text style={[styles.price, { fontSize: 12 }]}>2Người</Text>
-        </View>
         <TouchableOpacity style={[styles.button,
-        {backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray'}]}
-        disabled = {isValidOK() == false}
-        onPress={() => navigation.navigate('Payment_Method')}>
+        { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
+          disabled={isValidOK() == false}
+          onPress={() => navigation.navigate('Payment_Method')}>
           <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>
@@ -156,7 +170,7 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   button: {
-    width: 173.5,
+    width: '100%',
     height: 52,
     borderRadius: 15,
     backgroundColor: '#0FA3E2',

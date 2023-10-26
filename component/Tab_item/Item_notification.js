@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View,Image,TouchableOpacity,Dimensions } from 'react-native'
 import React from 'react'
+import { SIZES } from '../../constant/Themes';
 
 const Item_notification = props => {
     const {dulieu} = props;
   return (
-    <View style={styles.list_product}>
+    
+        <View style={styles.list_product}>
         <Image style={{width:56,height:56,borderRadius:30}} source={{uri:dulieu.image}}></Image>
             <View style={styles.list_product_text}>
                 <Text numberOfLines={1} style={styles.title}>{dulieu.title}</Text>
@@ -14,7 +16,8 @@ const Item_notification = props => {
         <TouchableOpacity style={styles.button_view}>
             <Text style={styles.button_view_text}>View</Text>
         </TouchableOpacity>
-</View>
+    </View>
+    
   )
 }
 
@@ -26,15 +29,20 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginTop:20,
         justifyContent:'space-between',
+        backgroundColor:'#FFFFFF',
+        height:62,
+        width:'100%'
     },
     list_product_text:{
         flexDirection:'column',
         marginLeft:11,
+        height:62,
+        paddingVertical:5
     },
     title:{
         fontStyle:'normal',
         fontWeight:'400',
-        fontSize:14,
+        fontSize:16,
         lineHeight:21,
         color:'#000000',
         width: Dimensions.get('window').width -182
@@ -42,7 +50,7 @@ const styles = StyleSheet.create({
     content:{
         fontStyle:'normal',
         fontWeight:'400',
-        fontSize:9,
+        fontSize:12,
         lineHeight:14,
         color:'#000000',
         width: Dimensions.get('window').width -182
@@ -50,7 +58,7 @@ const styles = StyleSheet.create({
     days:{
         fontStyle:'normal',
         fontWeight:'400',
-        fontSize:10,
+        fontSize:14,
         lineHeight:15,
         color:'rgba(0, 0, 0, 0.6)'
     },
@@ -65,8 +73,8 @@ const styles = StyleSheet.create({
     },
     button_view_text:{
         fontStyle:'normal',
-        fontWeight:'400',
-        fontSize:12,
+        fontWeight:'600',
+        fontSize:14,
         lineHeight:18,
         color:'#FFFFFF',
     }

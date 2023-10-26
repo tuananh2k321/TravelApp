@@ -25,6 +25,12 @@ import {
   TouchableOpacity,
   ToastAndroid
 } from 'react-native';
+import AddCard from './screen/booking/AddCard';
+import Payment_Method from './screen/booking/Payment_Method';
+import Item_card from './component/Tab_item/Item_card';
+import Payment from './screen/booking/Payment';
+import Detail_Booking from './screen/booking/Detail_Booking';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -73,9 +79,9 @@ const App = () => {
   
 
   // Nếu chưa kiểm tra xong token, bạn có thể hiển thị một màn hình loading
-  if (!tokenChecked) {
-    return <Text>Loading...</Text>; // Replace with your loading component
-  }
+  // if (!tokenChecked) {
+  //   return <Text>Loading...</Text>; // Replace with your loading component
+  // }
 
   return (
     <Provider store={Store}>

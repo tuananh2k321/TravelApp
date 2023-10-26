@@ -5,84 +5,153 @@ import {
   ImageBackground,
   Text,
   TouchableOpacity,
+  StyleSheet,
+   Modal,
+   Button,
 } from 'react-native';
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import {SIZES, COLOR, ICON} from '../../../constant/Themes';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
+import ItemIncluded from '../../../component/Tab_item/Item_included';
+import AxiosIntance from '../../../constant/AxiosIntance';
+import ItemLink from '../../../component/Tab_item/Item_link';
+import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 
-export default TourDetail = () => {
+export default TourDetail = (props) => {
+  const { navigation,route} = props;
+  const {params} = route;
+  const [tourName, settourName] = useState("")
+  const [adultPrice, setadultPrice] = useState("")
+  const [childrenPrice, setchildrenPrice] = useState("")
+  const [adultAge, setadultAge] = useState("")
+  const [childrenAge, setchildrenAge] = useState("")
+  const [departmentPlace, setdepartmentPlace] = useState("")
+  const [departmentDate, setdepartmentDate] = useState("")
+  const [limitedDay, setlimitedDay] = useState("")
+  const [operatingDay, setoperatingDay] = useState("")
+  const [limitedPerson, setlimitedPerson] = useState("")
+  const [offer, setoffer] = useState("")
+  const [vehicle, setvehicle] = useState("")
+  const [rating, setrating] = useState("")
+  const [isdomain, setisdomain] = useState("")
+  const [hotel_id, sethotel_id] = useState("")
+  const [tourGuide_id, settourGuide_id] = useState("")
+  const [destination_id, setdestination_id] = useState("")
+  const [description, setdescription] = useState("")
+  const [tourImage, settourImage] = useState([])
+  const [showMore, setShowMore] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
+  };
+  const sampleText =description;
+  // const images = [
+  //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
+  //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 3, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 4, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 5, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 6, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 7, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 8, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 9, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     { id: 10, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
+  //     // Thêm các hình ảnh khác tại đây
+  //   ];
+  let images = tourImage;
+    useEffect(() => {
+      try {
+          const getTour = async () => {
+              const response = await AxiosIntance().get("tour/api/"+ params.id +"/detail");
+              if (response.result == true) {
+                settourName(response.tour.tourName)
+                setadultPrice(response.tour.adultPrice)
+                setchildrenPrice(response.tour.childrenPrice)
+                setadultAge(response.tour.adultAge)
+                setchildrenAge(response.tour.childrenAge)
+                setdepartmentPlace(response.tour.departmentPlace)
+                setdepartmentDate(response.tour.departmentDate)
+                setlimitedDay(response.tour.limitedDay)
+                setoperatingDay(response.tour.operatingDay)
+                setlimitedPerson(response.tour.limitedPerson)
+                setoffer(response.tour.offer)
+                setvehicle(response.tour.vehicle)
+                setrating(response.tour.rating)
+                setisdomain(response.tour.isdomain)
+                sethotel_id(response.tour.hotel_id)
+                settourGuide_id(response.tour.tourGuide_id)
+                setdestination_id(response.tour.destination_id)
+                setdescription(response.tour.description)
+                settourImage(response.tour.tourImage)
+
+              } else {
+                  ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+              }
+          }
+          getTour();
+
+          return () => { }
+      } catch (error) {
+          console.log('errrrrrrror', error)
+      }
+
+  }, []);
+  console.log('>>>>>>>', tourImage)
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView
         style={{
           width: SIZES.width,
-          backgroundColor: COLOR.backgroundColor,
+          backgroundColor: COLOR.white,
         }}>
         <ImageBackground
-          source={{
-            uri: 'https://ik.imagekit.io/tvlk/blog/2023/04/go-and-share-bai-bien-viet-nam-5.jpeg',
-          }}
+          source={{uri: tourImage[0] !=="" ? tourImage[0] : undefined}}
           style={{width: SIZES.width, height: 300, padding: 15}}>
           <View
             style={{
               justifyContent: 'space-between',
               flexDirection: 'row',
             }}>
-            <View
+            <TouchableOpacity onPress={() => navigation.goBack(null)}
               style={{
-                width: 30,
-                height: 30,
+                width: 36,
+                height: 36,
                 borderRadius: 50,
                 backgroundColor: COLOR.white,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Image
-                source={ICON.arrow_back}
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-            </View>
+               <FontAwesome5 name={"arrow-left"} size={16} color="#000000" />
+            </TouchableOpacity>
 
             <View style={{flexDirection: 'row'}}>
-              <View
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50,
-                  backgroundColor: COLOR.white,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginRight: 10,
-                }}>
-                <Image
-                  source={ICON.share}
-                  style={{
-                    width: 30,
-                    height: 30,
-                  }}
-                />
-              </View>
+            <View
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 50,
+                backgroundColor: COLOR.white,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight:10
+              }}>
+               <FontAwesome5 name={"share-alt"} size={16} color="#000000" />
+            </View>
 
-              <View
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50,
-                  backgroundColor: COLOR.white,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Image
-                  source={ICON.heartt}
-                  style={{
-                    width: 20,
-                    height: 20,
-                  }}
-                />
-              </View>
+            <View
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 50,
+                backgroundColor: COLOR.white,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+               <FontAwesome name={"heart-o"} size={16} color="#000000" />
+            </View>
             </View>
           </View>
         </ImageBackground>
@@ -93,12 +162,12 @@ export default TourDetail = () => {
           <Text
             style={{
               fontSize: 24,
-              fontWeight: 'bold',
-              color: COLOR.primary,
+              fontWeight: '600',
+              color: COLOR.title,
               marginTop: 10,
               marginBottom: 10,
             }}>
-            Koh Rong Samloem
+            {tourName}
           </Text>
 
           <View style={{flexDirection: 'row'}}>
@@ -143,7 +212,7 @@ export default TourDetail = () => {
             </Text>
           </View>
 
-          <Text
+          {/* <Text
             style={{
               fontSize: 16,
               fontWeight: 'bold',
@@ -155,19 +224,48 @@ export default TourDetail = () => {
             condimentum morbi non egestas enim amet sagittis. Proin sed aliquet
             rhoncus ut pellentesque ullamcorper sit eget ac.Sit nisi, cras amet
             varius eget egestas pellentesque. Cursus gravida euismod non
-          </Text>
+          </Text> */}
           <Text
             style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: COLOR.title,
-              marginBottom: 30,
+              fontSize: 14,
+              fontWeight: '400',
+              color: COLOR.detail,
+              marginTop: 10,
             }}>
-            Thêm...
+            {showMore ? sampleText : sampleText.slice(0, maxChars)}
+            {!showMore && sampleText.length > maxChars && (
+              <Text
+                onPress={toggleShowMore}
+                style={{
+                  fontSize: 14,
+                  fontWeight: '600',
+                  color: COLOR.title,
+                  textDecorationLine: 'underline',
+                }}>
+                Đọc hết
+              </Text>
+            )}
+            {showMore && (
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: '600',
+                  color: COLOR.title,
+                  textDecorationLine: 'underline',
+                  marginLeft: 10,
+                }}
+                onPress={toggleShowMore}>
+                Đọc ít
+              </Text>
+            )}
           </Text>
 
           <View
-            style={{borderWidth: 0.2, width: SIZES.width, borderColor: 'gray'}}
+            style={{
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
+              marginVertical: 30,
+            }}
           />
 
           <Text
@@ -176,72 +274,25 @@ export default TourDetail = () => {
               fontWeight: 'bold',
               color: COLOR.title,
               marginBottom: 10,
-              marginTop: 30,
             }}>
             Bao gồm
           </Text>
-
-          <View style={{flexDirection: 'row', marginBottom: 30}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: 100,
-                height: 50,
-                borderColor: COLOR.detail,
-                borderWidth: 1,
-                borderRadius: 20,
-                marginRight: 10,
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-              }}>
-              <Image
-                source={ICON.bus}
-                style={{width: 25, height: 25, marginRight: 10}}
-              />
-
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: COLOR.detail,
-                }}>
-                Bus
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                width: 100,
-                height: 50,
-                borderColor: COLOR.detail,
-                borderWidth: 1,
-                borderRadius: 20,
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-              }}>
-              <Image
-                source={ICON.clock}
-                style={{width: 25, height: 25, marginRight: 10}}
-              />
-
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: COLOR.detail,
-                }}>
-                2 ngày 1 đêm
-              </Text>
-            </View>
+          {/* Bao gồm */}
+          <View style={{flexDirection: 'column'}}>
+            <ItemIncluded icon={"bus-alt"} title={vehicle} content={"Phương tiện di chuyển"} />
+            <ItemIncluded icon={"calendar-alt"} title={departmentDate} content={"Ngày khởi hành của tour du lịch"} />
+            <ItemIncluded icon={"child"} title={limitedPerson} content={"Tối thiểu người đi tuor"} />
+            <ItemIncluded icon={"clock"} title={limitedDay} content={"Thời gian đi của tour du lịch"} />
+            <ItemIncluded icon={"calendar-alt"} title={operatingDay} content={"Khoản thời gian mà tour còn hoạt động"} />
+            
           </View>
 
           <View
-            style={{borderWidth: 0.2, width: SIZES.width, borderColor: 'gray'}}
+            style={{
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
+              marginVertical: 20,
+            }}
           />
 
           <Text
@@ -250,9 +301,17 @@ export default TourDetail = () => {
               fontWeight: 'bold',
               color: COLOR.title,
               marginBottom: 10,
-              marginTop: 30,
             }}>
-            Địa điểm khách sạn
+            Địa điểm khởi hành
+          </Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: '400',
+              color: COLOR.detail,
+              marginBottom: 10,
+            }}>
+            Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
           </Text>
 
           <Image
@@ -266,63 +325,18 @@ export default TourDetail = () => {
             }}
           />
 
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              color: COLOR.detail,
-              marginBottom: 10,
-              marginTop: 30,
-            }}>
-            Đ. Xuân Thủy, Hàm Thuận Bắc, Bình Thuận 77157, Việt Nam
-          </Text>
-
-          <TouchableOpacity
-            style={{
-              width: 100,
-              height: 50,
-              borderRadius: 20,
-              marginTop: 10,
-              backgroundColor: COLOR.primary,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                color: 'white',
-              }}>
-              chi tiết
-            </Text>
-          </TouchableOpacity>
-
           <View
             style={{
-              borderWidth: 0.2,
-              width: SIZES.width,
-              borderColor: 'gray',
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
               marginTop: 30,
             }}
           />
-
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: COLOR.title,
-              marginBottom: 10,
-              marginTop: 30,
-            }}>
-            Checking
-          </Text>
-
-          <View style={{flexDirection: 'row', marginTop: 20}}>
+                 {/* checkin */}
+                 <View style={{flexDirection: 'row', marginTop: 20}}>
             <View style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
               <Image
-                source={{
-                  uri: 'https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg',
-                }}
+                source={{uri: tourImage[0] !=="" ? tourImage[0] : undefined}}
                 style={{
                   height: 200,
                   resizeMode: 'cover',
@@ -332,17 +346,13 @@ export default TourDetail = () => {
               />
 
               <Image
-                source={{
-                  uri: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg',
-                }}
+                source={{uri: tourImage[1] !=="" ? tourImage[1] : undefined}}
                 style={{height: 200, resizeMode: 'cover', borderRadius: 10}}
               />
             </View>
 
             <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              }}
+              source={{uri: tourImage[2] !=="" ? tourImage[2] : undefined}}
               style={{
                 height: 410,
                 resizeMode: 'cover',
@@ -351,41 +361,72 @@ export default TourDetail = () => {
               }}
             />
           </View>
-
-          <View
+              {/* seeall image */}
+          <TouchableOpacity onPress={() => setModalVisible(true)}
             style={{
               flexDirection: 'row',
-              width: 100,
+              width: 200,
               height: 50,
-              borderRadius: 20,
-              marginTop: 10,
-              backgroundColor: COLOR.primary,
+              borderRadius: 6,
+              marginTop: 20,
+              borderWidth:1,
+              borderColor:'#000000',
+              backgroundColor: COLOR.white,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Image
-              source={ICON.camera}
-              style={{width: 25, height: 25, marginRight: 10}}
-            />
-
             <Text
               style={{
                 fontSize: 18,
                 fontWeight: 'bold',
-                color: 'white',
+                color: '#000000',
               }}>
-              +20
+              See all +20 photos
             </Text>
-          </View>
-
+            <Modal
+              visible={isModalVisible}
+              transparent={true}
+              animationType="slide"
+              >
+              <View style={styles.modalContainer}>
+                <Button title="Đóng" onPress={() => setModalVisible(false)} />
+                <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.imageContainer}>
+                  {tourImage.map((image,index) => (
+                    <Image
+                    key={index}
+                      source={{uri: image !=="" ? image : undefined}}
+                      style={styles.image}
+                    />
+                  ))}
+                </View>
+                </KeyboardAwareScrollView>
+              </View>
+            </Modal>
+          </TouchableOpacity>
           <View
             style={{
-              borderWidth: 0.2,
-              width: SIZES.width,
-              borderColor: 'gray',
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
               marginTop: 30,
             }}
           />
+          {/* ItemLink */}
+          <ItemLink screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <ItemLink screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <ItemLink screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={"Trần Anh Trí"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
+              marginTop: 30,
+            }}
+          />
+
+          
+     
+
+          
 
           <Text
             style={{
@@ -400,9 +441,9 @@ export default TourDetail = () => {
 
           <View
             style={{
-              borderRadius: 10,
-              borderWidth: 0.5,
-              borderColor: COLOR.detail,
+              borderRadius: 6,
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
               padding: 15,
               marginBottom: 20,
               backgroundColor: 'white',
@@ -453,15 +494,6 @@ export default TourDetail = () => {
                       );
                     }
                   })}
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: COLOR.detail,
-                      marginLeft: 10,
-                    }}>
-                    01/05/2023
-                  </Text>
                 </View>
               </View>
             </View>
@@ -469,294 +501,82 @@ export default TourDetail = () => {
             <Text
               style={{
                 fontSize: 17,
-                fontWeight: 'bold',
+                fontWeight: '400',
                 color: COLOR.detail,
                 marginTop: 20,
               }}>
-              ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq weqweq
+              ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq weqweq111111111111111111111111
             </Text>
 
             <View style={{flexDirection: 'row', marginTop: 20}}>
-              <Image
-                source={{
-                  uri: 'https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg',
-                }}
-                style={{
-                  flex: 1,
-                  height: 110,
-                  resizeMode: 'cover',
-                  marginBottom: 10,
-                  borderRadius: 10,
-                  marginRight: 10,
-                }}
-              />
-
-              <Image
-                source={{
-                  uri: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg',
-                }}
-                style={{
-                  height: 110,
-                  resizeMode: 'cover',
-                  borderRadius: 10,
-                  marginRight: 10,
-                  flex: 1,
-                }}
-              />
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  height: 50,
-                  borderRadius: 10,
-                  backgroundColor: COLOR.primary,
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  flex: 1,
-                }}>
-                <Image
-                  source={ICON.camera}
-                  style={{
-                    width: 25,
-                    height: 25,
-                    marginRight: 5,
-                    alignSelf: 'center',
-                  }}
-                />
-
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: 'white',
-                    alignSelf: 'center',
-                  }}>
-                  +5
+              <View style={{flexDirection:'row',justifyContent:'flex-start'}}>
+                <Text style={{color:COLOR.detail,fontSize:14,fontWeight:'400'}}>
+                  Đã đăng
+                </Text>
+                <Text style={{color:COLOR.detail,fontSize:14,fontWeight:'400',marginLeft:10}}>
+                  10/10/2023
                 </Text>
               </View>
+
             </View>
-            {/* <View
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 50,
-                borderColor: COLOR.detail,
-                borderWidth: 1,
-                justifyContent: 'center',
-                alignSelf: 'flex-end',
-              }}>
-              <Image
-                source={ICON.vote_up}
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-              </View> */}
+           
           </View>
 
-          <View
-            style={{
-              borderRadius: 10,
-              borderWidth: 0.5,
-              borderColor: COLOR.detail,
-              padding: 15,
-              backgroundColor: 'white',
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                source={{
-                  uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                }}
-                style={{
-                  width: 70,
-                  height: 70,
-                  borderRadius: 50,
-                  marginRight: 20,
-                }}
-              />
-              <View style={{justifyContent: 'center'}}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: COLOR.title,
-                  }}>
-                  Trần Tuấn Anh
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  {Array.from({length: 5}).map((_, index) => {
-                    if (index < 3) {
-                      return (
-                        <Image
-                          key={`star-${index}`}
-                          source={ICON.star_yellow}
-                          style={{width: 16, height: 16}}
-                        />
-                      );
-                    } else {
-                      return (
-                        <Image
-                          key={`star-${index}`}
-                          source={ICON.star}
-                          style={{width: 16, height: 16}}
-                        />
-                      );
-                    }
-                  })}
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: COLOR.detail,
-                      marginLeft: 10,
-                    }}>
-                    01/05/2023
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <Text
-              style={{
-                fontSize: 17,
-                fontWeight: 'bold',
-                color: COLOR.detail,
-                marginTop: 20,
-              }}>
-              ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq weqweq
-            </Text>
-
-            <View style={{flexDirection: 'row', marginTop: 20}}>
-              <Image
-                source={{
-                  uri: 'https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg',
-                }}
-                style={{
-                  flex: 1,
-                  height: 110,
-                  resizeMode: 'cover',
-                  marginBottom: 10,
-                  borderRadius: 10,
-                  marginRight: 10,
-                }}
-              />
-
-              <Image
-                source={{
-                  uri: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg',
-                }}
-                style={{
-                  height: 110,
-                  resizeMode: 'cover',
-                  borderRadius: 10,
-                  marginRight: 10,
-                  flex: 1,
-                }}
-              />
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  height: 50,
-                  borderRadius: 10,
-                  backgroundColor: COLOR.primary,
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  flex: 1,
-                }}>
-                <Image
-                  source={ICON.camera}
-                  style={{
-                    width: 25,
-                    height: 25,
-                    marginRight: 5,
-                    alignSelf: 'center',
-                  }}
-                />
-
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: 'white',
-                    alignSelf: 'center',
-                  }}>
-                  +5
-                </Text>
-              </View>
-            </View>
-            {/* <View
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 50,
-                borderColor: COLOR.detail,
-                borderWidth: 1,
-                justifyContent: 'center',
-                alignSelf: 'flex-end',
-              }}>
-              <Image
-                source={ICON.vote_up}
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-              </View> */}
-          </View>
-
-          <View
+          <TouchableOpacity 
             style={{
               flexDirection: 'row',
-              padding: 10,
               width: 200,
-              borderRadius: 20,
+              height: 50,
+              borderRadius: 6,
               marginTop: 10,
-              backgroundColor: COLOR.primary,
+              borderWidth:1,
+              borderColor:'#000000',
+              backgroundColor: COLOR.white,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Image
-              source={ICON.camera}
-              style={{width: 25, height: 25, marginRight: 10}}
-            />
-
             <Text
               style={{
                 fontSize: 18,
                 fontWeight: 'bold',
-                color: 'white',
+                color: '#000000',
               }}>
-              +20 đánh giá
+              Thêm +20 đánh giá
             </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View
+          
+        </View>
+        <View
             style={{
-              borderWidth: 0.2,
-              width: SIZES.width,
-              borderColor: 'gray',
+              borderWidth: 1,
+              borderColor: COLOR.lightBlack2,
               marginTop: 30,
-              marginBottom: 30,
+              marginHorizontal:15
             }}
           />
-
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: COLOR.title,
-              marginBottom: 20,
-            }}>
-            Các Tour du lịch khác
-          </Text>
-        </View>
+          {/* độ tuổi qui định */}
+          <View style={{flexDirection:'column',justifyContent:'flex-start',paddingHorizontal:15,paddingVertical:20}}>
+            <Text style={{fontSize:18,color:COLOR.title,fontWeight:'600'}}>
+              Độ tuổi qui định
+            </Text>
+            <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
+              <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
+                Trẻ em: {childrenAge} tuổi
+              </Text>
+              <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
+                {childrenPrice}/Trẻ em
+              </Text>
+            </View>
+            <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
+              <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
+                Người lớn: {adultAge} tuổi
+              </Text>
+              <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
+                {adultPrice}/Người lớn
+              </Text>
+            </View>
+          </View>
         <View
           style={{
             flexDirection: 'row',
@@ -764,36 +584,15 @@ export default TourDetail = () => {
             paddingVertical: 20,
             paddingHorizontal: 10,
           }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              flex: 1,
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                color: COLOR.primary,
-              }}>
-              $ 600
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLOR.primary,
-              }}>
-              /Person
-            </Text>
-          </View>
-          <TouchableOpacity
+          
+          <TouchableOpacity onPress={() => navigation.navigate('StackBooking')}
             style={{
               flex: 1,
+              height:52,
               backgroundColor: COLOR.primary,
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: 10,
+              borderRadius: 15,
               padding: 10,
             }}>
             <Text
@@ -802,7 +601,7 @@ export default TourDetail = () => {
                 fontWeight: 'bold',
                 color: 'white',
               }}>
-              Book Now
+              Đặt ngay
             </Text>
           </TouchableOpacity>
         </View>
@@ -810,3 +609,21 @@ export default TourDetail = () => {
     </KeyboardAwareScrollView>
   );
 };
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 150,
+    height: 150,
+    margin: 10,
+  },
+})
