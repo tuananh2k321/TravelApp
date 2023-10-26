@@ -8,7 +8,7 @@ const Booking_Successfully = (props) => {
         <View style={styles.container}>
             <LinearGradient colors={['#0FA3E2', '#49C9FF']} style={{ flex: 2 }}>
                 <View style={styles.group_Content}>
-                    <Image style={styles.image} source={require('../assets/logo/logo.png')} />
+                    <Image style={styles.image} source={require('../../assets/logo/logo.png')} />
                     <Text style={styles.title}>Đặt Trước</Text>
                     <Text style={[styles.title, { fontSize: 37 }]}>Thành Công</Text>
                     <Text style={styles.content}>Chuẩn bị sẵn sàng mọi thứ trước ngày đi của bạn</Text>

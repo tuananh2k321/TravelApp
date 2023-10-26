@@ -13,6 +13,12 @@ import * as Animatable from 'react-native-animatable';
 import HotelDetail from './tab_app/Home/HotelDetail';
 import DestinationDetail from './tab_app/Home/DestinationDetail';
 import TourGuideDetail from './tab_app/Home/TourGuideDetail';
+import Detail_Booking from './booking/Detail_Booking';
+import Payment from './booking/Payment';
+import Payment_Method from './booking/Payment_Method';
+import AddCard from './booking/AddCard';
+import Available_Date from './booking/Available_Date';
+import Booking_Successfully from './booking/Booking_Successfully';
 
 
 const Tab = createBottomTabNavigator();
@@ -51,6 +57,20 @@ const StackHomes = () => {
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
+      {/* <Stack.Screen name="StackBooking" component={StackBooking} /> */}
+    </Stack.Navigator>
+  )
+}
+
+const StackBooking = () => {
+  return (
+    <Stack.Navigator initialRouteName="Detail_Booking" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Detail_Booking" component={Detail_Booking} />
+      <Stack.Screen name="Payment" component={Payment} />
+      <Stack.Screen name="Payment_Method" component={Payment_Method} />
+      <Stack.Screen name="AddCard" component={AddCard} />
+      <Stack.Screen name="Available_Date" component={Available_Date} />
+      <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
     </Stack.Navigator>
   )
 }

@@ -585,7 +585,7 @@ export default TourDetail = (props) => {
             paddingHorizontal: 10,
           }}>
           
-          <TouchableOpacity
+          <TouchableOpacity onPress={() => navigation.navigate('StackBooking')}
             style={{
               flex: 1,
               height:52,
