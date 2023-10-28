@@ -13,6 +13,7 @@ import UITextInput from '../../component/UITextInput';
 import UIButtonPrimary from '../../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk-next';
 import {
   isValidEmpty,
   validateEmail,
@@ -23,6 +24,51 @@ import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default Login = props => {
+
+  // LOGIN FACEBOOK
+  async function onFacebookButtonPress() {
+    try {
+      // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+      if (result.isCancelled) {
+        throw new Error('User cancelled the login process');
+      }
+  
+      // Lấy AccessToken
+      const data = await AccessToken.getCurrentAccessToken();
+  
+      if (!data) {
+        throw new Error('Something went wrong obtaining access token');
+      }
+  
+      // Lấy thông tin người dùng từ Facebook
+      const responseInfoCallback = (error, result) => {
+        if (error) {
+          throw new Error('Error fetching user info: ' + error.toString());
+        } else {
+          console.log('User info:', result);
+        }
+      };
+  
+      const infoRequest = new GraphRequest('/me', {
+        parameters: {
+          fields: {
+            string: 'id,name,picture.type(large)'
+          }
+        }
+      }, responseInfoCallback);
+  
+      new GraphRequestManager().addRequest(infoRequest).start();
+  
+      return data;
+    } catch (error) {
+      console.error('Facebook login error:', error);
+      throw error;
+    }
+  }
+
+  // LOGIN GOOGLE
   GoogleSignin.configure({
     webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
   });
@@ -312,7 +358,9 @@ export default Login = props => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{flex: 1}}>
+          <TouchableOpacity 
+          onPress={() => onFacebookButtonPress()}
+          style={{flex: 1}}>
             <View
               style={{
                 flexDirection: 'row',
