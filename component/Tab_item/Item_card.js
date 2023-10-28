@@ -1,17 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, {useS} from 'react'
+import { Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient';
 
 const Item_card = (props) => {
-    const {data} = props;
-    var numberCard = `${data.number}`;
+    const { item, onPress, borderWidth } = props;
+    var numberCard = `${item.number}`;
     var numberCardLength = numberCard.length;
-    console.log("Number card: " + numberCard);
-    console.log("Number card length: " + numberCardLength);
     return (
-        <TouchableOpacity style = {{paddingHorizontal: 15, paddingVertical: 8}}>
-            <LinearGradient start={{ x: 1.5, y: 0 }} end={{ x: 0, y: 0 }} colors={['#1F4352', '#227092',]} style={styles.card}>
-                <Text style={styles.name}>{data.name}</Text>
+        <Pressable style={{ paddingHorizontal: 15, paddingVertical: 8 }} onPress={onPress}>
+            <LinearGradient start={{ x: 1.5, y: 0 }} end={{ x: 0, y: 0 }} colors={['#1F4352', '#227092',]} style={[styles.card,{borderWidth: borderWidth}]}>
+                <Text style={styles.name}>{item.name}</Text>
                 <View style={styles.groupItem}>
                     <Text style={styles.title}>Account Balance</Text>
                     <Text style={styles.money}>100.000đ</Text>
@@ -20,7 +18,7 @@ const Item_card = (props) => {
                     <Text style={styles.title}>Master Card</Text>
                     <Text style={styles.cardID}>
                         {
-                            numberCardLength > 10 ? numberCard.slice(0,3)+ ' *** *** ' +  numberCard.slice(10,numberCardLength): numberCard
+                            numberCardLength > 10 ? numberCard.slice(0, 3) + ' *** *** ' + numberCard.slice(-3) : numberCard
                         }
                     </Text>
                 </View>
@@ -29,7 +27,7 @@ const Item_card = (props) => {
                     <Text style={styles.circle2}></Text>
                 </View>
             </LinearGradient>
-        </TouchableOpacity>
+        </Pressable>
 
     )
 }
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
         shadowRadius: 10.32,
         elevation: 16,
         padding: 24,
-        marginBottom: 25
+        borderColor: "white",
     },
     groupTwoCircle: {
         width: '100%',

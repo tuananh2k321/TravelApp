@@ -1,48 +1,124 @@
-import { StyleSheet, Text, View, ToastAndroid, TouchableOpacity, FlatList } from 'react-native'
+import { StyleSheet, Text, View, ToastAndroid, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { useSelector } from 'react-redux';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 import Item_card from '../../component/Tab_item/Item_card';
 import AxiosIntance from '../../constant/AxiosIntance';
+import Loading from '../Loading';
 
 const Payment = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { id, name, adult, children, totalPrice } = route.params;
   const [dataCards, setDataCards] = useState([]);
-    useEffect(() => {
-      const getNews = async () => {
-          const response = await AxiosIntance().get("/cart/api/getListCart");
-          console.log(response);
-          setDataCards(response.cart)
-      }
-      getNews();
-      return () => {
+  //use state
+  const [selectedId, setSelectedId] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    const getNews = async () => {
+      const response = await AxiosIntance().get("/cart/api/getListCart?userID=" + user.user._id);
+      console.log(response);
+      setDataCards(response.cart);
+      setIsLoading(false);
+    }
+    getNews();
+    return () => {
 
-      }
+    }
   }, []);
+
+  const onDeleteCard = (cardID) => {
+    return Alert.alert(
+      "Gỡ thẻ?",
+      "Bạn có chắc chắn muốn gỡ thẻ này không?",
+      [
+        // The "Yes" button
+        {
+          text: "Có",
+          onPress: async () => {
+            const response = await AxiosIntance().delete("/cart/api/deleteCart/" + cardID);
+            navigation.push("Payment", { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+          }
+
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "Không",
+        },
+      ]
+    );
+  };
+  const onBooking = async () => {
+    try {
+      const response = await AxiosIntance()
+        .post("/booking/api/addBooking",
+          { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id });
+      console.log(response);
+      if (response.result == true) {
+        navigation.push("Booking_Successfully");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const isValidOK = () => selectedId.length > 0
+  const renderItem = ({ item }) => {
+    const borderWidth = item._id === selectedId ? 10 : 0;
+    return (
+      <Item_card
+        item={item}
+        onPress={() => setSelectedId(item._id)}
+        borderWidth={borderWidth} />
+    );
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.groupHeader}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={20} color="#000000" />
-        </TouchableOpacity>
-        <Text style={styles.header}>Sự chi trả</Text>
-      </View>
-      <FlatList
-        contentContainerStyle={{ marginBottom: 50 }}
-        data={dataCards}
-        renderItem={({ item }) => <Item_card data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false} />
-      <View style={styles.groupButton}>
-        <TouchableOpacity style={styles.button}
-          onPress={() => navigation.navigate('Booking_Successfully')}>
-          <Text style={styles.textButton}>Xác nhận</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style = {{position: "absolute", bottom: 100, right: 20 ,width: 70, height: 70, backgroundColor: "#0A7BAB", borderRadius: 50, justifyContent: 'center', alignItems: 'center',}}>
-        <Ionicons name="card" size={30} color="#ffffff" />
-      </TouchableOpacity>
-    </View>
+    <>
+      {
+        isLoading == true ?
+          (Loading) :
+          (
+            <View style={styles.container}>
+              <View style={styles.groupHeader}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name="arrow-back" size={20} color="#000000" />
+                </TouchableOpacity>
+                <Text style={styles.header}>Sự chi trả</Text>
+              </View>
+              <SwipeListView
+                contentContainerStyle={{ flex: 8 }}
+                data={dataCards}
+                renderItem={renderItem}
+                renderHiddenItem={({ item }) => (
+                  <TouchableOpacity onPress={() => { onDeleteCard(item._id) }}
+                    style={{ position: "absolute", left: 15, right: 15, top: 8, backgroundColor: "#0A7BAB", height: 214, borderRadius: 12, justifyContent: "center", alignItems: "flex-end", padding: 20 }}>
+                    <Ionicons name="trash" size={40} color="#fff" />
+                  </TouchableOpacity>
+                )}
+                rightOpenValue={-75}
+                keyExtractor={item => item._id}
+                extraData={selectedId}
+              />
+              <View style={styles.groupButton}>
+                <TouchableOpacity style={[styles.button, { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
+                  disabled={isValidOK() == false}
+                  onPress={onBooking}>
+                  <Text style={styles.textButton}>Xác nhận</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity onPress={() => navigation.push("AddCard", { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice })}
+                style={{ position: "absolute", bottom: 100, right: 20, width: 70, height: 70, backgroundColor: "#0A7BAB", borderRadius: 50, justifyContent: 'center', alignItems: 'center', }}>
+                <Ionicons name="card" size={30} color="#ffffff" />
+              </TouchableOpacity>
+            </View>
+          )
+      }
+
+    </>
+
   )
 }
 
@@ -51,7 +127,7 @@ export default Payment
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 70
+    paddingBottom: 70,
   },
   groupHeader: {
     flexDirection: 'row',
@@ -60,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   header: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: '600',
     lineHeight: 18,
     color: '#000000',
@@ -139,7 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0FA3E2'
   },
   textButton: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     lineHeight: 52,
     letterSpacing: -0.17,

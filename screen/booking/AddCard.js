@@ -7,38 +7,33 @@ import {
   isValidName
 } from '../../constant/Validation';
 import AxiosIntance from '../../constant/AxiosIntance';
+import { useSelector } from 'react-redux';
 
 
 const AddCard = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { id, name, adult, children, totalPrice } = route.params;
   const [numberID, setNumberID] = useState('');
   const [CVV, setCVV] = useState('');
-  const [name, setName] = useState('');
+  const [nameCard, setNameCard] = useState('');
+
+  const user = useSelector((state) => state.user);
   // error
   const [errorNumberID, setErrorNumberID] = useState('');
   const [errorCVV, setErrorCVV] = useState('');
   const [errorName, setErrorName] = useState('');
-  const isValidOK = () => numberID.length > 0 && CVV.length > 0 && name.length > 0
-    && isValidCVV(CVV) == true && isValidNumberId(numberID) == true && isValidName(name) == true
+  const isValidOK = () => numberID.length > 0 && CVV.length > 0 && nameCard.length > 0
+    && isValidCVV(CVV) == true && isValidNumberId(numberID) == true && isValidName(nameCard) == true
   
     const onNewCard = async () => {
-      console.log(name, numberID, CVV);
       try {
         const response = await AxiosIntance()
-          // .post("/users/register",
-          //   { email: emailUser, password: passwordUser });
           .post("/cart/api/addCart",
-            { name: name, number: numberID, cvv: CVV});
-        // if (response.error == false) {
-        //   ToastAndroid.show("Đăng ký thành công!", ToastAndroid.SHORT);
-        //   //navigation.navigate('Login');
-        // } else {
-        //   ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.SHORT);
-        // }
+            { name: nameCard, number: numberID, cvv: CVV, user_id: user.user._id});
         console.log(response);
+        navigation.push("Payment", {id: id, name: name, adult: adult, children: children, totalPrice: totalPrice});
       } catch (e) {
         console.log(e);
-        console.log('Sai');
       }
   
     }
@@ -57,7 +52,7 @@ const AddCard = (props) => {
           onChangeText={(text) => {
             setErrorName(isValidName(text) == true ?
               `` : 'Tên không được bỏ trống');
-            setName(text)
+            setNameCard(text)
           }} />
         <Text style={styles.error}>{errorName}</Text>
       </View>

@@ -94,3 +94,10 @@ export const isValidCVV = (cvv)  => {
     cvv.length == 3
   )
 }
+
+// Limit person
+export const isLimitPerson = (quantity,limit)  => {
+  return (
+  quantity <= limit
+  )
+}

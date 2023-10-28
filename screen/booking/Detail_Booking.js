@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {
@@ -7,10 +7,12 @@ import {
   isValidNumberId,
   validatePhoneNumber,
   isValidQuantity,
+  isLimitPerson
 } from '../../constant/Validation';
 
 const Detail_Booking = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const {id, childrenPrice, adultPrice, image, tourName, limitedPerson} = route.params;
   //State for validating
   const [errorName, setErrorName] = useState('');
   const [errorQuantity, setErrorQuantity] = useState('');
@@ -19,17 +21,31 @@ const Detail_Booking = (props) => {
   const [errorNumberId, setErrorNumberId] = useState('');
   //State for store
   const [name, setName] = useState('');
-  const [quantity, setQuantity] = useState('1');
+  const [quantityAdult, setQuantityAdult] = useState('1');
+  const [quantityChildren, setQuantityChildren] = useState("0");
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [numberId, setNumberId] = useState('');
 
-  const isValidOK = () => name.length > 0 && quantity.length > 0
-    && isValidName(name) == true && isValidQuantity(quantity) == true
+  const quantity = Number(quantityAdult) + Number(quantityChildren);
+
+  const isValidOK = () => name.length > 0 && quantityAdult.length > 0
+    && isValidName(name) == true && isValidQuantity(quantityAdult) == true && isLimitPerson(quantity, limitedPerson) == true
   // const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0
   //   && phoneNumber.length > 0 && numberId.length > 0 && validateEmail(email) == true
   //   && isValidName(name) == true && isValidNumberId(numberId) == true && validatePhoneNumber(phoneNumber) == true
   //   && isValidQuantity(quantity) == true
+  // const quantity = () => {
+  //   if((quantityAdult + quantityChildren) > limitedPerson) {
+  //     return Alert.alert("Số lượng cho phép là "+limitedPerson+" người");
+  //   }
+  //   if(quantityAdult.length < 0) {
+  //     return "Tên khách hàng không được trống"
+  //   }
+  // };
+  if (isLimitPerson(quantity, limitedPerson) == false) {
+    Alert.alert("Số lượng cho phép là "+limitedPerson+" người");
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -56,11 +72,13 @@ const Detail_Booking = (props) => {
             style={styles.input}
             keyboardType="numeric"
             onChangeText={(text) => {
+              // setErrorQuantity(isValidQuantity(text) == true ?
+              //   `` : 'Số khách hàng không được trống');
               setErrorQuantity(isValidQuantity(text) == true ?
                 `` : 'Số khách hàng không được trống');
-              setQuantity(text)
+              setQuantityAdult(text)
             }} 
-            value={quantity}/>
+            value={quantityAdult}/>
           <Text style={styles.error}>{errorQuantity}</Text>
         </View>
         <View style={{ width: '48%' }}>
@@ -69,10 +87,9 @@ const Detail_Booking = (props) => {
             style={styles.input}
             keyboardType="numeric"
             onChangeText={(text) => {
-              setQuantity(text)
+              setQuantityChildren(text)
             }} 
-            />
-          <Text style={styles.error}>{errorQuantity}</Text>
+            value={quantityChildren}/>
         </View>
       </View>
       {/* <View style={styles.groupForm}>
@@ -118,7 +135,7 @@ const Detail_Booking = (props) => {
         <TouchableOpacity style={[styles.button,
         { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
           disabled={isValidOK() == false}
-          onPress={() => navigation.navigate('Payment_Method')}>
+          onPress={() => navigation.navigate('Payment_Method', {id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: quantityAdult, children: quantityChildren, image: image, tourName: tourName})}>
           <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>

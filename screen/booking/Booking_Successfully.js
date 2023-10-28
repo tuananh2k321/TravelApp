@@ -14,7 +14,7 @@ const Booking_Successfully = (props) => {
                     <Text style={styles.content}>Chuẩn bị sẵn sàng mọi thứ trước ngày đi của bạn</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BottomTab')}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeMain')}>
                     <Text style={styles.textButton}>Quay lại trang chủ</Text>
                 </TouchableOpacity>
             </LinearGradient>
