@@ -17,9 +17,7 @@ import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 're
 import {
   isValidEmpty,
   validateEmail,
-  validatePassword,
 } from '../../constant/Validation';
-import AxiosIntance from '../../constant/AxiosIntance';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
