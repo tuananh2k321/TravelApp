@@ -1,54 +1,111 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLOR, SIZES } from '../../../constant/Themes'
-
 import Item_wishlist from '../../../component/Tab_item/Item_wishlist'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import AxiosIntance from '../../../constant/AxiosIntance'
+import { log } from 'console'
 
 
 
 const Favorite = (props) => {
   const { navigation } = props;
+  const [data, setData] = useState([])
+  const [isLoading, setLoading] = useState(true)
+
+  const getApi = async () => {
+    try {
+      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" + "650712a41cc623753c664aa2");
+      console.log('response', response)
+      const listData = await response?.favorite
+      console.log('listData', listData)
+      setData(listData)
+
+    } catch (error) {
+      console.log('error>>>', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  useEffect(() => {
+    getApi()
+  }, [])
+
+  // console.log("data", data)
+
+  const deleteHandle = async (id) => {
+    console.log("deleteHandle", id)
+    // Hiện lên alert hỏi người dùng có chắc chắn muốn xóa không
+    Alert.alert(
+      "Xóa yêu thích",
+      "Bạn có chắc chắn muốn xóa tour du lịch này khỏi danh sách yêu thích không?",
+      [
+        {
+          text: "Hủy",
+          style: "cancel",
+        },
+        {
+          text: "Xóa",
+          onPress: async () => {
+            // Gọi API để xóa tour du lịch khỏi danh sách yêu thích
+            try {
+              const response = await AxiosIntance().delete(`/favorite/api/${id}/deleteFavorite`);
+              console.log("check response", response);
+              if (response.result === true) {
+                // Render lại dữ liệu
+                getApi();
+
+                // Thông báo cho người dùng rằng tour du lịch đã được xóa khỏi danh sách yêu thích
+                Alert.alert("Xóa yêu thích thành công");
+              } else {
+                // Xử lý lỗi
+
+                Alert.alert("Xóa yêu thích thất bại");
+              }
+
+            } catch (error) {
+              // Xử lý lỗi
+              console.log("error", error);
+              Alert.alert("Xóa yêu thích thất bại");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.wishlist}>Yêu thích</Text>
       <View style={styles.wishlist_list}>
-        <FlatList style={{ bottom: 20 }}
-          data={data}
-          contentContainerStyle={{ flexGrow: 1 }}
-          renderItem={({ item }) => <Item_wishlist dulieu={item} navigation={navigation} />}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-          removeClippedSubviews={true}
-        >
-        </FlatList>
+        {isLoading ? (<ActivityIndicator />) : (
+          <FlatList style={{ bottom: 20 }}
+            data={data}
+            contentContainerStyle={{ flexGrow: 1 }}
+            renderItem={({ item }) => <Item_wishlist data={item} navigation={navigation} handleDelete={() => deleteHandle(item._id)} />}
+            keyExtractor={item => item._id}
+            showsVerticalScrollIndicator={false}
+            removeClippedSubviews={true}
+
+          >
+          </FlatList>
+        )}
+
         {/* <SwipeListView
           showsVerticalScrollIndicator={false}
           data={data}
-          renderItem={({ item }) => <Item_wishlist dulieu={item}/>}
-          renderHiddenItem={(data, rowMap) => (
-            <TouchableOpacity
-              style={{
-                height: 80,
-                backgroundColor: '#FFFFFF',
-                marginTop: 10,
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}>
-              <Image
-                source={require('../../assets/icon/icon-recycle.png')}
-                style={{
-                  width: 20,
-                  height: 20,
-                  tintColor: '#000000',
-                  marginRight: 30,
-                }}
-              />
-            </TouchableOpacity>
-          )}
+
+          renderItem={({ item }) => <Item_wishlist data={item} navigation={navigation} />}
+          renderHiddenItem={renderHiddenItem}
           rightOpenValue={-10}
         /> */}
+
+
+
       </View>
     </SafeAreaView>
   )
@@ -65,11 +122,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   wishlist: {
+    marginTop: 15,
     fontStyle: 'normal',
     fontWeight: '600',
     fontSize: 25,
     lineHeight: 38,
-    color: '#000000'
+    color: COLOR.primary,
   },
   wishlist_list: {
     marginTop: 33,
@@ -80,56 +138,56 @@ const styles = StyleSheet.create({
 
 })
 
-const data = [
-  {
-    id: '1',
-    title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-    start: 4.8,
-    view: 100,
-    image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
-    days: '2 ngay 1 dem',
-    price: 10,
-    address: 'songlong'
-  },
-  {
-    id: '2',
-    title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-    start: 4.8,
-    view: 100,
-    image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
-    days: '2 ngay 1 dem',
-    price: 10,
-    address: 'songlong'
-  },
-  {
-    id: '3',
-    title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-    start: 4.8,
-    view: 100,
-    image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
-    days: '2 ngay 1 dem',
-    price: 10,
-    address: 'songlong'
-  },
-  {
-    id: '4',
-    title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-    start: 4.8,
-    view: 100,
-    image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
-    days: '2 ngay 1 dem',
-    price: 10,
-    address: 'songlong'
-  },
-  {
-    id: '5',
-    title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-    start: 4.8,
-    view: 100,
-    image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
-    days: '2 ngay 1 dem',
-    price: 10,
-    address: 'songlong'
-  },
+// const data = [
+//   {
+//     id: '1',
+//     title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
+//     start: 4.8,
+//     view: 100,
+//     image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
+//     days: '2 ngay 1 dem',
+//     price: 10,
+//     address: 'songlong'
+//   },
+//   {
+//     id: '2',
+//     title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
+//     start: 4.8,
+//     view: 100,
+//     image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
+//     days: '2 ngay 1 dem',
+//     price: 10,
+//     address: 'songlong'
+//   },
+//   {
+//     id: '3',
+//     title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
+//     start: 4.8,
+//     view: 100,
+//     image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
+//     days: '2 ngay 1 dem',
+//     price: 10,
+//     address: 'songlong'
+//   },
+//   {
+//     id: '4',
+//     title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
+//     start: 4.8,
+//     view: 100,
+//     image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
+//     days: '2 ngay 1 dem',
+//     price: 10,
+//     address: 'songlong'
+//   },
+//   {
+//     id: '5',
+//     title: 'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
+//     start: 4.8,
+//     view: 100,
+//     image: 'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
+//     days: '2 ngay 1 dem',
+//     price: 10,
+//     address: 'songlong'
+//   },
 
-]
+// ]

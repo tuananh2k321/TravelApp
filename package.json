@@ -29,6 +29,7 @@
     "react-native-calendar-range-picker": "^1.5.3",
     "react-native-calendars": "^1.1297.0",
     "react-native-date-picker": "^4.2.13",
+    "react-native-gesture-handler": "^2.13.4",
     "react-native-image-slider-box": "^1.1.24",
     "react-native-ionicons": "^4.6.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
