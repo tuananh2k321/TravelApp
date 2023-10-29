@@ -10,7 +10,10 @@ import AxiosIntance from '../../../constant/AxiosIntance'
 import { log } from 'console'
 
 
-
+handleDelete = (itemId) => {
+  // Xử lý xóa item với id được truyền vào
+  console.log('Item ID:', itemId);
+};
 const Favorite = (props) => {
   const { navigation } = props;
   const [data, setData] = useState([])

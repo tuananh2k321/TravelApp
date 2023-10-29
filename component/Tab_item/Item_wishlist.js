@@ -1,71 +1,30 @@
 import { StyleSheet, Text, View, Image, Animated, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { COLOR, ICON } from '../../constant/Themes'
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-const Item_wishlist = ({ data, handleDelete }) => {
-    // console.log('data>>>>>', data)
-    // const [isSwiped, setIsSwiped] = useState(false);
-    const rightSwipe = () => {
-        return (
-            <TouchableOpacity onPress={handleDelete} style={{
-                justifyContent: "center",
-                alignItems: "center",
-            }} >
-                <View style={styles.deleteBox}>
-                    <Animated.Text style={styles.textDelete}>Delete</Animated.Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
+
+const Item_wishlist = (props) => {
+    const { dulieu } = props;
     return (
-        <GestureHandlerRootView >
-            <Swipeable renderRightActions={rightSwipe} >
-                <View style={styles.item}>
-                    <Image style={styles.item_left} source={{ uri: data.tourImage?.[0] }}></Image>
-                    <View style={styles.item_right}>
-                        <Text numberOfLines={2} style={styles.item_title}>{data.tourName}</Text>
-                        <View style={styles.item_start_view}>
-                            {Array.from({ length: 5 }).map((_, index) => {
-                                if (index < 3) {
-                                    return (
-                                        <Image
-                                            key={`star-${index}`}
-                                            source={ICON.star_yellow}
-                                            style={{ width: 15, height: 15 }}
-                                        />
-                                    );
-                                } else {
-                                    return (
-                                        <Image
-                                            key={`star-${index}`}
-                                            source={ICON.star}
-                                            style={{ width: 15, height: 15 }}
-                                        />
-                                    );
-                                }
-                            })}
-                            <Text style={styles.item_start}>{data.start}</Text>
-                            <Text style={styles.item_view}>{data.view}{data.rating} review</Text>
-                        </View>
-                        <Text style={styles.item_address}>{data.address}</Text>
-                        <View style={{ flexDirection: 'column' }}>
-
-                            <Text style={styles.item_price}>{data.adultPrice}/Người lớn </Text>
-                            <Text style={styles.item_price}>{data.childrenPrice}/Trẻ em</Text>
-
-                            {/* <Text style={styles.person}></Text> */}
-                        </View>
-                        <View style={styles.item_days}>
-                            <Text style={styles.item_days_text}>{data.limitedDay}</Text>
-                        </View>
-                    </View>
+        <View style={styles.item}>
+            <Image style={styles.item_left} source={{ uri: dulieu.image }}></Image>
+            <View style={styles.item_right}>
+                <Text numberOfLines={2} style={styles.item_title}>{dulieu.title}</Text>
+                <View style={styles.item_start_view}>
+                    <Image style={{ fontSize: 13, marginRight: 5 }} source={require('../../assets/icon/ic_star.png')}></Image>
+                    <Text style={styles.item_start}>{dulieu.start}</Text>
+                    <Text style={styles.item_view}>{dulieu.view} reviews</Text>
                 </View>
+                <Text style={styles.item_address}>{dulieu.address}</Text>
+                <View style={{ flexDirection: 'row' }}>
 
-            </Swipeable>
-        </GestureHandlerRootView >
-
-
+                    <Text style={styles.item_price}>from ${dulieu.price}</Text>
+                    <Text style={styles.person}>/person</Text>
+                </View>
+                <View style={styles.item_days}>
+                    <Text style={styles.item_days_text}>{dulieu.days}</Text>
+                </View>
+            </View>
+        </View>
     )
 }
 
@@ -76,7 +35,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: 0.2,
-        borderBottomColor: "gray",
         height: 158,
     },
     item_left: {
@@ -92,10 +50,9 @@ const styles = StyleSheet.create({
     },
     item_title: {
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 21,
-        color: '#000000',
-        marginBottom: 4
+        color: '#000000'
     },
     item_start_view: {
         flexDirection: 'row',
@@ -147,14 +104,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         lineHeight: 15,
         color: '#1A1A1A'
-    },
-    deleteBox: {
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    textDelete: {
-        color: "red",
-
     }
 
 })
