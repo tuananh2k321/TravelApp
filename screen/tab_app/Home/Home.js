@@ -119,13 +119,22 @@ export default function Home(props) {
                         <ImageOverlay source={require('../../../assets/images/mienbac.png')}
                             title='Miền Bắc'
                             overlayAlpha={1}
-                            contentPosition="center"
-                            titleStyle={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}
+                            contentPosition="bottom"
+                            titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
-                        <View style={{ justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Hà Nội</Text>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Hải phòng</Text>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Quảng Ninh</Text>
+                        <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/hanoi.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hà Nội</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/haiphong.png')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hải phòng</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/quangninh.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Quảng Ninh</Text>
+                            </View>
                         </View>
                     </View>
                     <FlatList style={{ marginTop: 10 }}
@@ -139,16 +148,25 @@ export default function Home(props) {
 
                     <View style={styles.viewOverlay}>
                         <View style={{ justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Đà Nẵng</Text>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Nha Trang</Text>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Huế</Text>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/danang.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Đà Nẵng</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/nhatrang.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Nha Trang</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/hue.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Huế</Text>
+                            </View>
                         </View>
                         <ImageOverlay source={require('../../../assets/images/mientrung.png')}
                             title='Miền Trung'
                             overlayAlpha={1}
-                            contentPosition="center"
-                            titleStyle={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}
-                            containerStyle={styles.imgoverlay} />
+                            contentPosition="bottom"
+                            titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
+                            containerStyle={[styles.imgoverlay, { marginLeft: 10 }]} />
                     </View>
                     <FlatList style={{ marginTop: 10 }}
                         horizontal
@@ -163,13 +181,22 @@ export default function Home(props) {
                         <ImageOverlay source={require('../../../assets/images/miennam.png')}
                             title='Miền Nam'
                             overlayAlpha={1}
-                            contentPosition="center"
-                            titleStyle={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}
+                            contentPosition="bottom"
+                            titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
-                        <View style={{ justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Cần Thơ</Text>
-                            <Text style={{ fontSize: 20, color: 'black', fontWeight: 'bold' }}>Vũng Tàu</Text>
+                        <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                        <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/tphcm.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/cantho.png')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Cần Thơ</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/vungtau.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Vũng Tàu</Text>
+                            </View>
                         </View>
                     </View>
                     <FlatList style={{ marginTop: 10 }}
@@ -220,7 +247,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         backgroundColor: 'white',
-        alignSelf:'center',
+        alignSelf: 'center',
     },
     searchBar: {
         flex: 1,
@@ -241,11 +268,29 @@ const styles = StyleSheet.create({
     viewOverlay: {
         flexDirection: 'row',
         marginTop: 30,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-between',
     },
     imgoverlay: {
         width: 200,
-        height: 200
+        height: 200,
+        borderRadius: 20
+    },
+    viewdomain: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderWidth: 0.19,
+        borderRadius: 9,
+        width: 150,
+        alignItems: 'center',
+        borderColor: 'gray',
+        marginVertical: 5,
+    },
+    img_domain: {
+        width: 35,
+        height: 35,
+        borderTopLeftRadius: 9,
+        borderBottomLeftRadius: 9,
+        marginRight: 5
     }
 
 })
