@@ -422,11 +422,6 @@ export default TourDetail = (props) => {
             }}
           />
 
-          
-     
-
-          
-
           <Text
             style={{
               fontSize: 18,

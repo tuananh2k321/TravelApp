@@ -22,6 +22,7 @@ import {
   TouchableOpacity,
   ToastAndroid
 } from 'react-native';
+import SearchScreen from './screen/tab_app/Home/SearchScreen';
 
 
 const Stack = createNativeStackNavigator();
