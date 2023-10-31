@@ -579,7 +579,7 @@ export default TourDetail = (props) => {
             paddingHorizontal: 10,
           }}>
           
-          <TouchableOpacity
+          <TouchableOpacity onPress={() => navigation.navigate('Detail_Booking',{id: params.id, childrenPrice: childrenPrice, adultPrice: adultPrice, image: tourImage[0], tourName: tourName, limitedPerson: limitedPerson})}
             style={{
               flex: 1,
               height:52,

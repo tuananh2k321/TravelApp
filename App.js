@@ -23,6 +23,12 @@ import {
   ToastAndroid
 } from 'react-native';
 import SearchScreen from './screen/tab_app/Home/SearchScreen';
+import AddCard from './screen/booking/AddCard';
+import Payment_Method from './screen/booking/Payment_Method';
+import Item_card from './component/Tab_item/Item_card';
+import Payment from './screen/booking/Payment';
+import Detail_Booking from './screen/booking/Detail_Booking';
+import Loading from './screen/Loading';
 
 
 const Stack = createNativeStackNavigator();
@@ -62,7 +68,7 @@ const App = () => {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={"BottomTab"}
+          initialRouteName={"Login"}
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
