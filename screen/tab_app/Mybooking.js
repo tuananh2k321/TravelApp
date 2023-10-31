@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLOR, SIZES } from '../../constant/Themes'
 import Item_wishlist from '../../component/Tab_item/Item_wishlist'
 
-const Favorite = (props) => {
+const Mybooking = (props) => {
     const {navigation} = props;
   return (
     <SafeAreaView style={styles.container}>
@@ -56,7 +56,7 @@ const Favorite = (props) => {
   )
 }
 
-export default Favorite
+export default Mybooking
 
 const styles = StyleSheet.create({
     container:{
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 const data = [
     {
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-        start:4.8,
+        start:4,
         view:100,
         image:'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
         days:'2 ngay 1 dem',
@@ -94,7 +94,7 @@ const data = [
     },
     {
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-        start:4.8,
+        start:3,
         view:100,
         image:'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
         days:'2 ngay 1 dem',
@@ -103,7 +103,7 @@ const data = [
     },
     {
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-        start:4.8,
+        start:2,
         view:100,
         image:'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
         days:'2 ngay 1 dem',
@@ -112,7 +112,7 @@ const data = [
     },
     {
         title:'Khám phá thời tiết đảo Jeju và kinh nghiệm du lịch chi tiết',
-        start:4.8,
+        start:1,
         view:100,
         image:'https://ik.imagekit.io/tvlk/blog/2023/05/17VAvUV1-image.png?tr=dpr-2,w-675',
         days:'2 ngay 1 dem',

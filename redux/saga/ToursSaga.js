@@ -1,23 +1,17 @@
-import { takeEvery, put, fork, call, takeLatest, takeLeading } from 'redux-saga/effects';
-import { getTours } from '../reducer/ToursSlice';
-import { TourAll } from '../action/tourAction';
+import { takeLatest, call, put } from 'redux-saga/effects';
+import {  fetchDataSuccess, fetchDataFailure } from '../action/tourAction';
 
 
 // Các worker saga
-function* doTourAll(action) {
+function* fetchData() {
     try {
-        console.log("doTourAll")
-        const [tours] = action.payload;
-
-        const res = yield call(TourAll, tours)
-
-        yield put(getTours(res.tours))
-        console.log("doTourAll user: ",res.tours)
-
-    } catch (err) {
-        console.error("Error in doTourAll:", err);
-    }  
-}
+      const response = yield call(fetch, 'https://api.example.com/data');
+      const data = yield call([response, 'json']);
+      yield put(fetchDataSuccess(data));
+    } catch (error) {
+      yield put(fetchDataFailure(error));
+    }
+  }
 
 
   // Các watcher saga
