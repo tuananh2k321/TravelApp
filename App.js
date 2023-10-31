@@ -27,7 +27,7 @@ import {
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const [initialRoute, setInitialRoute] = useState('Login'); // Khởi tạo initialRoute là 'Login'
+  const [initialRoute, setInitialRoute] = useState('BottomTab'); // Khởi tạo initialRoute là 'Login'
   const [tokenChecked, setTokenChecked] = useState(false); // Khởi tạo biến để kiểm tra token
 
   // useEffect(() => {

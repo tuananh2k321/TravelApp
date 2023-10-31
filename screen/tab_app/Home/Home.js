@@ -4,7 +4,7 @@ import { SafeAreaView, View, Text, Image, StyleSheet, TextInput } from "react-na
 import { SIZES } from "../../../constant/Themes";
 
 import ItemPopular from "../../../component/Tab_item/ItemPopular";
-import ItemMenu from "../../../component/Tab_item/ItemMenu";
+import ItemMenu from "../../../component/Tab_item/ItemActive";
 
 import AxiosIntance from '../../../constant/AxiosIntance';
 
