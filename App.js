@@ -22,6 +22,7 @@ import {
   TouchableOpacity,
   ToastAndroid
 } from 'react-native';
+import SearchTourName from './screen/tab_app/Home/SearchTourName';
 
 
 const Stack = createNativeStackNavigator();
@@ -74,6 +75,7 @@ const App = () => {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
+    // <SearchTourName/>
   );
 };
 

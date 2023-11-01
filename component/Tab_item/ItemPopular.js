@@ -4,8 +4,6 @@ import { AirbnbRating, Rating } from 'react-native-ratings';
 
 const ItemPopular = (props) => {
     const {dulieu, navigation} = props;
-    // console.log('imaheeeee', dulieu.tourImage[0])
-    // console.log('tourrrrrrr', dulieu)
     const clickItem = () => {
       console.log("Click Item");
       navigation.navigate('TourDetail', { id: dulieu._id });
