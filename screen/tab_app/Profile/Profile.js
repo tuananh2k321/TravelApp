@@ -17,10 +17,9 @@ const Profile = (props) => {
         </View>
 
         <View style={{width:380,height:1,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:28}}></View>
-
-        
+    
             <View style={styles.profile_tab}> 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Mybooking")}>
                     <View style={styles.profile_tab1}>
                         <Text style={styles.booking}>
                             Đặt trước

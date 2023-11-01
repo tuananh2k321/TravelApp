@@ -1,12 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, TouchableOpacity } from 'react-native';
 import { COLOR, ICON } from "../constant/Themes";
 import Favorite from "./tab_app/Favorite/Favorite";
 import Home from "./tab_app/Home/Home";
 import Notification from "./tab_app/Notification/Notification";
 import Profile from "./tab_app/Profile/Profile";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TourDetail from './tab_app/Home/TourDetail';
 import * as Animatable from 'react-native-animatable';
@@ -19,6 +19,7 @@ import Payment_Method from './booking/Payment_Method';
 import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
+import Mybooking from './tab_app/Mybooking';
 
 
 const Tab = createBottomTabNavigator();
@@ -50,19 +51,29 @@ const zoomOut = {
 };
 
 const StackHomes = () => {
+  const header = (title) => (
+    {
+      title: title,
+      headerTitleAlign: "center",
+      headerTitleStyle: {
+        color: "#0FA3E2",
+      },
+      headerShown: true
+    }
+  )
   return (
-    <Stack.Navigator initialRouteName="HomeMain" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="HomeMain" screenOptions={{headerShown: false}}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
       {/* stack booking */}
-      <Stack.Screen name="Detail_Booking" component={Detail_Booking} />
-      <Stack.Screen name="Payment" component={Payment} />
-      <Stack.Screen name="Payment_Method" component={Payment_Method} />
+      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("")}/>
+      <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
+      <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")}/>
       <Stack.Screen name="AddCard" component={AddCard} />
-      <Stack.Screen name="Available_Date" component={Available_Date} />
+      <Stack.Screen name="Available_Date" component={Available_Date}/>
       <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
     </Stack.Navigator>
   )
@@ -102,6 +113,7 @@ const StackProfile = () => {
   return (
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
+      <Stack.Screen name="Mybooking" component={Mybooking} />
     </Stack.Navigator>
   )
 }
@@ -144,39 +156,39 @@ const BottomTab = () => {
               // bottom: 0
             }}>
               {
-                focused ? <Animatable.Image 
-                animation={'slideInUp'}
-                source={iconName}
-                style={{
-                  width: 25, height: 25, resizeMode: 'stretch',
-                  tintColor: focused ? COLOR.primary : COLOR.detail
-                }} />
-                :
-                <Image 
-                
-                source={iconName}
-                style={{
-                  width: 25, height: 25, resizeMode: 'stretch',
-                  tintColor: focused ? COLOR.primary : COLOR.detail
-                }} />
-              }
-                
-              {
-                  focused ? <Animatable.Text 
-                    animation={'slideInUp'}
+                focused ? <Animatable.Image
+                  animation={'slideInUp'}
+                  source={iconName}
+                  style={{
+                    width: 25, height: 25, resizeMode: 'stretch',
+                    tintColor: focused ? COLOR.primary : COLOR.detail
+                  }} />
+                  :
+                  <Image
+
+                    source={iconName}
                     style={{
-                      color: focused ? COLOR.primary : COLOR.detail,
-                      fontWeight: 'bold',
-                    }}>{label}</Animatable.Text>
-                  : 
-                  <Text 
+                      width: 25, height: 25, resizeMode: 'stretch',
+                      tintColor: focused ? COLOR.primary : COLOR.detail
+                    }} />
+              }
+
+              {
+                focused ? <Animatable.Text
+                  animation={'slideInUp'}
+                  style={{
+                    color: focused ? COLOR.primary : COLOR.detail,
+                    fontWeight: 'bold',
+                  }}>{label}</Animatable.Text>
+                  :
+                  <Text
                     style={{
                       color: focused ? COLOR.primary : COLOR.detail,
                       display: 'none'
                     }}>{label}</Text>
 
               }
-              
+
 
               {/* <View style={{
                 width: '80%',

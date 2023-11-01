@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ToastAndroid, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { StyleSheet, Text, View, ToastAndroid, TouchableOpacity, ScrollView, Alert, FlatList } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useSelector } from 'react-redux';
@@ -28,6 +28,41 @@ const Payment = (props) => {
 
     }
   }, []);
+
+  const dataNe = [
+    {
+      _id: "1",
+      name: "THE",
+    },
+    {
+      _id: "2",
+      name: "THE",
+    },
+    {
+      _id: "3",
+      name: "THE",
+    },
+    {
+      _id: "4",
+      name: "THE",
+    },
+    {
+      _id: "5",
+      name: "THE",
+    },
+    {
+      _id: "6",
+      name: "THE",
+    },
+    {
+      _id: "7",
+      name: "THE",
+    },
+    {
+      _id: "8",
+      name: "THE",
+    },
+  ]
 
   const onDeleteCard = (cardID) => {
     return Alert.alert(
@@ -67,7 +102,7 @@ const Payment = (props) => {
 
   const isValidOK = () => selectedId.length > 0
   const renderItem = ({ item }) => {
-    const borderWidth = item._id === selectedId ? 10 : 0;
+    const borderWidth = item._id === selectedId ? 2 : 0;
     return (
       <Item_card
         item={item}
@@ -82,16 +117,13 @@ const Payment = (props) => {
           (Loading) :
           (
             <View style={styles.container}>
-              <View style={styles.groupHeader}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name="arrow-back" size={20} color="#000000" />
-                </TouchableOpacity>
-                <Text style={styles.header}>Sự chi trả</Text>
-              </View>
+
               <SwipeListView
-                contentContainerStyle={{ flex: 8 }}
+                contentContainerStyle= {{backgroundColor: "#ffffff"}}
                 data={dataCards}
                 renderItem={renderItem}
+                keyExtractor={item => item._id}
+                extraData={selectedId}
                 renderHiddenItem={({ item }) => (
                   <TouchableOpacity onPress={() => { onDeleteCard(item._id) }}
                     style={{ position: "absolute", left: 15, right: 15, top: 8, backgroundColor: "#0A7BAB", height: 214, borderRadius: 12, justifyContent: "center", alignItems: "flex-end", padding: 20 }}>
@@ -99,8 +131,6 @@ const Payment = (props) => {
                   </TouchableOpacity>
                 )}
                 rightOpenValue={-75}
-                keyExtractor={item => item._id}
-                extraData={selectedId}
               />
               <View style={styles.groupButton}>
                 <TouchableOpacity style={[styles.button, { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
@@ -116,7 +146,6 @@ const Payment = (props) => {
             </View>
           )
       }
-
     </>
 
   )
@@ -140,7 +169,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 18,
     color: '#000000',
-    marginStart: 30
+    marginStart: 120
   },
   name: {
     fontSize: 20,

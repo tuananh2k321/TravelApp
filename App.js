@@ -28,6 +28,7 @@ import Item_card from './component/Tab_item/Item_card';
 import Payment from './screen/booking/Payment';
 import Detail_Booking from './screen/booking/Detail_Booking';
 import Loading from './screen/Loading';
+import Mybooking from './screen/tab_app/Mybooking';
 
 
 const Stack = createNativeStackNavigator();
@@ -79,6 +80,7 @@ const App = () => {
           <Stack.Screen name="BottomTab" component={BottomTab} />
         </Stack.Navigator>
       </NavigationContainer>
+      {/* <Mybooking/> */}
     </Provider>
   );
 };

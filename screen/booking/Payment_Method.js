@@ -34,12 +34,6 @@ const Payment_Method = (props) => {
     }
     return (
         <View style={styles.container}>
-            <View style={styles.groupHeader}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={24} color="#000000" />
-                </TouchableOpacity>
-                <Text style={styles.header}>Xác nhận và trả tiền</Text>
-            </View>
             <View style={styles.groupName}>
                 <Image style={styles.image} source={{uri: image}} resizeMode='stretch' />
                 <View style={{ marginStart: 10 }}>

@@ -48,9 +48,6 @@ const Detail_Booking = (props) => {
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Ionicons name="chevron-back-sharp" size={20} color="#000000" />
-      </TouchableOpacity>
       <Text style={styles.title}>Chi tiết đặt phòng</Text>
       <Text style={styles.content}>Tận dụng tốt nhất tình yêu bằng cách tạo một tài khoản</Text>
       <View style={styles.groupForm}>
@@ -157,7 +154,6 @@ const styles = StyleSheet.create({
     lineHeight: 27,
     letterSpacing: -0.17,
     color: '#000000',
-    marginTop: 27
   },
   content: {
     fontSize: 12,
