@@ -14,75 +14,27 @@ import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ImageSlideshow from '../../../component/Tab_item/ImageSlideshow';
 
-const HotelDetail = props => {
+const HotelDetail = (props) => {
+  const {navigation,route} = props;
+  const {params} = route;
   const [showMore, setShowMore] = useState(false);
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-  const sampleText =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis condimentum morbi non egestas enim amet sagittis. Proin sed aliquet rhoncus ut pellentesque ullamcorper sit eget ac.Sit nisi, cras ametvarius eget egestas pellentesque. Cursus gravida euismod non';
+  
   const images = [
     'https://www.lifegate.com/app/uploads/mare-fa-bene-2.jpg',
     'https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_640.jpg',
     'https://www.lifegate.com/app/uploads/mare-fa-bene-2.jpg',
   ];
-  const {navigation} = props;
+  
+  console.log(">>>>>>>>>>>>",params)
   return (
     <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView
         style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
-        {/* <ImageBackground
-            source={{
-                uri: 'https://ik.imagekit.io/tvlk/blog/2023/04/go-and-share-bai-bien-viet-nam-5.jpeg',
-            }}
-            style={{width: SIZES.width, height: 300, padding: 15}}>
-            <View
-                style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                }}>
-                <TouchableOpacity onPress={() => navigation.goBack(null)}
-                style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 50,
-                    backgroundColor: COLOR.white,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <FontAwesome5 name={"arrow-left"} size={16} color="#000000" />
-                </TouchableOpacity>
-
-                <View style={{flexDirection: 'row'}}>
-                <View
-                style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 50,
-                    backgroundColor: COLOR.white,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight:10
-                }}>
-                <FontAwesome5 name={"share-alt"} size={16} color="#000000" />
-                </View>
-
-                <View
-                style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 50,
-                    backgroundColor: COLOR.white,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <FontAwesome name={"heart-o"} size={16} color="#000000" />
-                </View>
-                </View>
-            </View>
-            </ImageBackground> */}
-        <ImageSlideshow images={images} interval={3000} />
+        <ImageSlideshow images={params.dulieu.listImage} interval={3000} />
         <View
           style={{
             flexDirection: 'row',
@@ -145,12 +97,12 @@ const HotelDetail = props => {
               marginTop: 10,
               marginBottom: 10,
             }}>
-            Koh Rong Samloem
+            {params.dulieu.hotelName}
           </Text>
           {/* đánh giá */}
           <View style={{flexDirection: 'row'}}>
             {Array.from({length: 5}).map((_, index) => {
-              if (index < 3) {
+              if (index < params.dulieu.rating) {
                 return (
                   <Image
                     key={`star-${index}`}
@@ -168,7 +120,6 @@ const HotelDetail = props => {
                 );
               }
             })}
-
             <Text
               style={{
                 fontSize: 16,
@@ -176,19 +127,10 @@ const HotelDetail = props => {
                 color: COLOR.detail,
                 marginLeft: 10,
               }}>
-              100 đánh giá
-            </Text>
-
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: 'bold',
-                color: COLOR.detail,
-                marginLeft: 10,
-              }}>
-              300 lượt đặt
+              {params.dulieu.rating}
             </Text>
           </View>
+          
           {/* Địa chỉ */}
           <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
             <Text
@@ -204,7 +146,7 @@ const HotelDetail = props => {
             <Text
               numberOfLines={2}
               style={{fontSize: 16, fontWeight: '600', color: COLOR.detail}}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing
+              {params.dulieu.address}
             </Text>
           </View>
           {/* sdt */}
@@ -222,7 +164,7 @@ const HotelDetail = props => {
             <Text
               numberOfLines={2}
               style={{fontSize: 16, fontWeight: '600', color: COLOR.detail}}>
-              1209012930123
+              {params.dulieu.phoneNumber}
             </Text>
           </View>
           {/* miêu tả */}
@@ -243,8 +185,8 @@ const HotelDetail = props => {
                 fontWeight: '400',
                 color: COLOR.detail,
               }}>
-              {showMore ? sampleText : sampleText.slice(0, maxChars)}
-              {!showMore && sampleText.length > maxChars && (
+              {showMore ? params.dulieu.description : params.dulieu.description.slice(0, maxChars)}
+              {!showMore && params.dulieu.description.length > maxChars && (
                 <Text
                   onPress={toggleShowMore}
                   style={{

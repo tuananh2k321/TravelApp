@@ -18,6 +18,7 @@ import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import Loading from '../../Loading';
 
 export default TourDetail = (props) => {
   const { navigation,route} = props;
@@ -36,9 +37,9 @@ export default TourDetail = (props) => {
   const [vehicle, setvehicle] = useState("")
   const [rating, setrating] = useState("")
   const [isdomain, setisdomain] = useState("")
-  const [hotel_id, sethotel_id] = useState("")
-  const [tourGuide_id, settourGuide_id] = useState("")
-  const [destination_id, setdestination_id] = useState("")
+  const [hotel_id, sethotel_id] = useState({})
+  const [tourGuide_id, settourGuide_id] = useState({})
+  const [destination_id, setdestination_id] = useState({})
   const [description, setdescription] = useState("")
   const [tourImage, settourImage] = useState([])
   const [showMore, setShowMore] = useState(false);
@@ -47,6 +48,7 @@ export default TourDetail = (props) => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
+  const [isLoading, setIsLoading] = useState(true);
   const sampleText =description;
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
@@ -81,11 +83,12 @@ export default TourDetail = (props) => {
                 setvehicle(response.tour.vehicle)
                 setrating(response.tour.rating)
                 setisdomain(response.tour.isdomain)
-                sethotel_id(response.tour.hotel_id)
-                settourGuide_id(response.tour.tourGuide_id)
-                setdestination_id(response.tour.destination_id)
+                sethotel_id(response.datahotel)
+                settourGuide_id(response.dataTourGuide)
+                setdestination_id(response.dataDestination)
                 setdescription(response.tour.description)
                 settourImage(response.tour.tourImage)
+                setIsLoading(false);
 
               } else {
                   ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
@@ -99,9 +102,13 @@ export default TourDetail = (props) => {
       }
 
   }, []);
-  console.log('>>>>>>>', tourImage)
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+    <>
+    {
+      isLoading == true ? 
+      (Loading) : 
+      (
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView
         style={{
           width: SIZES.width,
@@ -412,9 +419,9 @@ export default TourDetail = (props) => {
             }}
           />
           {/* ItemLink */}
-          <ItemLink screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <ItemLink screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={"Saigon hotel"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
-          <ItemLink screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={"Trần Anh Trí"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. A id diam nisl, non justo, in odio..."}/>
+          <ItemLink dulieu={hotel_id} screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={hotel_id.hotelName} content={hotel_id.description}/>
+          <ItemLink dulieu={destination_id} screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={destination_id.destinationName} content={destination_id.content}/>
+          <ItemLink dulieu={tourGuide_id} screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={tourGuide_id.name} content={tourGuide_id.phoneNumber}/>
           <View
             style={{
               borderWidth: 1,
@@ -422,11 +429,6 @@ export default TourDetail = (props) => {
               marginTop: 30,
             }}
           />
-
-          
-     
-
-          
 
           <Text
             style={{
@@ -607,6 +609,9 @@ export default TourDetail = (props) => {
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>
+      )
+    }
+    </>
   );
 };
 const styles = StyleSheet.create({

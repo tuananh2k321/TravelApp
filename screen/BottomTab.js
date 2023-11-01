@@ -13,6 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import HotelDetail from './tab_app/Home/HotelDetail';
 import DestinationDetail from './tab_app/Home/DestinationDetail';
 import TourGuideDetail from './tab_app/Home/TourGuideDetail';
+import SearchScreen from './tab_app/Home/SearchScreen';
 import Detail_Booking from './booking/Detail_Booking';
 import Payment from './booking/Payment';
 import Payment_Method from './booking/Payment_Method';
@@ -68,6 +69,7 @@ const StackHomes = () => {
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
       {/* stack booking */}
       <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("")}/>
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />

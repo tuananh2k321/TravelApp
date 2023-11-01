@@ -1,18 +1,41 @@
 import { StyleSheet, Text, View,Image, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLOR, SIZES } from '../../../constant/Themes'
+import { useSelector } from 'react-redux'
 
 const Profile = (props) => {
     const {navigation} = props;
+
+    const user = useSelector(state => state.user.user);
+
+    const userId = useSelector(state => state.user.user._id);
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
+        if (user.user) {
+          console.log('Login user: ' + JSON.stringify(user.user));
+            console.log("userID: ",userId)
+            setIsLoading(false)
+        } else {
+          // Xử lý trường hợp đăng nhập thất bại
+          //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+          setIsLoading (true)
+        }
+      }, [user]);
+
+    //   if (isLoading) {
+    //     return <Text>Loading...</Text>; // Replace with your loading component
+    //   }
   return (
     <ScrollView>
         <SafeAreaView style={styles.container}>
         <View style={styles.infomation}>
-            <Image style={styles.image} source={require('../../../assets/images/profile.png')}></Image>
+            <Image style={styles.image} source={{uri: user.avatar}}></Image>
             <View style={styles.info}>
-                <Text style={styles.name}>Van A</Text>
-                <Text style={styles.address}>Quan 8, Go Vap</Text>
+                <Text style={styles.name}>{user.name}</Text>
+                <Text style={styles.address}>{user.address}</Text>
             </View>
         </View>
 
@@ -38,15 +61,17 @@ const Profile = (props) => {
                 
             </View>
         
-        <View style={{width:380,height:1,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:40}}></View>
+        <View style={{width:380,height:0.5,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:30}}></View>
 
         <View style={styles.account_setting}>
-            <Text style={styles.account_setting_text}>Thiết lập tài khoản</Text>
             {/* edit profile */}
             <TouchableOpacity>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../../assets/icon/icon-user-circle.png')}></Image>
+                        <Image 
+                        style={{tintColor: COLOR.primary}}
+                        source={require('../../../assets/icon/icon-user-circle.png')}
+                        ></Image>
                         <Text style={styles.button_setting_text}>Chỉnh sửa hồ sơ</Text>
                     </View>
                     <View>
@@ -58,7 +83,7 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../../assets/icon/icon-translate.png')}></Image>
+                        <Image style={{tintColor: COLOR.primary}} source={require('../../../assets/icon/icon-translate.png')}></Image>
                         <Text style={styles.button_setting_text}>Thay đổi ngôn ngữ</Text>
                     </View>
                     <View>
@@ -70,7 +95,7 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../../assets/icon/icon-moon.png')}></Image>
+                        <Image style={{tintColor: COLOR.primary}} source={require('../../../assets/icon/icon-moon.png')}></Image>
                         <Text style={styles.button_setting_text}>Chế độ màu</Text>
                     </View>
                     <View>
@@ -81,13 +106,13 @@ const Profile = (props) => {
         </View>
 
             {/* Derleng Legal */}
+            <View style={{width:380,height:0.5,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:30}}></View>
         <View style={styles.account_setting}>
-            <Text style={styles.account_setting_text}>Derleng Legal</Text>
             {/* edit profile */}
             <TouchableOpacity>
                 <View style={styles.button_setting_2}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../../assets/icon/icon-reader-mode.png')}></Image>
+                        <Image style={{tintColor: COLOR.primary}} source={require('../../../assets/icon/icon-reader-mode.png')}></Image>
                         <Text style={styles.button_setting_text}>Điều khoản và điều kiện</Text>
                     </View>
                     
@@ -99,7 +124,7 @@ const Profile = (props) => {
             <TouchableOpacity>
                 <View style={styles.button_setting_2}>
                     <View style={styles.button_setting_left}>
-                        <Image source={require('../../../assets/icon/icon-shield.png')}></Image>
+                        <Image style={{tintColor: COLOR.primary}} source={require('../../../assets/icon/icon-shield.png')}></Image>
                         <Text style={styles.button_setting_text}>Chính sách bảo mật</Text>
                     </View>
                         <Image style={{marginLeft:10,marginTop:-10}} source={require('../../../assets/icon/icon-link.png')}></Image>
@@ -110,12 +135,12 @@ const Profile = (props) => {
 
              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <View style={styles.button_logout}>
-                        <Text style={styles.button_logout_text}>Logout</Text>
+                        <Text style={styles.button_logout_text}>Đăng Xuất</Text>
                 </View>
              </TouchableOpacity>
-            <View>
+            {/* <View>
                 <Text style={styles.version}>Verion 3.0.0</Text>
-            </View>
+            </View> */}
     </SafeAreaView>
     </ScrollView>
     
@@ -157,9 +182,10 @@ const styles = StyleSheet.create({
     address:{
         fontStyle:'normal',
         fontWeight:'400',
-        fontSize:12,
+        fontSize:14,
         lineHeight:18,
         color:'#9098B1',
+        fontWeight: 'bold',
         textAlign:'center',
         marginTop:10
     },
@@ -179,7 +205,7 @@ const styles = StyleSheet.create({
     },
     account_setting:{
         flexDirection:'column',
-        marginTop:40,
+        marginTop:20,
     },
     account_setting_text:{
         fontStyle:'normal',
@@ -213,7 +239,7 @@ const styles = StyleSheet.create({
     button_setting_2:{
         marginTop:20,
         flexDirection:'row',
-        borderWidth:1,
+        borderWidth:2,
         borderColor:'rgba(0, 0, 0, 0.1)',
         paddingHorizontal:20,
         borderRadius:15,
