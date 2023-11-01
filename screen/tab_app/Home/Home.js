@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     txtpack1: {
-        margin: 24
+        margin: 15
     },
     viewOverlay: {
         flexDirection: 'row',

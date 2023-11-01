@@ -4,14 +4,14 @@ import { Rating } from 'react-native-ratings'
 
 const ItemActive = (props) => {
   const { dulieu, navigation } = props;
-  
+
   const clickItem = () => {
     console.log("Click Item");
     navigation.navigate('TourDetail', { id: dulieu._id });
   }
   return (
     <TouchableOpacity style={styles.container} onPress={clickItem}>
-      <Image style={styles.image} source={{ uri: dulieu.tourImage[0] }} />
+      <Image style={styles.image} resizeMode='stretch' source={{ uri: dulieu.tourImage[0] }} />
       <Text numberOfLines={1} style={{ fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4 }}>{dulieu.tourName}</Text>
       <View style={styles.review}>
         <Rating
