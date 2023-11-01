@@ -1,21 +1,37 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { AirbnbRating, Rating } from 'react-native-ratings';
 
 const ItemPopular = (props) => {
     const {dulieu, navigation} = props;
+    // console.log('imaheeeee', dulieu.tourImage[0])
+    // console.log('tourrrrrrr', dulieu)
     const clickItem = () => {
       console.log("Click Item");
       navigation.navigate('TourDetail', { id: dulieu._id });
   }
+
+
   return (
     <TouchableOpacity style={styles.container} onPress={clickItem}>
-      <Image style={styles.image} source={{uri: dulieu.image}}/>
-      <Text style={{fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4}}>{dulieu.title}</Text>
+      <Image style={styles.image} source={{uri: dulieu.tourImage[0]}}/>
+      <Text numberOfLines={1} style={{fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4}}>{dulieu.tourName}</Text>
       <View style={styles.review}>
-        <Image style={{width: 25, height: 25}} source={require('../../assets/icon/iconflight.png')}/>
-        <Text style={{color: 'black', fontSize: 14}}>{dulieu.review} review</Text>
+        <Rating
+        readonly
+        ratingCount={5}
+        showReadOnlyText={false}
+        fractions={1}
+        startingValue={dulieu.rating}
+        jumpValue={0.1}
+        imageSize={12}/>
+        <View style={styles.review}>
+        <Text numberOfLines={1} style={{color: 'black', fontSize: 14, width: 40}}>100</Text>
+        <Text numberOfLines={1} style={{color: 'black', fontSize: 14}}> review</Text>
+        </View>
+        
       </View>
-      <Text style={{color: 'black', fontSize: 14}}>{dulieu.detail} ...</Text>
+      <Text numberOfLines={1} style={{color: 'black', fontSize: 14, width: 150, marginStart: 5}}>{dulieu.description}</Text>
     </TouchableOpacity>
   )
 }
@@ -24,17 +40,21 @@ export default ItemPopular
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginRight: 20
+        marginHorizontal: 5,
+        width: 170,
+        height: 225,
+        borderWidth: 0.19,
+        borderRadius: 6,
+        borderColor: 'gray',
     },
     image:{
         width: 150,
         height: 150,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10
+        alignSelf: 'center'
     },
      review: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center', 
+        marginStart: 5
      }
 })

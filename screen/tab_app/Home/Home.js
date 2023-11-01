@@ -1,61 +1,110 @@
-import { FlatList, ScrollView, TouchableOpacity, } from "react-native"
+import { FlatList, ScrollView, TouchableOpacity, ToastAndroid } from "react-native"
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { SIZES } from "../../../constant/Themes";
 
-
-import { SliderBox } from "react-native-image-slider-box";
 import ItemPopular from "../../../component/Tab_item/ItemPopular";
-import ItemMenu from "../../../component/Tab_item/ItemMenu";
+import ItemMenu from "../../../component/Tab_item/ItemActive";
 
-this.state ={
-    images : [
-        'https://cdn.pixabay.com/photo/2018/01/04/07/59/salt-harvesting-3060093_1280.jpg',
-        'https://cdn.pixabay.com/photo/2017/10/12/03/03/view-2843338_1280.jpg',
-        'https://cdn.pixabay.com/photo/2021/08/04/03/06/hanoi-6520941_1280.jpg',
-        'https://cdn.pixabay.com/photo/2021/08/26/15/18/mountain-6576362_1280.jpg',
-        'https://cdn.pixabay.com/photo/2017/03/15/08/47/vietnam-2145504_1280.jpg',
-    ]
-} 
+import AxiosIntance from '../../../constant/AxiosIntance';
+
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from "react";
+import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+
+// const disPath = useDispatch()
+
 
 
 export default function Home(props) {
     const { navigation } = props;
 
+    const [TourRating, setTourRating] = useState([])
+    const [TourBac, setTourBac] = useState([])
+    const [TourTrung, setTourTrung] = useState([])
+    const [TourNam, setTourNam] = useState([])
+
+    useEffect(() => {
+        try {
+            const getTour = async () => {
+                const respone = await AxiosIntance().get("tour/api/list/tourRating");
+                if (respone.result) {
+                    setTourRating(respone.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                }
+                const respone1 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Bac");
+                if (respone1.result) {
+                    setTourBac(respone1.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                } const respone2 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Trung");
+                if (respone2.result) {
+                    setTourTrung(respone2.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                }
+                const respone3 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Nam");
+                if (respone3.result) {
+                    setTourNam(respone3.tours);
+
+                } else {
+                    ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+                }
+            }
+            getTour();
+
+            return () => { }
+        } catch (error) {
+            console.log('errrrrrrror', error)
+        }
+
+    }, []);
+
+
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleSearch = (text) => {
+        setSearchValue(text);
+        // Xử lý tìm kiếm
+    };
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <SafeAreaView style={{ flex: 1 }}>
                 <View>
-                    <Image style={styles.image_logo} source={require('../../../assets/image/anhbien.jpg')} />
+                    <Image style={styles.image_logo} source={require('../../../assets/images/imgstart.jpg')} />
                     <Text style={styles.txt1}>Khám phá thế giới {"\n"}hôm nay</Text>
                     <Text style={styles.txt2}>{<Text style={{ fontWeight: 'bold' }}>Khám phá</Text>} - du lịch đến muôn nơi</Text>
-                    <TextInput style={styles.txtsearch}></TextInput>
-                    <View style={styles.press_menu}>
-                        <FlatList
-                            horizontal
-                            data={menu}
-                            renderItem={({ item }) => <ItemMenu menud={item} />}
-                            keyExtractor={item => item._id}
-                            showsHorizontalScrollIndicator={false}
+
+                    <View style={styles.searchContainer}>
+                        <TextInput
+                            style={styles.searchBar}
+                            placeholder="Nhập từ khóa"
+                            onChangeText={handleSearch}
+                            value={searchValue}
                         />
+                        <Icon name="search" size={20} color="gray" />
                     </View>
                 </View>
-                {/* <View style={styles.slider}>
-                    <SliderBox
-                        images={this.state.images}/>
-                </View> */}
 
                 <View style={styles.txtpack1}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Gói phổ biến</Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Tour được yêu thích nhất</Text>
                         <TouchableOpacity>
                             <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>See more</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <FlatList style={{ marginTop: 7 }}
+                    <FlatList style={{ marginTop: 10 }}
                         horizontal
-                        data={popular}
+                        data={TourRating.slice(0, 6)}
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
@@ -64,15 +113,95 @@ export default function Home(props) {
 
                 <View style={styles.txtpack1}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Gói mở rộng</Text>
-                        <TouchableOpacity>
-                            <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>See more</Text>
-                        </TouchableOpacity>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Các tour đặc trưng trong khu vực</Text>
                     </View>
-
-                    <FlatList style={{ marginTop: 7 }}
+                    <View style={styles.viewOverlay}>
+                        <ImageOverlay source={require('../../../assets/images/mienbac.png')}
+                            title='Miền Bắc'
+                            overlayAlpha={1}
+                            contentPosition="bottom"
+                            titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
+                            containerStyle={styles.imgoverlay} />
+                        <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/hanoi.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hà Nội</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/haiphong.png')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hải phòng</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/quangninh.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Quảng Ninh</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <FlatList style={{ marginTop: 10 }}
                         horizontal
-                        data={explore}
+                        data={TourBac}
+                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
+                        keyExtractor={item => item._id}
+                        showsHorizontalScrollIndicator={false}
+                    />
+
+
+                    <View style={styles.viewOverlay}>
+                        <View style={{ justifyContent: 'center' }}>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/danang.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Đà Nẵng</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/nhatrang.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Nha Trang</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/hue.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Huế</Text>
+                            </View>
+                        </View>
+                        <ImageOverlay source={require('../../../assets/images/mientrung.png')}
+                            title='Miền Trung'
+                            overlayAlpha={1}
+                            contentPosition="bottom"
+                            titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
+                            containerStyle={[styles.imgoverlay, { marginLeft: 10 }]} />
+                    </View>
+                    <FlatList style={{ marginTop: 10 }}
+                        horizontal
+                        data={TourTrung}
+                        renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
+                        keyExtractor={item => item._id}
+                        showsHorizontalScrollIndicator={false}
+                    />
+
+
+                    <View style={styles.viewOverlay}>
+                        <ImageOverlay source={require('../../../assets/images/miennam.png')}
+                            title='Miền Nam'
+                            overlayAlpha={1}
+                            contentPosition="bottom"
+                            titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
+                            containerStyle={styles.imgoverlay} />
+                        <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                        <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/tphcm.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/cantho.png')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Cần Thơ</Text>
+                            </View>
+                            <View style={styles.viewdomain}>
+                                <Image style={styles.img_domain} source={require('../../../assets/images/vungtau.jpg')} />
+                                <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Vũng Tàu</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <FlatList style={{ marginTop: 10 }}
+                        horizontal
+                        data={TourNam}
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
@@ -87,31 +216,8 @@ export default function Home(props) {
 
 
 const styles = StyleSheet.create({
-    slider: {
-        width: SIZES.width,
-        height: SIZES.height * 0.25,
-        padding: 10
-    },
-    reviewImage2: {
-        width: SIZES.width - 20,
-        height: SIZES.height * 0.25 - 10,
-    },
-    slideDot: {
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 10,
-        alignSelf: 'center'
-    },
-    dotActive: {
-        color: 'black',
-        margin: 3
-    },
-    dot: {
-        color: 'white',
-        margin: 3
-    },
     image_logo: {
-        height: SIZES.height * 0.4,
+        height: SIZES.height * 0.3,
         width: SIZES.width
     },
     txt1: {
@@ -128,14 +234,25 @@ const styles = StyleSheet.create({
         top: 120,
         left: 25
     },
-    txtsearch: {
+    searchContainer: {
         width: 350,
         height: 50,
-        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 10,
         position: 'absolute',
-        borderRadius: 20,
-        left: 25,
-        bottom: 90
+        bottom: 20,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+    },
+    searchBar: {
+        flex: 1,
+        height: 40,
+        marginLeft: 5,
     },
     press_menu: {
         width: 390,
@@ -147,7 +264,35 @@ const styles = StyleSheet.create({
     },
     txtpack1: {
         margin: 24
+    },
+    viewOverlay: {
+        flexDirection: 'row',
+        marginTop: 30,
+        justifyContent: 'space-between',
+    },
+    imgoverlay: {
+        width: 200,
+        height: 200,
+        borderRadius: 20
+    },
+    viewdomain: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderWidth: 0.19,
+        borderRadius: 9,
+        width: 150,
+        alignItems: 'center',
+        borderColor: 'gray',
+        marginVertical: 5,
+    },
+    img_domain: {
+        width: 35,
+        height: 35,
+        borderTopLeftRadius: 9,
+        borderBottomLeftRadius: 9,
+        marginRight: 5
     }
+
 })
 
 
@@ -173,56 +318,3 @@ const menu = [
         title: 'Tour'
     }
 ]
-
-const popular = [{
-    "_id": 1,
-    "image": "https://statics.vinpearl.com/hu%E1%BA%BF_1661248551.jpg",
-    "title": "Du lịch Huế",
-    "review": 252,
-    "detail": "Human Resources"
-}, {
-    "_id": 2,
-    "image": "https://dulichtoday.vn/wp-content/uploads/2017/04/vinh-Ha-Long.jpg",
-    "title": "Du lịch Vịnh Hạ Long",
-    "review": 375,
-    "detail": "Business "
-}, {
-    "_id": 3,
-    "image": "https://statics.vinpearl.com/nha-trang-beaches-banner%20-%20Copy_1661247069.jpg",
-    "title": "Du lịch Nha Trang",
-    "review": 167,
-    "detail": "Accounting"
-}, {
-    "_id": 4,
-    "image": "https://statics.vinpearl.com/diem-du-lich-04_1648302905.jpg",
-    "title": "Du lịch Hội An",
-    "review": 311,
-    "detail": "Research an"
-}, {
-    "_id": 5,
-    "image": "https://statics.vinpearl.com/b%C3%A1n%20%C4%91%E1%BA%A3o%20s%C6%A1n%20tr%C3%A0_1661247495.jpg",
-    "title": "Du lịch Đà Nẵng",
-    "review": 459,
-    "detail": "Marketing"
-}]
-const explore = [{
-    "_id": 1,
-    "image": "https://statics.vinpearl.com/%C4%90%E1%BB%89nh-phanxipang_1661249040.jpg",
-    "title": "Du lịch Sapa",
-    "review": 312,
-    "detail": "Engineering"
-}, {
-    "_id": 2,
-    "image": "https://statics.vinpearl.com/Hinh-anh-Da-Lat-dep-mong-mo_1661248995.jpeg",
-    "title": "Du lịch Đà Lạt",
-    "review": 297,
-    "detail": "Marketing"
-}, {
-    "_id": 3,
-    "image": "https://statics.vinpearl.com/diem-du-lich-14_1632662986.jpg",
-    "title": "Du lịch Mộc Châu",
-    "review": 400,
-    "detail": "Engineering"
-}]
-
-

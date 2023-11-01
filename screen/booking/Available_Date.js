@@ -1,10 +1,39 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, SafeAreaView, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, SafeAreaView, Button } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { CalendarList } from 'react-native-calendars';
-import { MaterialDatetimePickerAndroid } from 'react-native-material-datetime-picker';
-import RNMaterialDatetimePicker from 'react-native-material-datetime-picker';
 import Calendar from "react-native-calendar-range-picker";
+
+
+const CUSTOM_LOCALE = {
+    monthNames: [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+    ],
+    dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    today: 'Today',
+    year: '', // letter behind year number -> 2020{year}
+  }
+
+  ShowCurrentDate=()=>{
+
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+
+    Alert.alert(year + '-' + month + '-' + date);
+    // You can turn it in to your desired format
+    //return year + '-' + month + '-' + date;//format: dd-mm-yyyy;
+}
 const Available_Date = (props) => {
     const {navigation} = props;
 
@@ -12,7 +41,7 @@ const Available_Date = (props) => {
         <View style={styles.container}>
             <View style={styles.groupHeader}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="arrow-back" size={20} color="#000000" />
+                    <Ionicons name="arrow-back" size={24} color="#000000" />
                 </TouchableOpacity>
                 <Text style={styles.header}>Ngày có sẵn</Text>
             </View>
@@ -22,8 +51,9 @@ const Available_Date = (props) => {
                 selectedDayBackgroundColor: '#0FA3E2',
                 selectedBetweenDayBackgroundTextColor: '#99E1FF',
             }}
-                startDate="2023-05-05"
-                endDate="2023-05-12"
+                locale={CUSTOM_LOCALE}
+                startDate = "2023-07-01"
+                endDate ="2023-07-12"
                 onChange={({ startDate, endDate }) => console.log({ startDate, endDate })}
             />
 
@@ -73,7 +103,7 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     header: {
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: '600',
         lineHeight: 18,
         color: '#000000',
