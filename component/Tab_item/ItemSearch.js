@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {AirbnbRating, Rating} from 'react-native-ratings';
+import { Rating} from 'react-native-ratings';
 import { COLOR, SIZES } from '../../constant/Themes';
 
-const ItemSearch = props => {
+const ItemSearch = (props) => {
   const {dulieu, navigation} = props;
   // console.log('imaheeeee', dulieu.tourImage[0])
   // console.log('tourrrrrrr', dulieu)
@@ -81,8 +81,8 @@ const ItemSearch = props => {
             }}
           />
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 export default ItemSearch;
 

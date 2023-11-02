@@ -106,7 +106,7 @@ export default TourDetail = (props) => {
     <>
     {
       isLoading == true ? 
-      (Loading) : 
+      (<Loading />) : 
       (
         <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView

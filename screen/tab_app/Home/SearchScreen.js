@@ -8,11 +8,10 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {IconButton, Searchbar} from 'react-native-paper';
+import { Searchbar} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {COLOR} from '../../../constant/Themes';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemPopular from '../../../component/Tab_item/ItemPopular';
 import ItemSearch from '../../../component/Tab_item/ItemSearch';
@@ -100,12 +99,13 @@ const SearchScreen = (props) => {
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-        <Fontisto
+        {/* <Fontisto
                         name="angle-left"
                         size={22}
                         color="#000000"
                         style={{marginRight: 5,marginTop:25}}
-                      />
+                        onPress={() => navigation.goBack(null)}
+                      /> */}
           <Searchbar 
             placeholder="Tìm kiếm..."
             value={searchQuery}
@@ -114,7 +114,7 @@ const SearchScreen = (props) => {
             onIconPress={handleSearchSubmit}
             onClearIconPress={handleClose}
             style={[
-              {backgroundColor: '#ffffff', marginTop: 24, marginHorizontal: 5,width:340},
+              {backgroundColor: '#ffffff', marginTop: 24, marginHorizontal: 5,width:'auto'},
               styles.borderSearch,
             ]}
           />
@@ -131,8 +131,45 @@ const SearchScreen = (props) => {
               }}>
               Tìm kiếm gần đây
             </Text>
-
-            <FlatList
+            {
+              searchHistory.map((item) =><View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingVertical: 10,
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => handleHistoryItemPress(item)}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Fontisto
+                        name="clock"
+                        size={22}
+                        color="grey"
+                        style={{marginRight: 20}}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '400',
+                          color: '#000000',
+                        }}>
+                        {item}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => deleteSearchHistoryItem(index)}>
+                    <AntDesign name="close" size={22} color="grey" />
+                  </TouchableOpacity>
+                </View>)
+            }
+            {/* <FlatList
               style={{flex: 1}}
               showsVerticalScrollIndicator={false}
               data={searchHistory}
@@ -175,7 +212,7 @@ const SearchScreen = (props) => {
                   </TouchableOpacity>
                 </View>
               )}
-            />
+            /> */}
 
             <Text
               style={{
@@ -210,7 +247,10 @@ const SearchScreen = (props) => {
               }}>
               Kết quả tìm kiếm
             </Text>
-            <FlatList
+            {
+              TourNam.map((item) => <ItemSearch dulieu={item} navigation={navigation} />)
+            }
+            {/* <FlatList
               style={{marginTop: 10, flex: 1}}
               data={TourNam}
               renderItem={({item}) => (
@@ -218,13 +258,13 @@ const SearchScreen = (props) => {
               )}
               keyExtractor={item => item._id}
               showsHorizontalScrollIndicator={false}
-            />
+            /> */}
           </View>
         )}
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 export default SearchScreen;
 

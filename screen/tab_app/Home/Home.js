@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
 import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 
 
 // const disPath = useDispatch()
@@ -89,6 +90,7 @@ export default function Home(props) {
                             placeholder="Nhập từ khóa"
                             onChangeText={handleSearch}
                             value={searchValue}
+                            onFocus={() => navigation.navigate('SearchScreen')}
                         />
                         <Icon name="search" size={20} color="gray" />
                     </View>
