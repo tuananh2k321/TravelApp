@@ -2,18 +2,24 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { Rating } from 'react-native-ratings'
 
-const ItemActive = () => {
+const ItemActive = (props) => {
+  const { dulieu, navigation } = props;
+
+  const clickItem = () => {
+    console.log("Click Item");
+    navigation.navigate('TourDetail', { id: dulieu._id });
+  }
   return (
-    <TouchableOpacity style={styles.container}>
-      <Image style={styles.image} source={require('../../assets/images/cantho.png')} />
-      <Text numberOfLines={1} style={{ fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4 }}>sdasdasd</Text>
+    <TouchableOpacity style={styles.container} onPress={clickItem}>
+      <Image style={styles.image} resizeMode='stretch' source={{ uri: dulieu.tourImage[0] }} />
+      <Text numberOfLines={1} style={{ fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4 }}>{dulieu.tourName}</Text>
       <View style={styles.review}>
         <Rating
           readonly
           ratingCount={5}
           showReadOnlyText={false}
           fractions={1}
-          startingValue={4}
+          startingValue={dulieu.rating}
           jumpValue={0.1}
           imageSize={12} />
         <View style={styles.review}>
@@ -22,8 +28,12 @@ const ItemActive = () => {
         </View>
 
       </View>
-      <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 350, marginStart: 5 }}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
-      <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 250, marginStart: 5, marginTop: 6 }}>Giá: </Text>
+      <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 350, marginStart: 5 }}>{dulieu.description}</Text>
+      <View style={styles.review}>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20 }}>Giá người lớn: {dulieu.adultPrice} Đ</Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá trẻ nhỏ: {dulieu.childrenPrice} Đ</Text>
+      </View>
+
     </TouchableOpacity>
   )
 }
@@ -38,6 +48,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.19,
     borderRadius: 6,
     borderColor: 'gray',
+    marginTop: 10
   },
   image: {
     width: 370,

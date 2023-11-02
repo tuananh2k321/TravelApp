@@ -20,6 +20,7 @@ import Payment_Method from './booking/Payment_Method';
 import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
+import SearchTourName from './tab_app/Home/SearchTourName';
 
 
 const Tab = createBottomTabNavigator();
@@ -79,6 +80,7 @@ const StackBooking = () => {
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
       <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
+      <Stack.Screen name="SearchTourName" component={SearchTourName} />
     </Stack.Navigator>
   )
 }

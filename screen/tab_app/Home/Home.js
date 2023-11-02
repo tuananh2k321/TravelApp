@@ -4,11 +4,11 @@ import { SafeAreaView, View, Text, Image, StyleSheet, TextInput } from "react-na
 import { SIZES } from "../../../constant/Themes";
 
 import ItemPopular from "../../../component/Tab_item/ItemPopular";
-import ItemMenu from "../../../component/Tab_item/ItemActive";
 
 import AxiosIntance from '../../../constant/AxiosIntance';
 
 import { useDispatch, useSelector } from 'react-redux';
+// import { setData } from './actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
 import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
@@ -16,12 +16,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 
 
-// const disPath = useDispatch()
-
 
 
 export default function Home(props) {
     const { navigation } = props;
+
 
     const [TourRating, setTourRating] = useState([])
     const [TourBac, setTourBac] = useState([])
@@ -125,18 +124,18 @@ export default function Home(props) {
                             titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
                         <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                            <View style={styles.viewdomain}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Hà Nội'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/hanoi.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hà Nội</Text>
-                            </View>
-                            <View style={styles.viewdomain}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Hải phòng'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/haiphong.png')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hải phòng</Text>
-                            </View>
-                            <View style={styles.viewdomain}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Quảng Ninh'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/quangninh.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Quảng Ninh</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <FlatList style={{ marginTop: 10 }}
@@ -145,23 +144,24 @@ export default function Home(props) {
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
+                        
                     />
 
 
                     <View style={styles.viewOverlay}>
                         <View style={{ justifyContent: 'center' }}>
-                            <View style={styles.viewdomain}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Đà Nẵng'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/danang.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Đà Nẵng</Text>
-                            </View>
-                            <View style={styles.viewdomain}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.viewdomain}  onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Nha Trang'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/nhatrang.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Nha Trang</Text>
-                            </View>
-                            <View style={styles.viewdomain}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Huế'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/hue.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Huế</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         <ImageOverlay source={require('../../../assets/images/mientrung.png')}
                             title='Miền Trung'
@@ -187,18 +187,18 @@ export default function Home(props) {
                             titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
                         <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                        <View style={styles.viewdomain}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'TP.HCM'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/tphcm.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
-                            </View>
-                            <View style={styles.viewdomain}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.viewdomain}  onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Cần Thơ'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/cantho.png')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Cần Thơ</Text>
-                            </View>
-                            <View style={styles.viewdomain}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Vũng Tàu'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/vungtau.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Vũng Tàu</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <FlatList style={{ marginTop: 10 }}
@@ -207,6 +207,7 @@ export default function Home(props) {
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
+
                     />
                 </View>
             </SafeAreaView>
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     txtpack1: {
-        margin: 24
+        margin: 15
     },
     viewOverlay: {
         flexDirection: 'row',
