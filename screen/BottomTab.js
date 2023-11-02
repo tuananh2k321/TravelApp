@@ -22,6 +22,7 @@ import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
 import Mybooking from './tab_app/Mybooking';
 
+import EditProfile from './tab_app/Profile/EditProfile'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -116,6 +117,7 @@ const StackProfile = () => {
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
       <Stack.Screen name="Mybooking" component={Mybooking} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   )
 }

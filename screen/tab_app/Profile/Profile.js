@@ -3,31 +3,26 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLOR, SIZES } from '../../../constant/Themes'
 import { useSelector } from 'react-redux'
-
+import Loading from '../../Loading'
 const Profile = (props) => {
     const {navigation} = props;
 
     const user = useSelector(state => state.user.user);
 
-    const userId = useSelector(state => state.user.user._id);
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
-        if (user.user) {
-          console.log('Login user: ' + JSON.stringify(user.user));
-            console.log("userID: ",userId)
+        if (user) {
+          console.log('Profile user: ' + JSON.stringify(user));
             setIsLoading(false)
         } else {
-          // Xử lý trường hợp đăng nhập thất bại
-          //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
           setIsLoading (true)
         }
       }, [user]);
 
-    //   if (isLoading) {
-    //     return <Text>Loading...</Text>; // Replace with your loading component
-    //   }
+      if (isLoading) {
+        return <Loading></Loading>; 
+      }
   return (
     <ScrollView>
         <SafeAreaView style={styles.container}>
@@ -39,33 +34,13 @@ const Profile = (props) => {
             </View>
         </View>
 
-        <View style={{width:380,height:1,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:28}}></View>
-    
-            <View style={styles.profile_tab}> 
-                <TouchableOpacity onPress={() => navigation.navigate("Mybooking")}>
-                    <View style={styles.profile_tab1}>
-                        <Text style={styles.booking}>
-                            Đặt trước
-                        </Text>
-                        <Image  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <View style={[styles.profile_tab1,{marginTop:30}]}>
-                        <Text style={styles.booking}>
-                            Danh sách mong muốn
-                        </Text>
-                        <Image  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
-                    </View>
-                </TouchableOpacity>
-                
-            </View>
         
+              
         <View style={{width:380,height:0.5,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:30}}></View>
 
         <View style={styles.account_setting}>
             {/* edit profile */}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
                 <View style={styles.button_setting}>
                     <View style={styles.button_setting_left}>
                         <Image 
