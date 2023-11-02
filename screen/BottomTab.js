@@ -20,7 +20,7 @@ import Payment_Method from './booking/Payment_Method';
 import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
-
+import EditProfile from './tab_app/Profile/EditProfile'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -104,6 +104,7 @@ const StackProfile = () => {
   return (
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   )
 }
