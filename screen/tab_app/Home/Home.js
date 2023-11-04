@@ -14,14 +14,12 @@ import { useEffect } from "react";
 import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
+import { useNavigation } from '@react-navigation/native';
 
 
 
-
-export default function Home(props) {
-    const { navigation } = props;
-
-
+export default function Home() {
+    const navigation = useNavigation();
     const [TourRating, setTourRating] = useState([])
     const [TourBac, setTourBac] = useState([])
     const [TourTrung, setTourTrung] = useState([])
@@ -124,15 +122,15 @@ export default function Home(props) {
                             titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
                         <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Hà Nội'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Hà Nội'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/hanoi.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hà Nội</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Hải phòng'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Hải phòng'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/haiphong.png')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Hải phòng</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Quảng Ninh'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Quảng Ninh'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/quangninh.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Quảng Ninh</Text>
                             </TouchableOpacity>
@@ -150,15 +148,15 @@ export default function Home(props) {
 
                     <View style={styles.viewOverlay}>
                         <View style={{ justifyContent: 'center' }}>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Đà Nẵng'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Đà Nẵng'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/danang.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Đà Nẵng</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.viewdomain}  onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Nha Trang'})}>
+                            <TouchableOpacity style={styles.viewdomain}  onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Nha Trang'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/nhatrang.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Nha Trang</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Huế'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Huế'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/hue.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Huế</Text>
                             </TouchableOpacity>
@@ -187,15 +185,15 @@ export default function Home(props) {
                             titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
                         <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'TP.HCM'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'TP.HCM'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/tphcm.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.viewdomain}  onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Cần Thơ'})}>
+                            <TouchableOpacity style={styles.viewdomain}  onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Cần Thơ'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/cantho.png')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Cần Thơ</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchTourName', {nameDomain: 'Vũng Tàu'})}>
+                            <TouchableOpacity style={styles.viewdomain} onPress={() => navigation.navigate('SearchScreen', {nameDomain: 'Vũng Tàu'})}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/vungtau.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>Vũng Tàu</Text>
                             </TouchableOpacity>

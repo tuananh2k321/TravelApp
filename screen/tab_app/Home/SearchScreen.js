@@ -8,22 +8,27 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import { Searchbar} from 'react-native-paper';
+import {Searchbar} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemPopular from '../../../component/Tab_item/ItemPopular';
 import ItemSearch from '../../../component/Tab_item/ItemSearch';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../Loading';
 
-const SearchScreen = (props) => {
-  const {navigation} = props;
+const SearchScreen = props => {
+  const {navigation, route} = props;
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(true);
   const [searchHistory, setSearchHistory] = useState([]);
   const [TourRating, setTourRating] = useState([]);
   const [TourNam, setTourNam] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const nameDomain = route.params?.nameDomain;
 
+  // api danh sách theo rating
   useEffect(() => {
     try {
       const getTour = async () => {
@@ -33,6 +38,7 @@ const SearchScreen = (props) => {
         } else {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
+        setSearchQuery(nameDomain);
       };
       getTour();
 
@@ -41,9 +47,8 @@ const SearchScreen = (props) => {
       console.log('errrrrrrror', error);
     }
   }, []);
-
   // Hàm này sẽ được gọi khi nội dung của Searchbar thay đổi
-  const handleSearch =  (text) => {
+  const handleSearch = text => {
     setSearchQuery(text);
     // Thực hiện tìm kiếm dựa trên nội dung `text` và cập nhật `searchResults`
     // Ví dụ: bạn có thể gọi một API hoặc tìm kiếm trong dữ liệu của mình ở đây
@@ -55,18 +60,21 @@ const SearchScreen = (props) => {
     // Lưu nội dung tìm kiếm vào lịch sử
     setSearchHistory([searchQuery, ...searchHistory]);
     setIsSearching(false);
-    performSearch(searchQuery)
+    performSearch(searchQuery);
 
     // Thực hiện tìm kiếm và cập nhật kết quả tìm kiếm ở đây
   };
-  const performSearch = async (query) => {
+  const performSearch = async query => {
     // Thực hiện tìm kiếm dựa trên nội dung `query` và cập nhật `searchResults`
     // Ví dụ: bạn có thể gọi một API hoặc tìm kiếm trong dữ liệu của mình ở đây
-    const response = await AxiosIntance().get("tour/api/search/name?q=" + query)
-    if(response.result){
-        setTourNam(response.tours)
-    }else{
-      ToastAndroid.show("Lấy dữ liệu thấy bại",ToastAndroid.SHORT)
+    const response = await AxiosIntance().get(
+      'tour/api/search/name?q=' + query,
+    );
+    if (response.result) {
+      setTourNam(response.tours);
+      setIsLoading(false);
+    } else {
+      ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
     }
   };
   const handleHistoryItemPress = item => {
@@ -77,7 +85,7 @@ const SearchScreen = (props) => {
   };
   const handleClose = () => {
     // xóa text nhập vào
-    setSearchQuery("");
+    setSearchQuery('');
     setIsSearching(true);
   };
   // Hàm xóa các mục đã chọn từ lịch sử tìm kiếm
@@ -85,6 +93,37 @@ const SearchScreen = (props) => {
     const newSearchHistory = [...searchHistory];
     newSearchHistory.splice(index, 1);
     setSearchHistory(newSearchHistory);
+  };
+
+  /////////////////////////////////
+  // Lấy danh sách lịch sử tìm kiếm từ AsyncStorage khi màn hình được mở
+  useEffect(() => {
+    loadSearchHistory();
+  }, []);
+  // Lưu danh sách lịch sử tìm kiếm vào AsyncStorage khi thay đổi
+  useEffect(() => {
+    saveSearchHistory();
+  }, [searchHistory]);
+  const loadSearchHistory = async () => {
+    try {
+      const history = await AsyncStorage.getItem('searchHistory');
+      if (history !== null) {
+        setSearchHistory(JSON.parse(history));
+      }
+    } catch (error) {
+      // Xử lý lỗi khi đọc từ AsyncStorage
+    }
+  };
+
+  const saveSearchHistory = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'searchHistory',
+        JSON.stringify(searchHistory),
+      );
+    } catch (error) {
+      // Xử lý lỗi khi ghi vào AsyncStorage
+    }
   };
   return (
     <SafeAreaView
@@ -98,15 +137,20 @@ const SearchScreen = (props) => {
         justifyContent: 'flex-start',
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-        {/* <Fontisto
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}>
+          {/* <Fontisto
                         name="angle-left"
                         size={22}
                         color="#000000"
                         style={{marginRight: 5,marginTop:25}}
                         onPress={() => navigation.goBack(null)}
                       /> */}
-          <Searchbar 
+          <Searchbar
             placeholder="Tìm kiếm..."
             value={searchQuery}
             onChangeText={handleSearch}
@@ -114,7 +158,12 @@ const SearchScreen = (props) => {
             onIconPress={handleSearchSubmit}
             onClearIconPress={handleClose}
             style={[
-              {backgroundColor: '#ffffff', marginTop: 24, marginHorizontal: 5,width:'auto'},
+              {
+                backgroundColor: '#ffffff',
+                marginTop: 24,
+                marginHorizontal: 5,
+                width: 'auto',
+              },
               styles.borderSearch,
             ]}
           />
@@ -131,44 +180,43 @@ const SearchScreen = (props) => {
               }}>
               Tìm kiếm gần đây
             </Text>
-            {
-              searchHistory.map((item) =><View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    paddingVertical: 10,
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => handleHistoryItemPress(item)}>
-                    <View
+            {searchHistory?.map((item, index) => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingVertical: 10,
+                }}>
+                <TouchableOpacity onPress={() => handleHistoryItemPress(item)}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Fontisto
+                      name="clock"
+                      size={22}
+                      color="grey"
+                      style={{marginRight: 20}}
+                    />
+                    <Text
                       style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
+                        fontSize: 16,
+                        fontWeight: '400',
+                        color: '#000000',
                       }}>
-                      <Fontisto
-                        name="clock"
-                        size={22}
-                        color="grey"
-                        style={{marginRight: 20}}
-                      />
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: '400',
-                          color: '#000000',
-                        }}>
-                        {item}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => deleteSearchHistoryItem(index)}>
-                    <AntDesign name="close" size={22} color="grey" />
-                  </TouchableOpacity>
-                </View>)
-            }
+                      {item}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => deleteSearchHistoryItem(index)}>
+                  <AntDesign name="close" size={22} color="grey" />
+                </TouchableOpacity>
+              </View>
+            ))}
             {/* <FlatList
               style={{flex: 1}}
               showsVerticalScrollIndicator={false}
@@ -236,21 +284,25 @@ const SearchScreen = (props) => {
             />
           </View>
         ) : (
-          <View>
-          <Text
-              style={{
-                fontSize: 20,
-                fontWeight: '600',
-                color: '#000000',
-                marginTop: 35,
-                marginBottom: 20,
-              }}>
-              Kết quả tìm kiếm
-            </Text>
-            {
-              TourNam.map((item) => <ItemSearch dulieu={item} navigation={navigation} />)
-            }
-            {/* <FlatList
+          <>
+            { isLoading == true ? (
+              <Loading />
+            ) : (
+              <View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: '600',
+                    color: '#000000',
+                    marginTop: 35,
+                    marginBottom: 20,
+                  }}>
+                  Kết quả tìm kiếm
+                </Text>
+                {TourNam.map(item => (
+                  <ItemSearch dulieu={item} navigation={navigation} />
+                ))}
+                {/* <FlatList
               style={{marginTop: 10, flex: 1}}
               data={TourNam}
               renderItem={({item}) => (
@@ -259,12 +311,14 @@ const SearchScreen = (props) => {
               keyExtractor={item => item._id}
               showsHorizontalScrollIndicator={false}
             /> */}
-          </View>
+              </View>
+            )}
+          </>
         )}
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 export default SearchScreen;
 
