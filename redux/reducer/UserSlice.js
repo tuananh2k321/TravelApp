@@ -6,6 +6,7 @@ const initialState = {
     dataSendOTP: {},
     dataVerifyOTP: {},
     dataChangePassword: {},
+    dataEditProfile: {},
     user: {},
     token: ""
 }
@@ -39,6 +40,11 @@ export const UserSlice = createSlice({
             state.dataChangePassword = {...action.payload}
             console.log("addDataChangePassword ", state.dataChangePassword)
         },
+        addDataEditProfile: (state, action) => {
+            //console.log("addData action: ", action.payload)
+            state.dataEditProfile = {...action.payload}
+            console.log("addDataEditProfile ", state.dataEditProfile)
+        },
         addUser: (state, action) => {
             console.log("addUser action: ", action.payload)
             state.user = {...action.payload}
@@ -51,6 +57,6 @@ export const UserSlice = createSlice({
 })
 
 export const {addUser, addData, addDataSendOTP, setToken, 
-    addDataRegister, addDataVerifyOTP, addDataChangePassword} = UserSlice.actions
+    addDataRegister, addDataVerifyOTP, addDataChangePassword, addDataEditProfile} = UserSlice.actions
 
 export default UserSlice.reducer

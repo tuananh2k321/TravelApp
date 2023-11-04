@@ -138,8 +138,12 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     image:{
-        width:68,
-        height:68
+        width: 100,
+              height: 100,
+              borderRadius: 100,
+              resizeMode: 'stretch',
+              borderWidth: 2,
+              borderColor: COLOR.primary
     },
     info:{
         marginLeft:24,

@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Button,
+  PermissionsAndroid,
 } from 'react-native';
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -16,6 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLOR, SIZES, ICON} from '../../../constant/Themes';
 import { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {
     isValidEmpty,
     validateDateOfBirth,
@@ -25,25 +27,83 @@ import {
   } from '../../../constant/Validation';
   import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
   import UITextInput from '../../../component/UITextInput';
-  import { useSelector } from 'react-redux'
+  import { useDispatch, useSelector } from 'react-redux'
   import Loading from '../../Loading'
 import { useEffect } from 'react';
-// import { openPicker } from '@baronha/react-native-multiple-image-picker';
+import storage from '@react-native-firebase/storage';
+
 const EditProfile = (props) => {
 
     const {navigation} = props
+    const [errorName, setErrorName] = useState(true);
+    const [errorLastName, setErrorLastName] = useState(true);
+    const [errorPhone, setErrorPhone] = useState(true);
+    const [errorBirthday, setErrorBirthday] = useState(true);
+    const [isValid, setIsvalid] = useState(false);
+
+  const [date, setDate] = useState('');
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [dob, setDob] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
+
+  const user = useSelector(state => state.user.user);
+  const updateUser = useSelector(state => state.user.dataEditProfile);
+  const disPath = useDispatch()
+
+  const userId = useSelector(state => state.user.user._id);
+  const [isLoading, setIsLoading] = useState(true)
+
+    const btnEditProfile = async (url) => {
+      console.log('btnEditProfile');
+      console.log(errorPhone);
+      try {
+        if (errorName == true && errorLastName == true && errorPhone == true && errorBirthday == true) {
+          console.log('valid');
+
+            disPath({
+              type: 'EDIT-PROFILE',
+              payload: [email, url, name, lastName, phoneNumber, dob],
+            });
+          
+        }
+      } catch (error) {
+        console.log('AxiosIntance', error);
+      }
+    };
+
+    useEffect(() => {
+      try {
+        console.log('edit user: ' + JSON.stringify(updateUser));
+      if (updateUser.result) {
+        //console.log('email: '+user.dataEditProfile.user.name)
+        handleReloadPage()
+      } else {
+        setMessageRegister(user.dataEditProfile.message);
+        console.log(messageRegister);
+        //ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.LONG);
+      }
+      } catch(error) {
+
+      }
+      
+    }, [updateUser]);
 
     const handleReloadPage = () => {
-        navigation.goBack(); // Quay lại màn hình trước đó
-        navigation.navigate('Report'); // Điều hướng đến lại trang "ReportProblem"
+        navigation.popToTop(); 
+        navigation.navigate('Profile'); 
       };
 
-      const [selectedImage, setSelectedImage] = useState([]);
+      const [selectedImage, setSelectedImage] = useState(null);
 
       const uploadImage = async (imageUri) => {
-        setisLoading(true);
     
-        const reference = storage().ref(`images/${new Date().getTime()}.jpg`);
+        const reference = storage().ref(`user-avatar/${new Date().getTime()}.jpg`);
         console.log('đang tải ảnh lên');
     
         try {
@@ -54,8 +114,8 @@ const EditProfile = (props) => {
           // Lấy URL của tệp vừa tải lên
           const url = await reference.getDownloadURL();
           console.log('URL ảnh tải lên ne:', url);
-          setImg(url);
-          setisLoading(false);
+          btnEditProfile(url)
+          
           } else {
           console.log('Khg có image');
           }
@@ -97,94 +157,71 @@ const EditProfile = (props) => {
     // }
 
     const options = {
-        mediaType: 'photo', // Chỉ chọn ảnh, bạn có thể sử dụng 'video' để chọn video.
-        includeBase64: false, // True nếu bạn muốn nhận được dữ liệu ảnh dưới dạng Base64.
-        cameraType: 'back', // Sử dụng camera sau. Bạn có thể sử dụng 'front' cho camera trước.
-        cropping: true, // Cho phép cắt ảnh sau khi chụp.
-        useFrontCamera: false, // Sử dụng camera trước nếu cameraType là 'front'.
-        showCropGuidelines: true, // Hiển thị hướng dẫn cắt ảnh.
-        freeStyleCropEnabled: true, // Cho phép cắt ảnh theo tự do.
-        cropping: true, // Cho phép cắt ảnh.
-        cropperCircleOverlay: false, // Hiển thị vùng cắt hình tròn.
-        compressImageQuality: 0.8, // Chất lượng ảnh nén (giá trị từ 0 đến 1).
-      };
-      const pickImage = async () => {
-        try {
-          const response = await openPicker(options);
-          if (response) {
-            setSelectedImage(response);
-            console.log(response)
+      title: 'Chọn ảnh',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      mediaType: 'photo', // Chọn hình ảnh
+      quality: 0.8,
+      maxWidth: 800,
+      maxHeight: 600,
+    };
+    const pickImage = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          const result = await launchImageLibrary(options);
+          const image = result.assets[0].uri
+          console.log(result)
+          if (result) {
+            console.log(result.assets[0].uri)
+            setSelectedImage(image);
+            console.log(image)
           }
-        } catch (err) {
+          // upload image
+          // if (image) {
+          //   uploadImage(image)
+          // }
+  
+          // const paths = selectedImages.map(item => item.realPath);
+          // console.log(paths);
+          // uploadImages(paths)
         }
-    
+      } catch (error) {
+        console.error('An error occurred:', error);
       }
+    }
 
-    const [errorName, setErrorName] = useState(true);
-    const [errorLastName, setErrorLastName] = useState(true);
-    const [errorPhone, setErrorPhone] = useState(true);
-    const [errorBirthday, setErrorBirthday] = useState(true);
-    const [isValid, setIsvalid] = useState(false);
-
-  const [date, setDate] = useState('');
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [dob, setDob] = useState('');
-
-  const user = useSelector(state => state.user.user);
-
-  const userId = useSelector(state => state.user.user._id);
-  const [isLoading, setIsLoading] = useState(true)
+    
 
   useEffect(() => {
-    if (user) {
-      console.log('Edit Profile user: ' + JSON.stringify(user));
-        setIsLoading(false)
-        console.log(user.dob)
-    } else {
-      setIsLoading (true)
+    try {
+      if (user) {
+        console.log('Edit Profile user: ' + JSON.stringify(user));
+          setIsLoading(false)
+          console.log(user.dob)
+          setEmail(user.email)
+          setName(user.name)
+          setLastName(user.lastName)
+          setPhoneNumber(user.phoneNumber)
+          setDob(user.dob)
+      } else {
+        setIsLoading (true)
+      }
+    } catch(error) {
+      console.log("error: " + error);
     }
+    
   }, [user]);
 
   if (isLoading) {
     return <Loading></Loading>; 
   }
 
-    const checkForm = (
-        name,
-        lastName,
-        phoneNumber,
-        dob,
-      ) => {
-        if (name.length === 0) {
-          console.log('name emty');
-          setErrorName(false);
-          setIsvalid(false);
-        }
-    
-        if (lastName.length === 0) {
-          console.log('last name emty');
-          setErrorLastName(false);
-          setIsvalid(false);
-        }
-    
-        if (phoneNumber.length === 0) {
-          console.log('phone number emty');
-          setErrorPhone(false);
-          setIsvalid(false);
-        }
-    
-        if (dob.length === 0) {
-          console.log('dob emty');
-          setErrorBirthday(false);
-          setIsvalid(false);
-        }
-        
-      };
+
     
       if (isLoading) {
         return <Loading></Loading>; 
@@ -206,10 +243,10 @@ const EditProfile = (props) => {
               color: '#000000',
               position: 'absolute',
               left: '50%',
-              transform: [{translateX: -50}],
+              transform: [{translateX: -60}],
               fontWeight: 'bold'
             }}>
-            Edit Profile
+            Chỉnh sửa hồ sơ
           </Text>
         </View>
         <View style={styles.image}>
@@ -222,7 +259,7 @@ const EditProfile = (props) => {
               borderWidth: 2,
               borderColor: COLOR.primary
             }}
-            source={{uri: user.avatar}}></Image>
+            source={{uri: selectedImage ? selectedImage : user.avatar}}></Image>
           <TouchableOpacity
           onPress={() => pickImage()}
            style={styles.settings}>
@@ -373,6 +410,11 @@ const EditProfile = (props) => {
             marginBottom: 20,
           }}>
           <TouchableOpacity
+          onPress={() => {
+            
+            uploadImage(selectedImage)
+            
+          }}
             style={{
               width: "100%",
               height: 50,

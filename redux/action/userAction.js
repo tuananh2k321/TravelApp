@@ -80,3 +80,18 @@ export const updatePasswordByEmail = async (email, newPassword) => {
         throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
     }
 };
+
+export const updateUser = async (email, avatar, name, lastName, phoneNumber, dob) => {
+    try {
+        const res = await AxiosIntance().post("user/api/update?email="+email, {
+            avatar: avatar,
+            name: name,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            dob: dob,
+        });
+        return res; // Trả về toàn bộ response, bạn có thể xử lý dữ liệu sau này
+    } catch (err) {
+        throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
+    }
+};

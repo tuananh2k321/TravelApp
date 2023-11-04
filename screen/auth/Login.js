@@ -169,7 +169,7 @@ export default Login = props => {
       navigation.navigate('BottomTab');
 
       // Hiển thị thông báo thành công
-      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+      //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
     } else {
       // Xử lý trường hợp đăng nhập thất bại
       //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);

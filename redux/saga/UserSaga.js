@@ -1,6 +1,6 @@
 import { takeEvery, put, fork, call, takeLatest, takeLeading } from 'redux-saga/effects';
-import { addUser, setToken, addData, addDataRegister, addDataSendOTP, addDataVerifyOTP, addDataChangePassword } from '../reducer/UserSlice';
-import {login, register, sendEmail, sendOTP, verifyOTP, updatePasswordByEmail, sendEmailChangePassword} from '../action/userAction'
+import { addUser, setToken, addData, addDataRegister, addDataSendOTP, addDataVerifyOTP, addDataChangePassword, addDataEditProfile } from '../reducer/UserSlice';
+import {login, register, sendEmail, sendOTP, verifyOTP, updatePasswordByEmail, sendEmailChangePassword, updateUser} from '../action/userAction'
 
 
 // Các worker saga
@@ -115,6 +115,32 @@ function* doWatchSendMailChangePassword(action) {
     }  
 }
 
+function* doEditProfile(action) {
+    try {
+        console.log("doEditProfile")
+        const [email, url, name, lastName, phoneNumber, dob] = action.payload
+        console.log("doEditProfile: "+action.payload)
+
+        const res = yield call(updateUser, email, url, name, lastName, phoneNumber, dob)
+        console.log("doEditProfile: "+JSON.stringify(res))
+
+        if (res.result) {
+            yield put(addUser(res.user))
+            console.log("doEditProfile addUser: ",res.user)
+
+            yield put(addDataEditProfile(res))
+            console.log("doEditProfile addDataEditProfile: ",res)
+
+        } else {
+            yield put(addData(res))
+            console.log("doEditProfile addData: ",JSON.stringify(res))
+        }
+        
+    } catch (err) {
+        console.error("Error in doEditProfile:", err);
+    }  
+}
+
 
 
 
@@ -150,9 +176,15 @@ function* watchUpdatePasswordByEmail() {
     yield takeLatest("CHANGE-PASSWORD", doUpdatePasswordByEmail)
 }
 
+
 function* watchSendMailChangePassword() {
     console.log("watchSendMailChangePassword")
     yield takeLatest("SEND-MAIL-CHANGE-PASSWORD", doWatchSendMailChangePassword)
+}
+
+function* watchEditProfile() {
+    console.log("watchEditProfile")
+    yield takeLatest("EDIT-PROFILE", doEditProfile)
 }
 
 
@@ -164,6 +196,7 @@ export default function* UserSaga() {
     yield fork(watchVerifyOTP)
     yield fork(watchUpdatePasswordByEmail)
     yield fork(watchSendMailChangePassword)
+    yield fork(watchEditProfile)
 }
 
 
