@@ -12,6 +12,18 @@ export const login = async (email, password) => {
     }
 };
 
+export const loginFB = async (email, name) => {
+    try {
+        const res = await AxiosIntance().post("user/api/loginFB", {
+            email: email,
+            name: name,
+        });
+        return res; // Trả về toàn bộ response, bạn có thể xử lý dữ liệu sau này
+    } catch (err) {
+        throw err; // Nếu có lỗi, ném ra lỗi để Redux Saga bắt
+    }
+};
+
 export const register = async (name, lastName, dob, phoneNumber, email, password) => {
     try {
         const res = await AxiosIntance().post("user/api/register", {

@@ -1,6 +1,6 @@
 import { takeEvery, put, fork, call, takeLatest, takeLeading } from 'redux-saga/effects';
 import { addUser, setToken, addData, addDataRegister, addDataSendOTP, addDataVerifyOTP, addDataChangePassword, addDataEditProfile } from '../reducer/UserSlice';
-import {login, register, sendEmail, sendOTP, verifyOTP, updatePasswordByEmail, sendEmailChangePassword, updateUser} from '../action/userAction'
+import {login, register, sendEmail, sendOTP, verifyOTP, updatePasswordByEmail, sendEmailChangePassword, updateUser, loginFB} from '../action/userAction'
 
 
 // Các worker saga
@@ -141,7 +141,33 @@ function* doEditProfile(action) {
     }  
 }
 
+function* doLoginFB(action) {
+    try {
+        console.log("doLogin")
+        const [email, name] = action.payload
+        console.log("doLoginFB : "+email+name)
 
+        const res = yield call(loginFB, email, name)
+        console.log("login: "+JSON.stringify(res))
+
+        if (res.result) {
+            yield put(addData(res))
+            console.log("doLoginFB addData: ",JSON.stringify(res))
+
+            yield put(addUser(res.user))
+            console.log("doLoginFB addUser: ",res.user)
+
+            yield put(setToken(res.token))
+            console.log("doLoginFB setToken: ",res.token)
+        } else {
+            yield put(addData(res))
+            console.log("doLoginFB addData: ",JSON.stringify(res))
+        }
+        
+    } catch (err) {
+        console.error("Error in doLogin:", err);
+    }  
+}
 
 
   // Các watcher saga
@@ -187,6 +213,11 @@ function* watchEditProfile() {
     yield takeLatest("EDIT-PROFILE", doEditProfile)
 }
 
+function* watchLoginFB() {
+    console.log("watchLoginFB")
+    yield takeLatest("LOGIN-FB", doLoginFB)
+}
+
 
 export default function* UserSaga() {
     yield fork(watchRegister)
@@ -197,6 +228,7 @@ export default function* UserSaga() {
     yield fork(watchUpdatePasswordByEmail)
     yield fork(watchSendMailChangePassword)
     yield fork(watchEditProfile)
+    yield fork(watchLoginFB)
 }
 
 

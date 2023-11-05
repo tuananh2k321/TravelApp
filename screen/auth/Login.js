@@ -20,15 +20,33 @@ import {
 } from '../../constant/Validation';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../Loading'
+
 
 export default Login = props => {
+
+  const {navigation} = props;
+  const [isHidePassword, setIsHidePassword] = useState(true);
+  const [errorEmail, setErrorEmail] = useState(true);
+  const [errorPassword, setErrorPassword] = useState(true);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isValid, setIsvalid] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false)
+  const disPath = useDispatch();
+
+  const [messageLogin, setMessageLogin] = useState('');
 
   // LOGIN FACEBOOK
   async function onFacebookButtonPress() {
     try {
       // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-  
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
+      
       if (result.isCancelled) {
         throw new Error('User cancelled the login process');
       }
@@ -46,13 +64,18 @@ export default Login = props => {
           throw new Error('Error fetching user info: ' + error.toString());
         } else {
           console.log('User info:', result);
+          disPath({
+            type: "LOGIN-FB",
+            payload: [result.id, result.name]
+          })
+          setIsLoading(true)
         }
       };
   
       const infoRequest = new GraphRequest('/me', {
         parameters: {
           fields: {
-            string: 'id,name,picture.type(large)'
+            string: 'id,name,picture'
           }
         }
       }, responseInfoCallback);
@@ -105,20 +128,7 @@ export default Login = props => {
     }
   }
 
-  const {navigation} = props;
-  const [isHidePassword, setIsHidePassword] = useState(true);
-  const [errorEmail, setErrorEmail] = useState(true);
-  const [errorPassword, setErrorPassword] = useState(true);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isValid, setIsvalid] = useState(false);
-
-  const disPath = useDispatch();
-
-  const [messageLogin, setMessageLogin] = useState('');
 
   //const [user, setUser] = useState(null)
   const user = useSelector(state => state.user);
@@ -161,7 +171,7 @@ export default Login = props => {
     // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
     if (user.data.result) {
       console.log('Login user: ' + JSON.stringify(user.user));
-
+      setIsLoading(false)
       // Lưu token vào AsyncStorage
       AsyncStorage.setItem('token', user.token);
 
@@ -176,6 +186,12 @@ export default Login = props => {
       setMessageLogin(user.data.message);
     }
   }, [user]);
+
+  if (isLoading) {
+    return (
+      <Loading></Loading>
+    )
+  }
 
   return (
     <KeyboardAwareScrollView>
