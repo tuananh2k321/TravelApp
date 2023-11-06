@@ -6,12 +6,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-   Modal,
-   Button,
+  Modal,
+  Button,
 } from 'react-native';
-import React, {useState,useEffect} from 'react';
-import {SIZES, COLOR, ICON} from '../../../constant/Themes';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React, { useState, useEffect } from 'react';
+import { SIZES, COLOR, ICON } from '../../../constant/Themes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
@@ -20,8 +20,8 @@ import ItemLink from '../../../component/Tab_item/Item_link';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 
 export default TourDetail = (props) => {
-  const { navigation,route} = props;
-  const {params} = route;
+  const { navigation, route } = props;
+  const { params } = route;
   const [tourName, settourName] = useState("")
   const [adultPrice, setadultPrice] = useState("")
   const [childrenPrice, setchildrenPrice] = useState("")
@@ -47,7 +47,7 @@ export default TourDetail = (props) => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-  const sampleText =description;
+  const sampleText = description;
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
   //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
@@ -62,41 +62,41 @@ export default TourDetail = (props) => {
   //     // Thêm các hình ảnh khác tại đây
   //   ];
   let images = tourImage;
-    useEffect(() => {
-      try {
-          const getTour = async () => {
-              const response = await AxiosIntance().get("tour/api/"+ params.id +"/detail");
-              if (response.result == true) {
-                settourName(response.tour.tourName)
-                setadultPrice(response.tour.adultPrice)
-                setchildrenPrice(response.tour.childrenPrice)
-                setadultAge(response.tour.adultAge)
-                setchildrenAge(response.tour.childrenAge)
-                setdepartmentPlace(response.tour.departmentPlace)
-                setdepartmentDate(response.tour.departmentDate)
-                setlimitedDay(response.tour.limitedDay)
-                setoperatingDay(response.tour.operatingDay)
-                setlimitedPerson(response.tour.limitedPerson)
-                setoffer(response.tour.offer)
-                setvehicle(response.tour.vehicle)
-                setrating(response.tour.rating)
-                setisdomain(response.tour.isdomain)
-                sethotel_id(response.datahotel)
-                settourGuide_id(response.dataTourGuide)
-                setdestination_id(response.dataDestination)
-                setdescription(response.tour.description)
-                settourImage(response.tour.tourImage)
+  useEffect(() => {
+    try {
+      const getTour = async () => {
+        const response = await AxiosIntance().get("tour/api/" + params.id + "/detail");
+        if (response.result == true) {
+          settourName(response.tour.tourName)
+          setadultPrice(response.tour.adultPrice)
+          setchildrenPrice(response.tour.childrenPrice)
+          setadultAge(response.tour.adultAge)
+          setchildrenAge(response.tour.childrenAge)
+          setdepartmentPlace(response.tour.departmentPlace)
+          setdepartmentDate(response.tour.departmentDate)
+          setlimitedDay(response.tour.limitedDay)
+          setoperatingDay(response.tour.operatingDay)
+          setlimitedPerson(response.tour.limitedPerson)
+          setoffer(response.tour.offer)
+          setvehicle(response.tour.vehicle)
+          setrating(response.tour.rating)
+          setisdomain(response.tour.isdomain)
+          sethotel_id(response.datahotel)
+          settourGuide_id(response.dataTourGuide)
+          setdestination_id(response.dataDestination)
+          setdescription(response.tour.description)
+          settourImage(response.tour.tourImage)
 
-              } else {
-                  ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
-              }
-          }
-          getTour();
-
-          return () => { }
-      } catch (error) {
-          console.log('errrrrrrror', error)
+        } else {
+          ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
+        }
       }
+      getTour();
+
+      return () => { }
+    } catch (error) {
+      console.log('errrrrrrror', error)
+    }
 
   }, []);
   return (
@@ -107,8 +107,8 @@ export default TourDetail = (props) => {
           backgroundColor: COLOR.white,
         }}>
         <ImageBackground
-          source={{uri: tourImage[0] !=="" ? tourImage[0] : undefined}}
-          style={{width: SIZES.width, height: 300, padding: 15}}>
+          source={{ uri: tourImage[0] !== "" ? tourImage[0] : undefined }}
+          style={{ width: SIZES.width, height: 300, padding: 15 }}>
           <View
             style={{
               justifyContent: 'space-between',
@@ -123,34 +123,34 @@ export default TourDetail = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-               <FontAwesome5 name={"arrow-left"} size={16} color="#000000" />
+              <FontAwesome5 name={"arrow-left"} size={16} color="#000000" />
             </TouchableOpacity>
 
-            <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 50,
-                backgroundColor: COLOR.white,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight:10
-              }}>
-               <FontAwesome5 name={"share-alt"} size={16} color="#000000" />
-            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <View
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 50,
+                  backgroundColor: COLOR.white,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 10
+                }}>
+                <FontAwesome5 name={"share-alt"} size={16} color="#000000" />
+              </View>
 
-            <View
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 50,
-                backgroundColor: COLOR.white,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-               <FontAwesome name={"heart-o"} size={16} color="#000000" />
-            </View>
+              <View
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 50,
+                  backgroundColor: COLOR.white,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <FontAwesome name={"heart-o"} size={16} color="#000000" />
+              </View>
             </View>
           </View>
         </ImageBackground>
@@ -169,14 +169,14 @@ export default TourDetail = (props) => {
             {tourName}
           </Text>
 
-          <View style={{flexDirection: 'row'}}>
-            {Array.from({length: 5}).map((_, index) => {
+          <View style={{ flexDirection: 'row' }}>
+            {Array.from({ length: 5 }).map((_, index) => {
               if (index < 3) {
                 return (
                   <Image
                     key={`star-${index}`}
                     source={ICON.star_yellow}
-                    style={{width: 18, height: 18}}
+                    style={{ width: 18, height: 18 }}
                   />
                 );
               } else {
@@ -184,7 +184,7 @@ export default TourDetail = (props) => {
                   <Image
                     key={`star-${index}`}
                     source={ICON.star}
-                    style={{width: 18, height: 18}}
+                    style={{ width: 18, height: 18 }}
                   />
                 );
               }
@@ -277,13 +277,13 @@ export default TourDetail = (props) => {
             Bao gồm
           </Text>
           {/* Bao gồm */}
-          <View style={{flexDirection: 'column'}}>
+          <View style={{ flexDirection: 'column' }}>
             <ItemIncluded icon={"bus-alt"} title={vehicle} content={"Phương tiện di chuyển"} />
             <ItemIncluded icon={"calendar-alt"} title={departmentDate} content={"Ngày khởi hành của tour du lịch"} />
             <ItemIncluded icon={"child"} title={limitedPerson} content={"Tối thiểu người đi tuor"} />
             <ItemIncluded icon={"clock"} title={limitedDay} content={"Thời gian đi của tour du lịch"} />
             <ItemIncluded icon={"calendar-alt"} title={operatingDay} content={"Khoản thời gian mà tour còn hoạt động"} />
-            
+
           </View>
 
           <View
@@ -331,11 +331,11 @@ export default TourDetail = (props) => {
               marginTop: 30,
             }}
           />
-                 {/* checkin */}
-                 <View style={{flexDirection: 'row', marginTop: 20}}>
-            <View style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
+          {/* checkin */}
+          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
               <Image
-                source={{uri: tourImage[0] !=="" ? tourImage[0] : undefined}}
+                source={{ uri: tourImage[0] !== "" ? tourImage[0] : undefined }}
                 style={{
                   height: 200,
                   resizeMode: 'cover',
@@ -345,13 +345,13 @@ export default TourDetail = (props) => {
               />
 
               <Image
-                source={{uri: tourImage[1] !=="" ? tourImage[1] : undefined}}
-                style={{height: 200, resizeMode: 'cover', borderRadius: 10}}
+                source={{ uri: tourImage[1] !== "" ? tourImage[1] : undefined }}
+                style={{ height: 200, resizeMode: 'cover', borderRadius: 10 }}
               />
             </View>
 
             <Image
-              source={{uri: tourImage[2] !=="" ? tourImage[2] : undefined}}
+              source={{ uri: tourImage[2] !== "" ? tourImage[2] : undefined }}
               style={{
                 height: 410,
                 resizeMode: 'cover',
@@ -360,7 +360,7 @@ export default TourDetail = (props) => {
               }}
             />
           </View>
-              {/* seeall image */}
+          {/* seeall image */}
           <TouchableOpacity onPress={() => setModalVisible(true)}
             style={{
               flexDirection: 'row',
@@ -368,8 +368,8 @@ export default TourDetail = (props) => {
               height: 50,
               borderRadius: 6,
               marginTop: 20,
-              borderWidth:1,
-              borderColor:'#000000',
+              borderWidth: 1,
+              borderColor: '#000000',
               backgroundColor: COLOR.white,
               justifyContent: 'center',
               alignItems: 'center',
@@ -386,19 +386,19 @@ export default TourDetail = (props) => {
               visible={isModalVisible}
               transparent={true}
               animationType="slide"
-              >
+            >
               <View style={styles.modalContainer}>
                 <Button title="Đóng" onPress={() => setModalVisible(false)} />
                 <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.imageContainer}>
-                  {tourImage.map((image,index) => (
-                    <Image
-                    key={index}
-                      source={{uri: image !=="" ? image : undefined}}
-                      style={styles.image}
-                    />
-                  ))}
-                </View>
+                  <View style={styles.imageContainer}>
+                    {tourImage.map((image, index) => (
+                      <Image
+                        key={index}
+                        source={{ uri: image !== "" ? image : undefined }}
+                        style={styles.image}
+                      />
+                    ))}
+                  </View>
                 </KeyboardAwareScrollView>
               </View>
             </Modal>
@@ -411,9 +411,9 @@ export default TourDetail = (props) => {
             }}
           />
           {/* ItemLink */}
-          <ItemLink dulieu={hotel_id} screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={hotel_id.hotelName} content={hotel_id.description}/>
-          <ItemLink dulieu={destination_id} screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={destination_id.destinationName} content={destination_id.content}/>
-          <ItemLink dulieu={tourGuide_id} screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={tourGuide_id.name} content={tourGuide_id.phoneNumber}/>
+          <ItemLink dulieu={hotel_id} screen={"HotelDetail"} icon={"hotel"} tile={"Khách sạn"} name={hotel_id.hotelName} content={hotel_id.description} />
+          {/* <ItemLink dulieu={destination_id} screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={destination_id.destinationName} content={destination_id.content}/> */}
+          <ItemLink dulieu={tourGuide_id} screen={"TourGuideDetail"} icon={"child"} tile={"Hướng dẫn viên"} name={tourGuide_id.name} content={tourGuide_id.phoneNumber} />
           <View
             style={{
               borderWidth: 1,
@@ -422,10 +422,10 @@ export default TourDetail = (props) => {
             }}
           />
 
-          
-     
 
-          
+
+
+
 
           <Text
             style={{
@@ -447,7 +447,7 @@ export default TourDetail = (props) => {
               marginBottom: 20,
               backgroundColor: 'white',
             }}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <Image
                 source={{
                   uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
@@ -459,7 +459,7 @@ export default TourDetail = (props) => {
                   marginRight: 20,
                 }}
               />
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 18,
@@ -474,13 +474,13 @@ export default TourDetail = (props) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  {Array.from({length: 5}).map((_, index) => {
+                  {Array.from({ length: 5 }).map((_, index) => {
                     if (index < 3) {
                       return (
                         <Image
                           key={`star-${index}`}
                           source={ICON.star_yellow}
-                          style={{width: 16, height: 16}}
+                          style={{ width: 16, height: 16 }}
                         />
                       );
                     } else {
@@ -488,7 +488,7 @@ export default TourDetail = (props) => {
                         <Image
                           key={`star-${index}`}
                           source={ICON.star}
-                          style={{width: 16, height: 16}}
+                          style={{ width: 16, height: 16 }}
                         />
                       );
                     }
@@ -507,29 +507,29 @@ export default TourDetail = (props) => {
               ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq weqweq111111111111111111111111
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: 20}}>
-              <View style={{flexDirection:'row',justifyContent:'flex-start'}}>
-                <Text style={{color:COLOR.detail,fontSize:14,fontWeight:'400'}}>
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400' }}>
                   Đã đăng
                 </Text>
-                <Text style={{color:COLOR.detail,fontSize:14,fontWeight:'400',marginLeft:10}}>
+                <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
                   10/10/2023
                 </Text>
               </View>
 
             </View>
-           
+
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={{
               flexDirection: 'row',
               width: 200,
               height: 50,
               borderRadius: 6,
               marginTop: 10,
-              borderWidth:1,
-              borderColor:'#000000',
+              borderWidth: 1,
+              borderColor: '#000000',
               backgroundColor: COLOR.white,
               justifyContent: 'center',
               alignItems: 'center',
@@ -544,38 +544,38 @@ export default TourDetail = (props) => {
             </Text>
           </TouchableOpacity>
 
-          
+
         </View>
         <View
-            style={{
-              borderWidth: 1,
-              borderColor: COLOR.lightBlack2,
-              marginTop: 30,
-              marginHorizontal:15
-            }}
-          />
-          {/* độ tuổi qui định */}
-          <View style={{flexDirection:'column',justifyContent:'flex-start',paddingHorizontal:15,paddingVertical:20}}>
-            <Text style={{fontSize:18,color:COLOR.title,fontWeight:'600'}}>
-              Độ tuổi qui định
+          style={{
+            borderWidth: 1,
+            borderColor: COLOR.lightBlack2,
+            marginTop: 30,
+            marginHorizontal: 15
+          }}
+        />
+        {/* độ tuổi qui định */}
+        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', paddingHorizontal: 15, paddingVertical: 20 }}>
+          <Text style={{ fontSize: 18, color: COLOR.title, fontWeight: '600' }}>
+            Độ tuổi qui định
+          </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 7 }}>
+            <Text style={{ fontSize: 14, color: COLOR.detail, fontWeight: '400' }}>
+              Trẻ em: {childrenAge} tuổi
             </Text>
-            <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
-              <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
-                Trẻ em: {childrenAge} tuổi
-              </Text>
-              <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
-                {childrenPrice}/Trẻ em
-              </Text>
-            </View>
-            <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
-              <Text style={{fontSize:14,color:COLOR.detail,fontWeight:'400'}}>
-                Người lớn: {adultAge} tuổi
-              </Text>
-              <Text style={{fontSize:20,color:COLOR.primary,fontWeight:'600'}}>
-                {adultPrice}/Người lớn
-              </Text>
-            </View>
+            <Text style={{ fontSize: 20, color: COLOR.primary, fontWeight: '600' }}>
+              {childrenPrice}/Trẻ em
+            </Text>
           </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 7 }}>
+            <Text style={{ fontSize: 14, color: COLOR.detail, fontWeight: '400' }}>
+              Người lớn: {adultAge} tuổi
+            </Text>
+            <Text style={{ fontSize: 20, color: COLOR.primary, fontWeight: '600' }}>
+              {adultPrice}/Người lớn
+            </Text>
+          </View>
+        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -583,11 +583,11 @@ export default TourDetail = (props) => {
             paddingVertical: 20,
             paddingHorizontal: 10,
           }}>
-          
+
           <TouchableOpacity
             style={{
               flex: 1,
-              height:52,
+              height: 52,
               backgroundColor: COLOR.primary,
               justifyContent: 'center',
               alignItems: 'center',

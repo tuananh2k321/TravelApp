@@ -28,7 +28,6 @@ const Favorite = (props) => {
       const listData = await response.favorite
       console.log('listData', listData)
       setData(listData)
-      console.log("data", data)
 
     } catch (error) {
       console.log('error>>>', error)
