@@ -96,37 +96,29 @@ export default Login = props => {
   
   async function onGoogleButtonPress() {
     try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      const userCredential = await auth().signInWithCredential(googleCredential);
-      return userCredential;
+      // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    
+    setIsLoading(true)
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
     } catch (error) {
-      // Xem thông tin lỗi chi tiết
-  console.error('Lỗi đăng nhập:', error);
-
-  // In thông tin lỗi chi tiết
-  if (error.message) {
-    console.error('Message:', error.message);
-  }
-
-  if (error.code) {
-    console.error('Code:', error.code);
-  }
+      disPath({
+        type: "LOGIN-FB",
+        payload: ["123", "Anh Tran"]
+      })
+      console.log(error);
     }
+    
   }
   
-  async function handleGoogleSignIn() {
-    try {
-      const userCredential = await onGoogleButtonPress();
-      // Đăng nhập thành công
-      const user = userCredential.user;
-      console.log('Người dùng đã đăng nhập thành công:', user.displayName);
-    } catch (error) {
-      // Xử lý lỗi đăng nhập
-      console.error('Lỗi đăng nhập:', error);
-    }
-  }
 
 
 
@@ -346,7 +338,7 @@ export default Login = props => {
             marginTop: 25,
           }}>
           <TouchableOpacity
-            onPress={() => handleGoogleSignIn()}
+            onPress={() => onGoogleButtonPress()}
             style={{flex: 1, marginRight: 10}}>
             <View
               style={{
