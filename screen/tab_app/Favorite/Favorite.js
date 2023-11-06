@@ -22,10 +22,13 @@ const Favorite = (props) => {
   const getApi = async () => {
     try {
       const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" + "650712a41cc623753c664aa2");
-      console.log('response', response)
-      const listData = await response?.favorite
+
+      console.log('response', response.favorite)
+
+      const listData = await response.favorite
       console.log('listData', listData)
       setData(listData)
+      console.log("data", data)
 
     } catch (error) {
       console.log('error>>>', error)
@@ -85,18 +88,18 @@ const Favorite = (props) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.wishlist}>Yêu thích</Text>
       <View style={styles.wishlist_list}>
-        {isLoading ? (<ActivityIndicator />) : (
-          <FlatList style={{ bottom: 20 }}
-            data={data}
-            contentContainerStyle={{ flexGrow: 1 }}
-            renderItem={({ item }) => <Item_wishlist data={item} navigation={navigation} handleDelete={() => deleteHandle(item._id)} />}
-            keyExtractor={item => item._id}
-            showsVerticalScrollIndicator={false}
-            removeClippedSubviews={true}
+        {/* {isLoading ? (<ActivityIndicator />) : ( */}
+        <FlatList style={{ bottom: 20 }}
+          data={data}
+          contentContainerStyle={{ flexGrow: 1 }}
+          renderItem={({ item }) => <Item_wishlist data={item} navigation={navigation} handleDelete={() => deleteHandle(item._id)} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+          removeClippedSubviews={true}
 
-          >
-          </FlatList>
-        )}
+        >
+        </FlatList>
+        {/* )} */}
 
         {/* <SwipeListView
           showsVerticalScrollIndicator={false}
