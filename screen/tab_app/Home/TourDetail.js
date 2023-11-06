@@ -62,6 +62,11 @@ export default TourDetail = (props) => {
   //     // Thêm các hình ảnh khác tại đây
   //   ];
   let images = tourImage;
+
+  const addFavorite = () => {
+
+  }
+
   useEffect(() => {
     try {
       const getTour = async () => {
