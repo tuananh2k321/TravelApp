@@ -263,6 +263,9 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    
+    // facebook
+    implementation 'com.facebook.android:facebook-android-sdk:[8,9)' 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-vector-icons')

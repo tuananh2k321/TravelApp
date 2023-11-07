@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TravelApp</string>
+    <string name="facebook_app_id">3701014453514365</string>
+<string name="fb_login_protocol_scheme">fb1234</string>
+<string name="facebook_client_token">415598c882863df820e4fb8a7523cc67</string>
 </resources>
+
+
+
+

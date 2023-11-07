@@ -18,6 +18,7 @@ import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import Loading from '../../Loading';
 
 export default TourDetail = (props) => {
   const { navigation,route} = props;
@@ -47,6 +48,7 @@ export default TourDetail = (props) => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
+  const [isLoading, setIsLoading] = useState(true);
   const sampleText =description;
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
@@ -86,6 +88,7 @@ export default TourDetail = (props) => {
                 setdestination_id(response.dataDestination)
                 setdescription(response.tour.description)
                 settourImage(response.tour.tourImage)
+                setIsLoading(false);
 
               } else {
                   ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
@@ -100,7 +103,12 @@ export default TourDetail = (props) => {
 
   }, []);
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+    <>
+    {
+      isLoading == true ? 
+      (Loading) : 
+      (
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <SafeAreaView
         style={{
           width: SIZES.width,
@@ -422,11 +430,6 @@ export default TourDetail = (props) => {
             }}
           />
 
-          
-     
-
-          
-
           <Text
             style={{
               fontSize: 18,
@@ -584,7 +587,7 @@ export default TourDetail = (props) => {
             paddingHorizontal: 10,
           }}>
           
-          <TouchableOpacity
+          <TouchableOpacity onPress={() => navigation.navigate('Detail_Booking',{id: params.id, childrenPrice: childrenPrice, adultPrice: adultPrice, image: tourImage[0], tourName: tourName, limitedPerson: limitedPerson})}
             style={{
               flex: 1,
               height:52,
@@ -606,6 +609,9 @@ export default TourDetail = (props) => {
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>
+      )
+    }
+    </>
   );
 };
 const styles = StyleSheet.create({

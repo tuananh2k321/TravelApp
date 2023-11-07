@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   Image,
@@ -6,17 +6,48 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
-import UITextInput from '../component/UITextInput';
-import UIButtonPrimary from '../component/UIButtonPrimary';
+import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import UITextInput from '../../component/UITextInput';
+import UIButtonPrimary from '../../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {validateEmail, validatePhoneNumber} from '../constant/Validation';
+import { validatePassword, validateEmail } from '../../constant/Validation';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-export default ForgetPassword = props => {
-  const {navigation} = props;
+export default NewPassword = (props) => {
+  const {navigation} = props
+  const [isHidePassword, setIsHidePassword] = useState(true);
+  const [errorPassword, setErrorPassword] = useState(true);
+  const [ password, setPassword] = useState('');
+  const [ email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState(true);
-  const [errorPhone, setErrorPhone] = useState(true);
+
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+
+  useEffect(() => {
+    if (user.dataChangePassword.result) {
+      //ToastAndroid.show('Đổi mật khẩu thành công!', ToastAndroid.SHORT);
+      navigation.navigate('Login')
+    }
+  },[user])
+
+  const btnChangePassword = () => {
+    try {
+      if (errorPassword == true && errorEmail == true) {
+        dispatch({
+          type: 'CHANGE-PASSWORD',
+          payload: [email, password]
+        })
+      } else {
+
+      }
+    } catch (err) {
+
+    }
+  }
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -29,7 +60,7 @@ export default ForgetPassword = props => {
         }}>
         <TouchableOpacity
           style={{position: 'absolute', top: 15, left: 10}}
-          onPress={() => navigation.navigate('Login')}>
+          onPress={() => navigation.pop()}>
           <Image
             source={ICON.left}
             style={{
@@ -48,7 +79,7 @@ export default ForgetPassword = props => {
             marginTop: 20,
             textAlign: 'center',
           }}>
-          Quên mật khẩu
+          Tạo mật khẩu mới
         </Text>
 
         <View style={{width: 300, alignSelf: 'center'}}>
@@ -60,8 +91,7 @@ export default ForgetPassword = props => {
               color: COLOR.detail,
               marginTop: 15,
             }}>
-            Nhập email hoặc điện thoại của bạn, chúng tôi sẽ gửi mã xác minh để
-            đặt lại mật khẩu của bạn
+            Giữ an toàn cho tài khoản của bạn bằng cách tạo một mật khẩu mạnh
           </Text>
         </View>
 
@@ -80,6 +110,7 @@ export default ForgetPassword = props => {
           borderError={errorEmail}
           onChangeText={text => {
             setErrorEmail(validateEmail(text));
+            setEmail(text)
           }}
         />
 
@@ -101,34 +132,32 @@ export default ForgetPassword = props => {
             color: COLOR.detail,
             marginTop: 20,
           }}>
-          Phone Number
+          New Password
         </Text>
 
-        <UITextInput
-          hintText="Nhập sổ điện thoại của bạn"
-          keyboardType="numeric"
-          borderError={errorPhone}
+        <UITextInput hintText="Mật khẩu mới"  isIconRight = {true} icon = {ICON.eye}
+          isTextEntry={isHidePassword}
+          onPress={() => setIsHidePassword(!isHidePassword)}
+          borderError={errorPassword}
           onChangeText={text => {
-            setErrorPhone(validatePhoneNumber(text));
+            setErrorPassword(validatePassword(text));
+            setPassword(text)
           }}
         />
 
-        {!errorPhone && (
+{!errorPassword && (
           <Text
             style={{
               fontSize: 14,
               fontWeight: '400',
               color: 'red',
             }}>
-            Số điện thoại không hợp lệ !
+            ít nhất 8 ký tự, ít nhất một chữ cái viết hoa, viết thường,  một số!
           </Text>
         )}
 
         <View style={{marginTop: 30}}>
-          <UIButtonPrimary
-            text="Yêu cầu mã"
-            onPress={() => navigation.navigate('VerifyCode2')}
-          />
+          <UIButtonPrimary text="Xác Nhận" onPress={() => btnChangePassword()}/>
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>

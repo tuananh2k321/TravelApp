@@ -68,3 +68,36 @@ export const validateDateOfBirth = (dateOfBirth) => {
   
   return true;
 }
+// NAME
+export const isValidName = (name)  => {
+  return (
+    name.length > 0
+  )
+}
+
+// QUANTITY
+export const isValidQuantity = (quantity)  => {
+  return (
+    quantity.length > 0
+  )
+}
+// NUMBER ID
+export const isValidNumberId = (numberID)  => {
+  return (
+    numberID.length > 10
+  )
+}
+
+// CVV
+export const isValidCVV = (cvv)  => {
+  return (
+    cvv.length == 3
+  )
+}
+
+// Limit person
+export const isLimitPerson = (quantity,limit)  => {
+  return (
+  quantity <= limit
+  )
+}

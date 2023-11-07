@@ -1,10 +1,15 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import LinearGradient from 'react-native-linear-gradient';
+const windowWidth = Dimensions.get('window').width - 90;
 
 const Payment_Method = (props) => {
-    const {navigation} = props;
+    const { navigation, route } = props;
+    const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
+    let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
+    let count = Number(adult) + Number(children);
+    const [totalPrice, settotalPrice] = useState(price);
+    const [quantity, setQuantity] = useState(count);
     const chooses = [
         {
             id: 1,
@@ -16,25 +21,28 @@ const Payment_Method = (props) => {
             name: 'Credit card/debit',
             image: 'https://firebasestorage.googleapis.com/v0/b/onlinemusic-19f2b.appspot.com/o/img_card1.png?alt=media&token=63ed1d35-b3de-411e-960c-52c93d79f1b6'
         },
-        // {
-        //     id: 3,
-        //     name: 'Ví điện tử',
-        // },
     ]
-    const [selectedRadio, setSelectedRadio] = useState(1)
+    const [selectedRadio, setSelectedRadio] = useState(1);
+
+    const onPaymentMethod = () => {
+        if (selectedRadio == 1) {
+            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+        }
+        else {
+            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+        }
+    }
     return (
         <View style={styles.container}>
-            <View style={styles.groupHeader}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={20} color="#000000" />
-                </TouchableOpacity>
-                <Text style={styles.header}>Xác nhận và trả tiền</Text>
-            </View>
             <View style={styles.groupName}>
-                <Image style={styles.image} source={require('../assets/img/img_payment_method.png')} />
+                <Image style={styles.image} source={{uri: image}} resizeMode='stretch' />
                 <View style={{ marginStart: 10 }}>
-                    <Text style={styles.name}>Koh Rong Samloem</Text>
-                    <Text style={styles.order}>Order number #837nx38</Text>
+                    <Text style={styles.name}>
+                        {
+                            tourName.length > 40 ? tourName.slice(0,90) + "..." : tourName
+                        }
+                    </Text>
+                    <Text style={styles.order}>Order number #{id}</Text>
                 </View>
             </View>
 
@@ -44,30 +52,30 @@ const Payment_Method = (props) => {
                     <Text style={[styles.totalPrice, { fontSize: 10 }]}>(incl VAT)</Text>
                 </View>
                 <View style={styles.groupPrice}>
-                    <Text style={styles.money}>$1200/</Text>
-                    <Text style={[styles.money, { fontWeight: '400' }]}>2Người</Text>
+                    <Text style={styles.money}>{totalPrice}/</Text>
+                    <Text style={[styles.money, { fontWeight: '400' }]}>{quantity}Người</Text>
                 </View>
 
             </View>
 
             {
-                chooses.map((item, index)=> <TouchableOpacity 
-                key = {index}
-                style={styles.card} onPress={() => setSelectedRadio(item.id)}>
-                <View style={styles.groupCardLeft}>
-                    <Image style={styles.imageCard} source={{uri: item.image}} />
-                    <Text style={styles.creditCard}>{item.name}</Text>
-                </View>
-                <View style={styles.radio}> 
-                    {
-                        selectedRadio == item.id ? <View style={styles.radioBg}></View> : null
-                    }
-                </View>
-            </TouchableOpacity>)
+                chooses.map((item, index) => <TouchableOpacity
+                    key={index}
+                    style={[styles.card, { borderColor: selectedRadio == item.id ? '#000000' : '#00000026' }]} onPress={() => setSelectedRadio(item.id)}>
+                    <View style={styles.groupCardLeft}>
+                        <Image style={styles.imageCard} source={{ uri: item.image }} />
+                        <Text style={styles.creditCard}>{item.name}</Text>
+                    </View>
+                    <View style={styles.radio}>
+                        {
+                            selectedRadio == item.id ? <View style={styles.radioBg}></View> : null
+                        }
+                    </View>
+                </TouchableOpacity>)
             }
 
             <View style={styles.groupButton}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Payment')}>
+                <TouchableOpacity style={styles.button} onPress={onPaymentMethod}>
                     <Text style={styles.textButton}>Quy trình thanh toán</Text>
                 </TouchableOpacity>
             </View>
@@ -90,13 +98,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     header: {
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: '600',
         lineHeight: 18,
         color: '#000000',
         marginStart: 30
     },
     name: {
+        width: windowWidth,
         fontSize: 14,
         fontWeight: '600',
         lineHeight: 20,
@@ -185,7 +194,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 91,
         borderRadius: 15,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: '#00000026',
         paddingHorizontal: 20,
         paddingVertical: 32,
