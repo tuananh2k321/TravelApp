@@ -39,14 +39,14 @@ export default ItemPopular
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 5,
-        width: 190,
+        width: 175,
         height: 225,
         borderWidth: 0.19,
         borderRadius: 6,
         borderColor: 'gray',
     },
     image:{
-        width: 190,
+        width: 175,
         height: 150,
         alignSelf: 'center',
         borderTopLeftRadius: 6,

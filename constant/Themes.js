@@ -67,6 +67,8 @@ export const ICON = {
     bus: require('../assets/icon/directions_bus_FILL1_wght400_GRAD0_opsz48.png'),
     clock: require('../assets/icon/schedule_FILL1_wght400_GRAD0_opsz48.png'),
     camera: require('../assets/icon/icons8-camera-50.png'),
+    deal: require('../assets/icon/dealsLight.png'),
+    deal_d: require('../assets/icon/dealdark.png'),
 }
 
 export const IMAGES = {

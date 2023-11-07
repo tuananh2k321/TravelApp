@@ -14,6 +14,7 @@ import HotelDetail from './tab_app/Home/HotelDetail';
 import DestinationDetail from './tab_app/Home/DestinationDetail';
 import TourGuideDetail from './tab_app/Home/TourGuideDetail';
 import SearchTourName from './tab_app/Home/SearchTourName';
+import Deal from './tab_app/Deal/Deal';
 
 
 const Tab = createBottomTabNavigator();
@@ -93,7 +94,10 @@ const BottomTab = () => {
             if (route.name === 'Home') {
               iconName = ICON.home
               label = 'Home'
-            } else if (route.name === 'Favorite') {
+            } else if (route.name === 'Deal') {
+              iconName = ICON.deal_d;
+              label = 'Deals'
+            }else if (route.name === 'Favorite') {
               iconName = ICON.heart;
               label = 'Favorite'
             } else if (route.name === 'Notification') {
@@ -172,6 +176,7 @@ const BottomTab = () => {
         })}
     >
       <Tab.Screen name="Home" component={StackHomes} />
+      <Tab.Screen name='Deal' component={Deal}/>
       <Tab.Screen name="Favorite" component={StackFavorites} />
       <Tab.Screen name="Notification" component={StackNotification} />
       <Tab.Screen name="Profile" component={StackProfile} />
