@@ -66,14 +66,17 @@ export default TourDetail = (props) => {
   //   ];
   let images = tourImage;
   const user = useSelector((state) => state.user);
+
+  // Yêu thích
   const [isLiked, setIsLiked] = useState(false);
   const handleLike = async () => {
     try {
       const tourId = params.id;
-      // const user_id = "650712a41cc623753c664aa2"
+      const user_id = "650712a41cc623753c664aa2"
       console.log("tour id", tourId);
       // Thực hiện cuộc gọi API bằng axios hoặc thư viện HTTP client khác
-      const response = await AxiosIntance.get(`favorite/api/${user}/${tourId}/addFavorite`);
+      const response = await AxiosIntance().get(`favorite/api/${user_id}/${tourId}/addFavorite`);
+      console.log("check response", response);
       // console.log("user: " + user);
       console.log("response", response)
       if (response.result === true) {
@@ -96,7 +99,7 @@ export default TourDetail = (props) => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get("tour/api/" + params.id + "/detail");
-        console.log("tour ", params.id)
+        // console.log("tour ", params.id)
         if (response.result == true) {
           settourName(response.tour.tourName)
           setadultPrice(response.tour.adultPrice)
