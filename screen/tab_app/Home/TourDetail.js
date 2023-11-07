@@ -18,6 +18,9 @@ import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import { useSelector } from 'react-redux';
+import { log } from 'console';
+import { set } from 'immer/dist/internal';
 
 export default TourDetail = (props) => {
   const { navigation, route } = props;
@@ -62,15 +65,38 @@ export default TourDetail = (props) => {
   //     // Thêm các hình ảnh khác tại đây
   //   ];
   let images = tourImage;
-
-  const addFavorite = () => {
-
+  const user = useSelector((state) => state.user);
+  const [isLiked, setIsLiked] = useState(false);
+  const handleLike = async () => {
+    try {
+      const tourId = params.id;
+      // const user_id = "650712a41cc623753c664aa2"
+      console.log("tour id", tourId);
+      // Thực hiện cuộc gọi API bằng axios hoặc thư viện HTTP client khác
+      const response = await AxiosIntance.get(`favorite/api/${user}/${tourId}/addFavorite`);
+      // console.log("user: " + user);
+      console.log("response", response)
+      if (response.result === true) {
+        // API đã thêm yêu thích thành công
+        setIsLiked(true);
+      } else {
+        // Xử lý lỗi hoặc thông báo cho người dùng
+        console.log("Thêm thất bại")
+      }
+    } catch (error) {
+      // Xử lý lỗi
+      console.log("error: " + error)
+    }
+    // useEffect(() => {
+    //   handleLike()
+    // }, [])
   }
 
   useEffect(() => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get("tour/api/" + params.id + "/detail");
+        console.log("tour ", params.id)
         if (response.result == true) {
           settourName(response.tour.tourName)
           setadultPrice(response.tour.adultPrice)
@@ -154,7 +180,17 @@ export default TourDetail = (props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <FontAwesome name={"heart-o"} size={16} color="#000000" />
+                <TouchableOpacity
+                  onPress={handleLike}
+                // style={[styles.heart, isLiked && styles.heartFilled]}
+                >
+                  <FontAwesome
+                    name={isLiked ? "heart" : "heart-o"}
+                    size={16}
+                    color={isLiked ? "red" : "#000000"} // Sử dụng màu đỏ khi yêu thích, màu đen khi chưa yêu thích
+                  />
+                </TouchableOpacity>
+
               </View>
             </View>
           </View>
@@ -629,5 +665,13 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     margin: 10,
+  },
+  heart: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+  },
+  heartFilled: {
+    backgroundColor: "#ff0000",
   },
 })
