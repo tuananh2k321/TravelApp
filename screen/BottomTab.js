@@ -71,7 +71,7 @@ const StackHomes = () => {
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       {/* stack booking */}
-      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("")}/>
+      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhập đặt tour")}/>
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")}/>
       <Stack.Screen name="AddCard" component={AddCard} />
