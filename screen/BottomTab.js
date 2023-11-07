@@ -23,6 +23,8 @@ import Booking_Successfully from './booking/Booking_Successfully';
 import Mybooking from './tab_app/Mybooking';
 
 import EditProfile from './tab_app/Profile/EditProfile'
+import Deal from './tab_app/Deal/Deal';
+import SearchTourName from './tab_app/Home/SearchTourName';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -71,6 +73,7 @@ const StackHomes = () => {
       <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
+      <Stack.Screen name='SearchTourName' component={SearchTourName}/>
       {/* stack booking */}
       <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("")}/>
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
@@ -133,7 +136,10 @@ const BottomTab = () => {
             if (route.name === 'Home') {
               iconName = ICON.home
               label = 'Home'
-            } else if (route.name === 'Favorite') {
+            } else if (route.name === 'Deal') {
+              iconName = ICON.deal_d;
+              label = 'Deal'
+            }else if (route.name === 'Favorite') {
               iconName = ICON.heart;
               label = 'Favorite'
             } else if (route.name === 'Notification') {
@@ -212,6 +218,7 @@ const BottomTab = () => {
         })}
     >
       <Tab.Screen name="Home" component={StackHomes} />
+      <Tab.Screen name='Deal' component={Deal}/>
       <Tab.Screen name="Favorite" component={StackFavorites} />
       <Tab.Screen name="Notification" component={StackNotification} />
       <Tab.Screen name="Profile" component={StackProfile} />
