@@ -29,41 +29,6 @@ const Payment = (props) => {
     }
   }, []);
 
-  const dataNe = [
-    {
-      _id: "1",
-      name: "THE",
-    },
-    {
-      _id: "2",
-      name: "THE",
-    },
-    {
-      _id: "3",
-      name: "THE",
-    },
-    {
-      _id: "4",
-      name: "THE",
-    },
-    {
-      _id: "5",
-      name: "THE",
-    },
-    {
-      _id: "6",
-      name: "THE",
-    },
-    {
-      _id: "7",
-      name: "THE",
-    },
-    {
-      _id: "8",
-      name: "THE",
-    },
-  ]
-
   const onDeleteCard = (cardID) => {
     return Alert.alert(
       "Gỡ thẻ?",
@@ -86,6 +51,7 @@ const Payment = (props) => {
       ]
     );
   };
+
   const onBooking = async () => {
     try {
       const response = await AxiosIntance()
@@ -114,7 +80,7 @@ const Payment = (props) => {
     <>
       {
         isLoading == true ?
-          (Loading) :
+          (<Loading/>) :
           (
             <View style={styles.container}>
 

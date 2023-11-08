@@ -6,7 +6,7 @@ const initialState = {
     dataSendOTP: {},
     dataVerifyOTP: {},
     dataChangePassword: {},
-    user: {},
+    user: null,
     token: ""
 }
 

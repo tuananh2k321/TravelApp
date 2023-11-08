@@ -33,7 +33,7 @@ const Detail_Booking = (props) => {
 
   const quantity = Number(quantityAdult) + Number(quantityChildren);
   let price = Number(quantityAdult) * Number(adultPrice) + Number(quantityChildren) * Number(childrenPrice);
-
+  price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   const isValidOK = () => name.length > 0 && quantityAdult.length > 0
     && isValidName(name) == true && isValidQuantity(quantityAdult) == true && isLimitPerson(quantity, limitedPerson) == true
   // const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0

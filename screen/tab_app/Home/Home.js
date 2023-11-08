@@ -185,7 +185,7 @@ export default function Home(props) {
                             titleStyle={{ fontSize: 20, color: 'white', fontWeight: '500' }}
                             containerStyle={styles.imgoverlay} />
                         <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                        <View style={styles.viewdomain}>
+                            <View style={styles.viewdomain}>
                                 <Image style={styles.img_domain} source={require('../../../assets/images/tphcm.jpg')} />
                                 <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>TP.HCM</Text>
                             </View>

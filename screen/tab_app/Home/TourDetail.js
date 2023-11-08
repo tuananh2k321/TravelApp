@@ -19,6 +19,7 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
+import { useSelector } from 'react-redux';
 
 export default TourDetail = (props) => {
   const { navigation,route} = props;
@@ -50,6 +51,7 @@ export default TourDetail = (props) => {
   };
   const [isLoading, setIsLoading] = useState(true);
   const sampleText =description;
+  const user = useSelector((state) => state.user);
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
   //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
@@ -63,6 +65,14 @@ export default TourDetail = (props) => {
   //     { id: 10, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
   //     // Thêm các hình ảnh khác tại đây
   //   ];
+const onBooking = () => {
+  if(user.user == null) {
+    navigation.navigate('Login');
+  }else {
+    navigation.navigate('Detail_Booking',{id: params.id, childrenPrice: childrenPrice, adultPrice: adultPrice, image: tourImage[0], tourName: tourName, limitedPerson: limitedPerson})
+  }
+}
+
   let images = tourImage;
     useEffect(() => {
       try {
@@ -587,7 +597,7 @@ export default TourDetail = (props) => {
             paddingHorizontal: 10,
           }}>
           
-          <TouchableOpacity onPress={() => navigation.navigate('Detail_Booking',{id: params.id, childrenPrice: childrenPrice, adultPrice: adultPrice, image: tourImage[0], tourName: tourName, limitedPerson: limitedPerson})}
+          <TouchableOpacity onPress={onBooking}
             style={{
               flex: 1,
               height:52,

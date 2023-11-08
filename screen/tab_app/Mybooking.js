@@ -53,7 +53,7 @@ const Mybooking = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             {
-                isLoading == true ? (Loading) :
+                isLoading == true ? (<Loading/>) :
                 (<View>
                     <Text style={styles.wishlist}>My booking</Text>
                     <View style={styles.wishlist_list}>
