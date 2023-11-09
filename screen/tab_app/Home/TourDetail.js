@@ -66,7 +66,10 @@ export default TourDetail = (props) => {
   //   ];
   let images = tourImage;
   const userId = useSelector(state => state.user.user._id);
-
+  const handleReloadPage = () => {
+    navigation.popToTop();
+    navigation.navigate('Favorite');
+  };
   // Yêu thích
   const [isLiked, setIsLiked] = useState(false);
   const handleLike = async () => {
@@ -83,6 +86,7 @@ export default TourDetail = (props) => {
       if (response.result === true) {
         // API đã thêm yêu thích thành công
         setIsLiked(true);
+        handleReloadPage()
 
 
       } else {
@@ -93,10 +97,10 @@ export default TourDetail = (props) => {
       // Xử lý lỗi
       console.log("error: " + error)
     }
-    // useEffect(() => {
-    //   handleLike()
-    // }, [])
+
   }
+
+
 
   useEffect(() => {
     try {

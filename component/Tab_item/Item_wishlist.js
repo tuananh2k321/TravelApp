@@ -15,7 +15,6 @@ const Item_wishlist = ({ data, handleDelete }) => {
                 <View style={styles.deleteBox}>
                     <Animated.Text style={styles.textDelete}>Delete</Animated.Text>
                 </View>
-
             </TouchableOpacity>
         )
     }

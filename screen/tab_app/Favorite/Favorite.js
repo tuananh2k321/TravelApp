@@ -19,6 +19,21 @@ const Favorite = (props) => {
   const [data, setData] = useState([])
   const [isLoading, setLoading] = useState(true)
 
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+
+    // Thực hiện các công việc làm mới dữ liệu ở đây, sau đó cập nhật state data
+
+    // Ví dụ: Sau 2 giây, dừng làm mới và cập nhật dữ liệu
+
+    getApi()
+    setRefreshing(false);
+
+  };
+
   const getApi = async () => {
     try {
       const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" + "650712a41cc623753c664aa2");
@@ -95,7 +110,8 @@ const Favorite = (props) => {
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
-
+          onRefresh={handleRefresh}
+          refreshing={refreshing}
         >
         </FlatList>
         {/* )} */}
