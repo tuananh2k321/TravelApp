@@ -65,7 +65,7 @@ export default TourDetail = (props) => {
   //     // Thêm các hình ảnh khác tại đây
   //   ];
   let images = tourImage;
-  const user = useSelector((state) => state.user);
+  const userId = useSelector(state => state.user.user._id);
 
   // Yêu thích
   const [isLiked, setIsLiked] = useState(false);
@@ -77,11 +77,14 @@ export default TourDetail = (props) => {
       // Thực hiện cuộc gọi API bằng axios hoặc thư viện HTTP client khác
       const response = await AxiosIntance().get(`favorite/api/${user_id}/${tourId}/addFavorite`);
       console.log("check response", response);
+      console.log("CHeck userid", userId)
       // console.log("user: " + user);
       console.log("response", response)
       if (response.result === true) {
         // API đã thêm yêu thích thành công
         setIsLiked(true);
+
+
       } else {
         // Xử lý lỗi hoặc thông báo cho người dùng
         console.log("Thêm thất bại")
