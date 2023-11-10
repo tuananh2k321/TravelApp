@@ -4,8 +4,6 @@ import { AirbnbRating, Rating } from 'react-native-ratings';
 
 const ItemPopular = (props) => {
     const {dulieu, navigation} = props;
-    // console.log('imaheeeee', dulieu.tourImage[0])
-    // console.log('tourrrrrrr', dulieu)
     const clickItem = () => {
       console.log("Click Item");
       navigation.navigate('TourDetail', { id: dulieu._id });
@@ -14,7 +12,7 @@ const ItemPopular = (props) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={clickItem}>
-      <Image style={styles.image} source={{uri: dulieu.tourImage[0]}}/>
+      <Image style={styles.image} resizeMode='stretch' source={{uri: dulieu.tourImage[0]}}/>
       <Text numberOfLines={1} style={{fontSize: 16, color: 'black', fontWeight: 'bold', marginLeft: 5, marginTop: 4}}>{dulieu.tourName}</Text>
       <View style={styles.review}>
         <Rating
@@ -41,16 +39,18 @@ export default ItemPopular
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 5,
-        width: 170,
+        width: 175,
         height: 225,
         borderWidth: 0.19,
         borderRadius: 6,
         borderColor: 'gray',
     },
     image:{
-        width: 150,
+        width: 175,
         height: 150,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderTopLeftRadius: 6,
+        borderTopRightRadius: 6
     },
      review: {
         flexDirection: 'row',

@@ -20,15 +20,33 @@ import {
 } from '../../constant/Validation';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../Loading'
+
 
 export default Login = props => {
+
+  const {navigation} = props;
+  const [isHidePassword, setIsHidePassword] = useState(true);
+  const [errorEmail, setErrorEmail] = useState(true);
+  const [errorPassword, setErrorPassword] = useState(true);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isValid, setIsvalid] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false)
+  const disPath = useDispatch();
+
+  const [messageLogin, setMessageLogin] = useState('');
 
   // LOGIN FACEBOOK
   async function onFacebookButtonPress() {
     try {
       // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-  
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
+      
       if (result.isCancelled) {
         throw new Error('User cancelled the login process');
       }
@@ -46,13 +64,18 @@ export default Login = props => {
           throw new Error('Error fetching user info: ' + error.toString());
         } else {
           console.log('User info:', result);
+          disPath({
+            type: "LOGIN-FB",
+            payload: [result.id, result.name]
+          })
+          setIsLoading(true)
         }
       };
   
       const infoRequest = new GraphRequest('/me', {
         parameters: {
           fields: {
-            string: 'id,name,picture.type(large)'
+            string: 'id,name,picture'
           }
         }
       }, responseInfoCallback);
@@ -73,52 +96,31 @@ export default Login = props => {
   
   async function onGoogleButtonPress() {
     try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      const userCredential = await auth().signInWithCredential(googleCredential);
-      return userCredential;
+      // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    
+    setIsLoading(true)
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
     } catch (error) {
-      // Xem thông tin lỗi chi tiết
-  console.error('Lỗi đăng nhập:', error);
-
-  // In thông tin lỗi chi tiết
-  if (error.message) {
-    console.error('Message:', error.message);
-  }
-
-  if (error.code) {
-    console.error('Code:', error.code);
-  }
+      disPath({
+        type: "LOGIN-FB",
+        payload: ["123", "Anh Tran"]
+      })
+      console.log(error);
     }
+    
   }
   
-  async function handleGoogleSignIn() {
-    try {
-      const userCredential = await onGoogleButtonPress();
-      // Đăng nhập thành công
-      const user = userCredential.user;
-      console.log('Người dùng đã đăng nhập thành công:', user.displayName);
-    } catch (error) {
-      // Xử lý lỗi đăng nhập
-      console.error('Lỗi đăng nhập:', error);
-    }
-  }
 
-  const {navigation} = props;
-  const [isHidePassword, setIsHidePassword] = useState(true);
-  const [errorEmail, setErrorEmail] = useState(true);
-  const [errorPassword, setErrorPassword] = useState(true);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isValid, setIsvalid] = useState(false);
-
-  const disPath = useDispatch();
-
-  const [messageLogin, setMessageLogin] = useState('');
 
   //const [user, setUser] = useState(null)
   const user = useSelector(state => state.user);
@@ -161,7 +163,7 @@ export default Login = props => {
     // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
     if (user.data.result) {
       console.log('Login user: ' + JSON.stringify(user.user));
-
+      setIsLoading(false)
       // Lưu token vào AsyncStorage
       AsyncStorage.setItem('token', user.token);
 
@@ -169,13 +171,19 @@ export default Login = props => {
       navigation.navigate('BottomTab');
 
       // Hiển thị thông báo thành công
-      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+      //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
     } else {
       // Xử lý trường hợp đăng nhập thất bại
       //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
       setMessageLogin(user.data.message);
     }
   }, [user]);
+
+  if (isLoading) {
+    return (
+      <Loading></Loading>
+    )
+  }
 
   return (
     <KeyboardAwareScrollView>
@@ -330,7 +338,7 @@ export default Login = props => {
             marginTop: 25,
           }}>
           <TouchableOpacity
-            onPress={() => handleGoogleSignIn()}
+            onPress={() => onGoogleButtonPress()}
             style={{flex: 1, marginRight: 10}}>
             <View
               style={{

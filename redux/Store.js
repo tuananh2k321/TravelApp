@@ -10,6 +10,7 @@ const middleware = [sagaMiddleware]
 export const Store = configureStore({
     reducer: {
         user: UserSlice
+
     },
     middleware
 })
