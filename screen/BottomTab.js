@@ -27,7 +27,6 @@ import Register from './auth/Register';
 
 import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
-import SearchTourName from './tab_app/Home/SearchTourName';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

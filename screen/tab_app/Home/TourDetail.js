@@ -17,11 +17,8 @@ import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
-import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
 import {useSelector} from 'react-redux';
-import {log} from 'console';
-import {set} from 'immer/dist/internal';
 
 export default TourDetail = props => {
   const {navigation, route} = props;
@@ -83,7 +80,7 @@ export default TourDetail = props => {
   };
 
   let images = tourImage;
-  const userId = useSelector(state => state.user.user._id);
+  //const userId = useSelector(state => state.user.user._id);
   const handleReloadPage = () => {
     navigation.popToTop();
     navigation.navigate('Favorite');
@@ -117,13 +114,15 @@ export default TourDetail = props => {
     }
   };
 
+
+  // tour
   useEffect(() => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get(
           'tour/api/' + params.id + '/detail',
         );
-        // console.log("tour ", params.id)
+         console.log("tour ", params.id)
         if (response.result == true) {
           settourName(response.tour.tourName);
           setadultPrice(response.tour.adultPrice);
