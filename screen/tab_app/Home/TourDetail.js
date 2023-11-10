@@ -39,7 +39,7 @@ export default TourDetail = props => {
   const [isdomain, setisdomain] = useState('');
   const [hotel_id, sethotel_id] = useState({});
   const [tourGuide_id, settourGuide_id] = useState({});
-  const [destination_id, setdestination_id] = useState({});
+  const [destination_id, setdestination_id] = useState([]);
   const [description, setdescription] = useState('');
   const [tourImage, settourImage] = useState([]);
   const [showMore, setShowMore] = useState(false);
@@ -80,7 +80,7 @@ export default TourDetail = props => {
   };
 
   let images = tourImage;
-  //const userId = useSelector(state => state.user.user._id);
+  // const userId = useSelector(state => state.user.user._id);
   const handleReloadPage = () => {
     navigation.popToTop();
     navigation.navigate('Favorite');
@@ -97,8 +97,8 @@ export default TourDetail = props => {
         `favorite/api/${user_id}/${tourId}/addFavorite`,
       );
       console.log('check response', response);
-      console.log('CHeck userid', userId);
-      // console.log("user: " + user);
+      // console.log('CHeck userid', userId);
+      //  console.log("user: " + user);
       console.log('response', response);
       if (response.result === true) {
         // API đã thêm yêu thích thành công
@@ -114,15 +114,14 @@ export default TourDetail = props => {
     }
   };
 
-
-  // tour
+  // tourDetail
   useEffect(() => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get(
           'tour/api/' + params.id + '/detail',
         );
-         console.log("tour ", params.id)
+        console.log('tour ', params.id);
         if (response.result == true) {
           settourName(response.tour.tourName);
           setadultPrice(response.tour.adultPrice);
@@ -140,9 +139,10 @@ export default TourDetail = props => {
           setisdomain(response.tour.isdomain);
           sethotel_id(response.datahotel);
           settourGuide_id(response.dataTourGuide);
-          setdestination_id(response.dataDestination);
+          setdestination_id(response.dataDestination.content.data);
           setdescription(response.tour.description);
           settourImage(response.tour.tourImage);
+          setIsLoading(false);
         } else {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
@@ -378,14 +378,6 @@ export default TourDetail = props => {
                 />
               </View>
 
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  marginVertical: 20,
-                }}
-              />
-
               <Text
                 style={{
                   fontSize: 18,
@@ -405,7 +397,7 @@ export default TourDetail = props => {
                 Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
               </Text>
 
-              <Image
+              {/* <Image
                 style={{
                   width: '100%',
                   height: 300,
@@ -414,17 +406,10 @@ export default TourDetail = props => {
                 source={{
                   uri: 'https://www.google.com/maps/d/thumbnail?mid=1sTvpmQyZI2YRtqSyEdCJeBS9KQU&hl=en_US',
                 }}
-              />
+              /> */}
 
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  marginTop: 30,
-                }}
-              />
               {/* checkin */}
-              <View style={{flexDirection: 'row', marginTop: 20}}>
+              {/* <View style={{flexDirection: 'row', marginTop: 20}}>
                 <View
                   style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
                   <Image
@@ -456,9 +441,9 @@ export default TourDetail = props => {
                     flex: 1,
                   }}
                 />
-              </View>
+              </View> */}
               {/* seeall image */}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => setModalVisible(true)}
                 style={{
                   flexDirection: 'row',
@@ -503,7 +488,7 @@ export default TourDetail = props => {
                     </KeyboardAwareScrollView>
                   </View>
                 </Modal>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <View
                 style={{
                   borderWidth: 1,
@@ -520,7 +505,6 @@ export default TourDetail = props => {
                 name={hotel_id.hotelName}
                 content={hotel_id.description}
               />
-              {/* <ItemLink dulieu={destination_id} screen={"DestinationDetail"} icon={"location-arrow"} tile={"Điểm đến"} name={destination_id.destinationName} content={destination_id.content}/> */}
               <ItemLink
                 dulieu={tourGuide_id}
                 screen={'TourGuideDetail'}
@@ -529,6 +513,37 @@ export default TourDetail = props => {
                 name={tourGuide_id.name}
                 content={tourGuide_id.phoneNumber}
               />
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: COLOR.lightBlack2,
+                  marginTop: 30,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: COLOR.title,
+                  marginBottom: 20,
+                  marginTop: 30,
+                }}>
+                Một số điểm tham quan
+              </Text>
+              
+                {destination_id.map((item, index) => (
+                  <View style={{justifyContent:'center',alignItems:'center',marginVertical:5}} key={index}>
+                    <Image
+                      source={{uri: item.destinationImage}}
+                      style={{ width: '100%',
+                  height: 300,
+                  }}
+                    />
+                    <Text style={{fontSize:16,fontWeight:'500',color:COLOR.title}}>{item.description}</Text>
+                  </View>
+                ))}
+              
+
               <View
                 style={{
                   borderWidth: 1,

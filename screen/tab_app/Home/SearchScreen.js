@@ -35,6 +35,7 @@ const SearchScreen = props => {
         const respone = await AxiosIntance().get('tour/api/list/tourRating');
         if (respone.result) {
           setTourRating(respone.tours);
+          setIsLoading(false);
         } else {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
@@ -272,6 +273,10 @@ const SearchScreen = props => {
               }}>
               Gợi ý
             </Text>
+            <>
+      {isLoading == true ? (
+        <Loading />
+      ) : (
             <FlatList
               style={{marginTop: 10, flex: 1}}
               horizontal
@@ -282,6 +287,8 @@ const SearchScreen = props => {
               keyExtractor={item => item._id}
               showsHorizontalScrollIndicator={false}
             />
+             )}
+    </>
           </View>
         ) : (
           <>
@@ -302,15 +309,7 @@ const SearchScreen = props => {
                 {TourNam.map(item => (
                   <ItemSearch dulieu={item} navigation={navigation} />
                 ))}
-                {/* <FlatList
-              style={{marginTop: 10, flex: 1}}
-              data={TourNam}
-              renderItem={({item}) => (
-                <ItemSearch dulieu={item} navigation={navigation} />
-              )}
-              keyExtractor={item => item._id}
-              showsHorizontalScrollIndicator={false}
-            /> */}
+               
               </View>
             )}
           </>
