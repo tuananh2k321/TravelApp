@@ -6,21 +6,69 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../constant/Themes';
-import UITextInput from '../component/UITextInput';
-import UIButtonPrimary from '../component/UIButtonPrimary';
+import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import UITextInput from '../../component/UITextInput';
+import UIButtonPrimary from '../../component/UIButtonPrimary';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { isValidEmpty } from '../constant/Validation';
+import {isValidEmpty} from '../../constant/Validation';
+import {useDispatch, useSelector} from 'react-redux';
 
-
-export default VerifyCode = (props) => {
+export default VerifyCode = props => {
   const {navigation} = props;
+  const disPatch = useDispatch();
+  const user = useSelector(state => state.user);
+
+  const [messageVerifyOTP, setMessageVerifyOTP] = useState(null)
+
+
+  const btnSendOTP = async () => {
+    console.log('btnSendOTP');
+    try {
+      
+        console.log('valid');
+        const phoneNumber = user.dataSendOTP.phoneNumber
+        disPatch({
+          type: 'SEND-OTP',
+          payload: [phoneNumber],
+        });
+       
+      
+    } catch (error) {
+      console.log('AxiosIntance', error);
+      //ToastAndroid.show('Gửi mã thất bại!', ToastAndroid.LONG);
+    }
+  };
+
+
+  useEffect(() => {
+    if (user.dataVerifyOTP.result) {
+      navigation.navigate("NewPassword")
+      //ToastAndroid.show('Xác nhận thành công!', ToastAndroid.SHORT);
+    } else {
+      setMessageVerifyOTP(user.dataVerifyOTP.message)
+    }
+  }, [user])
+
+  const btnVerify = () => {
+    console.log('btnVerify');
+    if (errorOTP == true) {
+      // console.log("btnVerify: "+otpCode)
+      const phoneNumber = user.dataSendOTP.phoneNumber
+      disPatch({
+        type: 'VERIFY-OTP',
+        payload: [phoneNumber, otpCode],
+      });
+    }
+  };
+
   const [otpCode, setOtpCode] = useState('');
   const [errorOTP, setErrorOTP] = useState(true);
   const [countdown, setCountdown] = useState(60);
   const [isRunning, setIsRunning] = useState(true);
+
   useEffect(() => {
     let timerId;
 
@@ -55,7 +103,7 @@ export default VerifyCode = (props) => {
         }}>
         <TouchableOpacity
           style={{position: 'absolute', top: 15, left: 10}}
-          onPress={() => navigation.navigate('Register')}>
+          onPress={() => navigation.pop()}>
           <Image
             source={ICON.left}
             style={{
@@ -112,14 +160,13 @@ export default VerifyCode = (props) => {
           }}
           placeholderTextColor={{backgroundColor: 'red'}}
           onCodeFilled={otpCode => {
-            console.log(otpCode)
-          
+            console.log(otpCode);
+            setOtpCode(otpCode)
             setErrorOTP(isValidEmpty(otpCode));
-            
           }}
         />
 
-{!errorOTP && (
+        {!errorOTP && (
           <Text
             style={{
               fontSize: 14,
@@ -152,18 +199,18 @@ export default VerifyCode = (props) => {
           <TouchableOpacity
             style={{}}
             onPress={() => {
-              console.log('nhận lại') 
-              handleStart()
-          }}
-          disabled = {isRunning ? true : false}
-            >
+              console.log('nhận lại');
+              handleStart();
+              btnSendOTP()
+            }}
+            disabled={isRunning ? true : false}>
             <Text
               style={{
                 textAlign: 'center',
                 fontSize: 16,
                 fontWeight: '400',
                 marginRight: 5,
-                color: isRunning? COLOR.detail : COLOR.primary,
+                color: isRunning ? COLOR.detail : COLOR.primary,
               }}>
               Nhận lại
             </Text>
@@ -179,15 +226,28 @@ export default VerifyCode = (props) => {
               }}>
               ({countdown}s)
             </Text>
-          </View> 
+          </View>
         </View>
 
         <View style={{marginTop: 50, justifyContent: 'flex-end'}}>
           <UIButtonPrimary
             text="Xác Minh"
-            onPress={() => navigation.navigate('Successfully')}
+            onPress={() => btnVerify()}
           />
         </View>
+
+        
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              fontWeight: '400',
+              color: 'red',
+              marginTop: 15,
+            }}>
+            {messageVerifyOTP}
+          </Text>
+        
       </SafeAreaView>
     </KeyboardAwareScrollView>
   );

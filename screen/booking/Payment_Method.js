@@ -7,6 +7,8 @@ const Payment_Method = (props) => {
     const { navigation, route } = props;
     const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
     let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
+    price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    
     let count = Number(adult) + Number(children);
     const [totalPrice, settotalPrice] = useState(price);
     const [quantity, setQuantity] = useState(count);
@@ -34,18 +36,12 @@ const Payment_Method = (props) => {
     }
     return (
         <View style={styles.container}>
-            <View style={styles.groupHeader}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={24} color="#000000" />
-                </TouchableOpacity>
-                <Text style={styles.header}>Xác nhận và trả tiền</Text>
-            </View>
             <View style={styles.groupName}>
-                <Image style={styles.image} source={{uri: image}} resizeMode='stretch' />
+                <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
                 <View style={{ marginStart: 10 }}>
                     <Text style={styles.name}>
                         {
-                            tourName.length > 40 ? tourName.slice(0,90) + "..." : tourName
+                            tourName.length > 40 ? tourName.slice(0, 90) + "..." : tourName
                         }
                     </Text>
                     <Text style={styles.order}>Order number #{id}</Text>

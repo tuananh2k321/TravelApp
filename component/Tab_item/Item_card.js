@@ -4,31 +4,34 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Item_card = (props) => {
     const { item, onPress, borderWidth } = props;
+    // const { item } = props;
     var numberCard = `${item.number}`;
     var numberCardLength = numberCard.length;
     return (
-        <Pressable style={{ paddingHorizontal: 15, paddingVertical: 8 }} onPress={onPress}>
-            <LinearGradient start={{ x: 1.5, y: 0 }} end={{ x: 0, y: 0 }} colors={['#1F4352', '#227092',]} style={[styles.card,{borderWidth: borderWidth}]}>
-                <Text style={styles.name}>{item.name}</Text>
-                <View style={styles.groupItem}>
-                    <Text style={styles.title}>Account Balance</Text>
-                    <Text style={styles.money}>100.000đ</Text>
-                </View>
-                <View style={styles.groupItem}>
-                    <Text style={styles.title}>Master Card</Text>
-                    <Text style={styles.cardID}>
-                        {
-                            numberCardLength > 10 ? numberCard.slice(0, 3) + ' *** *** ' + numberCard.slice(-3) : numberCard
-                        }
-                    </Text>
-                </View>
-                <View style={styles.groupTwoCircle}>
-                    <Text style={styles.circle1}></Text>
-                    <Text style={styles.circle2}></Text>
-                </View>
-            </LinearGradient>
-        </Pressable>
-
+        <View>
+            <Pressable onPress={onPress}
+                style={{ marginHorizontal: 15, marginVertical: 8, backgroundColor: "white", borderWidth: borderWidth, borderRadius: 14, borderColor: "red" }}>
+                <LinearGradient start={{ x: 1.5, y: 0 }} end={{ x: 0, y: 0 }} colors={['#1F4352', '#227092',]} style={[styles.card, {}]}>
+                    <Text style={styles.name}>{item.name}</Text>
+                    <View style={styles.groupItem}>
+                        <Text style={styles.title}>Account Balance</Text>
+                        <Text style={styles.money}>100.000đ</Text>
+                    </View>
+                    <View style={styles.groupItem}>
+                        <Text style={styles.title}>Master Card</Text>
+                        <Text style={styles.cardID}>
+                            {
+                                numberCardLength > 10 ? numberCard.slice(0, 3) + ' *** *** ' + numberCard.slice(-3) : numberCard
+                            }
+                        </Text>
+                    </View>
+                    <View style={styles.groupTwoCircle}>
+                        <Text style={styles.circle1}></Text>
+                        <Text style={styles.circle2}></Text>
+                    </View>
+                </LinearGradient>
+            </Pressable>
+        </View>
     )
 }
 
@@ -71,16 +74,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 214,
         borderRadius: 12,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 8,
-        },
-        shadowOpacity: 0.44,
-        shadowRadius: 10.32,
-        elevation: 16,
+
         padding: 24,
-        borderColor: "white",
+        borderColor: "red",
     },
     groupTwoCircle: {
         width: '100%',
