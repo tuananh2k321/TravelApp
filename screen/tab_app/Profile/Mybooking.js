@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import { COLOR, SIZES } from '../../constant/Themes'
+import { COLOR, SIZES } from '../../../constant/Themes'
 import { useSelector } from 'react-redux'
-import AxiosIntance from '../../constant/AxiosIntance';
-import Item_Booking from '../../component/Tab_item/Item_Booking'
-import Loading from '../Loading'
+import AxiosIntance from '../../../constant/AxiosIntance';
+import Item_Booking from '../../../component/Tab_item/Item_Booking'
+import Loading from '../../Loading'
 
 const Mybooking = (props) => {
     const { navigation } = props;

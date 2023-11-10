@@ -20,7 +20,7 @@ import Payment_Method from './booking/Payment_Method';
 import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
-import Mybooking from './tab_app/Mybooking';
+import Mybooking from './tab_app/Profile/Mybooking';
 import Login from './auth/Login';
 import Register from './auth/Register';
 
