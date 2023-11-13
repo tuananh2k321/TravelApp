@@ -1,17 +1,19 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions, Alert } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 const windowWidth = Dimensions.get('window').width - 90;
+import AxiosIntance from '../../constant/AxiosIntance';
+import { useStripe } from '@stripe/stripe-react-native';
 
 const Payment_Method = (props) => {
     const { navigation, route } = props;
-    const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
-    let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
-    price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-    
-    let count = Number(adult) + Number(children);
-    const [totalPrice, settotalPrice] = useState(price);
-    const [quantity, setQuantity] = useState(count);
+    // const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
+    // let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
+    // price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+
+    // let count = Number(adult) + Number(children);
+    const [totalPrice, settotalPrice] = useState(5000000);
+    // const [quantity, setQuantity] = useState(count);
     const chooses = [
         {
             id: 1,
@@ -26,17 +28,71 @@ const Payment_Method = (props) => {
     ]
     const [selectedRadio, setSelectedRadio] = useState(1);
 
+    function vndToUsd(amountInVND, exchangeRate) {
+        // Kiểm tra xem đầu vào có hợp lệ không
+        if (isNaN(amountInVND) || isNaN(exchangeRate) || exchangeRate <= 0) {
+            return "Dữ liệu không hợp lệ";
+        }
+
+        // Thực hiện phép nhân để chuyển đổi
+        var amountInUSD = amountInVND / exchangeRate;
+
+        // Làm tròn đến 2 chữ số sau dấu thập phân
+        amountInUSD = Math.round(amountInUSD * 100) / 100;
+
+        return amountInUSD;
+    }
+
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const onCheckout = async () => {
+        var exchangeRate = 24200;
+        var amountInUSD = vndToUsd(totalPrice, exchangeRate);
+        // 1. Create a payment intent
+        const response = await AxiosIntance()
+            .post("/payments/intent",
+                { amount: Math.floor(amountInUSD * 100) });
+        console.log(response);
+        if (response.error) {
+            Alert.alert("Đã xảy ra sự cố!");
+            return;
+        }
+        // 2. Initialize the Payment sheet
+        const initResponse = await initPaymentSheet({
+            merchantDisplayName: "VoThanhThe.dev",
+            paymentIntentClientSecret: response.paymentIntent,
+        })
+
+        if (initResponse.error) {
+            console.log(initResponse.error);
+            Alert.alert("Đã xảy ra sự cố!");
+            return;
+        }
+
+        // 3. Present the Payment Sheet from Stripe
+        const { error: paymentError } = await presentPaymentSheet();
+
+        if (paymentError) {
+            Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
+            return;
+        } else {
+            Alert.alert('Success', 'Your order is confirmed!');
+        }
+        // 4. If payment ok -> create the order
+        // onCreateOrder();
+    };
+
     const onPaymentMethod = () => {
         if (selectedRadio == 1) {
-            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+            // navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
         }
         else {
-            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+            // navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+            onCheckout();
         }
     }
     return (
         <View style={styles.container}>
-            <View style={styles.groupName}>
+            {/* <View style={styles.groupName}>
                 <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
                 <View style={{ marginStart: 10 }}>
                     <Text style={styles.name}>
@@ -46,9 +102,9 @@ const Payment_Method = (props) => {
                     </Text>
                     <Text style={styles.order}>Order number #{id}</Text>
                 </View>
-            </View>
+            </View> */}
 
-            <View style={styles.groupTotalPrice}>
+            {/* <View style={styles.groupTotalPrice}>
                 <View style={styles.groupPrice}>
                     <Text style={styles.totalPrice}>Tổng tiền </Text>
                     <Text style={[styles.totalPrice, { fontSize: 10 }]}>(incl VAT)</Text>
@@ -58,7 +114,7 @@ const Payment_Method = (props) => {
                     <Text style={[styles.money, { fontWeight: '400' }]}>{quantity}Người</Text>
                 </View>
 
-            </View>
+            </View> */}
 
             {
                 chooses.map((item, index) => <TouchableOpacity
