@@ -7,13 +7,13 @@ import { useStripe } from '@stripe/stripe-react-native';
 
 const Payment_Method = (props) => {
     const { navigation, route } = props;
-    // const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
-    // let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
-    // price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-
-    // let count = Number(adult) + Number(children);
-    const [totalPrice, settotalPrice] = useState(5000000);
-    // const [quantity, setQuantity] = useState(count);
+    const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
+    let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
+    price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    let amount = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
+    let count = Number(adult) + Number(children);
+    const [totalPrice, settotalPrice] = useState(amount);
+    const [quantity, setQuantity] = useState(count);
     const chooses = [
         {
             id: 1,
@@ -41,6 +41,20 @@ const Payment_Method = (props) => {
         amountInUSD = Math.round(amountInUSD * 100) / 100;
 
         return amountInUSD;
+    }
+
+    const onBooking = async () => {
+        try {
+            const response = await AxiosIntance()
+                .post("/booking/api/addBooking",
+                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id });
+            console.log(response);
+            if (response.result == true) {
+                navigation.push("Booking_Successfully");
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -83,7 +97,7 @@ const Payment_Method = (props) => {
 
     const onPaymentMethod = () => {
         if (selectedRadio == 1) {
-            // navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
         }
         else {
             // navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
@@ -92,7 +106,7 @@ const Payment_Method = (props) => {
     }
     return (
         <View style={styles.container}>
-            {/* <View style={styles.groupName}>
+            <View style={styles.groupName}>
                 <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
                 <View style={{ marginStart: 10 }}>
                     <Text style={styles.name}>
@@ -102,19 +116,19 @@ const Payment_Method = (props) => {
                     </Text>
                     <Text style={styles.order}>Order number #{id}</Text>
                 </View>
-            </View> */}
+            </View>
 
-            {/* <View style={styles.groupTotalPrice}>
+            <View style={styles.groupTotalPrice}>
                 <View style={styles.groupPrice}>
                     <Text style={styles.totalPrice}>Tổng tiền </Text>
                     <Text style={[styles.totalPrice, { fontSize: 10 }]}>(incl VAT)</Text>
                 </View>
                 <View style={styles.groupPrice}>
-                    <Text style={styles.money}>{totalPrice}/</Text>
+                    <Text style={styles.money}>{price}/</Text>
                     <Text style={[styles.money, { fontWeight: '400' }]}>{quantity}Người</Text>
                 </View>
 
-            </View> */}
+            </View>
 
             {
                 chooses.map((item, index) => <TouchableOpacity

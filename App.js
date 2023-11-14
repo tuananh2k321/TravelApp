@@ -87,14 +87,14 @@ const App = () => {
   // if (!tokenChecked) {
   //   return <Text>Loading...</Text>; // Replace with your loading component
   // }
-const STRIPE_KEY = 'pk_test_51OAMNGANZv3Twwu9pzJzF1umKF8axh0rzphoESMxaGlGaIa0NDb1q4v18l8WugkxdR72EqNfzDrRKGr1VWv9N2Z400vuFz9UB4';
+  const STRIPE_KEY = 'pk_test_51OAMNGANZv3Twwu9pzJzF1umKF8axh0rzphoESMxaGlGaIa0NDb1q4v18l8WugkxdR72EqNfzDrRKGr1VWv9N2Z400vuFz9UB4';
   return (
     <Provider store={Store}>
-      <StripeProvider publishableKey= {STRIPE_KEY}>
-        {/* <NavigationContainer >
+      <StripeProvider publishableKey={STRIPE_KEY}>
+        <NavigationContainer >
           <Stack.Navigator
             initialRouteName={"BottomTab"}
-            screenOptions={{ headerShown: false }}> */}
+            screenOptions={{ headerShown: false }}>
             {/* <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="GoToLogin" component={GoToLogin} />
@@ -105,11 +105,10 @@ const STRIPE_KEY = 'pk_test_51OAMNGANZv3Twwu9pzJzF1umKF8axh0rzphoESMxaGlGaIa0NDb
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="VerifyCode2" component={Verifycode2} />
           <Stack.Screen name="Successfully" component={Successfully} /> */}
-            {/* <Stack.Screen name="BottomTab" component={BottomTab} />
+            <Stack.Screen name="BottomTab" component={BottomTab} />
           </Stack.Navigator>
-        </NavigationContainer> */}
-        <Payment_Method/>
-        </StripeProvider>
+        </NavigationContainer>
+      </StripeProvider>
     </Provider>
   );
 };
