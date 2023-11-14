@@ -13,14 +13,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
 import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
+import { useNavigation } from '@react-navigation/native';
 
 
 
-
-export default function Home(props) {
-    const { navigation } = props;
-
-
+export default function Home() {
+    const navigation = useNavigation();
     const [TourRating, setTourRating] = useState([])
     const [TourBac, setTourBac] = useState([])
     const [TourTrung, setTourTrung] = useState([])
@@ -88,6 +87,7 @@ export default function Home(props) {
                             placeholder="Nhập từ khóa"
                             onChangeText={handleSearch}
                             value={searchValue}
+                            onFocus={() => navigation.navigate('SearchScreen')}
                         />
                         <Icon name="search" size={20} color="gray" />
                     </View>
