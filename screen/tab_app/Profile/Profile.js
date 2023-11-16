@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLOR, SIZES } from '../../../constant/Themes'
 import { useSelector } from 'react-redux'
 import Loading from '../../Loading'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 const Profile = (props) => {
     const {navigation} = props;
 
@@ -39,6 +40,21 @@ const Profile = (props) => {
         <View style={{width:380,height:0.5,backgroundColor:'rgba(0, 0, 0, 0.2)',marginTop:30}}></View>
 
         <View style={styles.account_setting}>
+            {/* My booking */}
+            <TouchableOpacity onPress={() => navigation.navigate("Mybooking")}>
+                <View style={styles.button_setting}>
+                    <View style={styles.button_setting_left}>
+                        <Image 
+                        style={{tintColor: COLOR.primary}}
+                        source={require('../../../assets/icon/icon-user-circle.png')}
+                        ></Image>
+                        <Text style={styles.button_setting_text}>Lịch sử đặt tour</Text>
+                    </View>
+                    <View>
+                        <Image source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                    </View>
+                </View>
+            </TouchableOpacity>
             {/* edit profile */}
             <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
                 <View style={styles.button_setting}>
@@ -74,7 +90,7 @@ const Profile = (props) => {
                         <Text style={styles.button_setting_text}>Chế độ màu</Text>
                     </View>
                     <View>
-                        <Image source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                        <Ionicons name="calendar-outline" size={24} color={"#111"} />
                     </View>
                 </View>
             </TouchableOpacity>

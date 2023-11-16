@@ -43,7 +43,6 @@ export default Login = props => {
 
   // LOGIN FACEBOOK
   // async function onFacebookButtonPress() {
-    
   //   try {
   //     // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
   //     const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
@@ -90,44 +89,44 @@ export default Login = props => {
   //   }
   // }
 
-  // // LOGIN GOOGLE
+  // LOGIN GOOGLE
   // GoogleSignin.configure({
   //   webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
   // });
   
-  async function onGoogleButtonPress() {
-    try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      const userCredential = await auth().signInWithCredential(googleCredential);
-      return userCredential;
-    } catch (error) {
-      // Xem thông tin lỗi chi tiết
-  console.error('Lỗi đăng nhập:', error);
+  // async function onGoogleButtonPress() {
+  //   try {
+  //     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  //     const { idToken } = await GoogleSignin.signIn();
+  //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  //     const userCredential = await auth().signInWithCredential(googleCredential);
+  //     return userCredential;
+  //   } catch (error) {
+  //     // Xem thông tin lỗi chi tiết
+  // console.error('Lỗi đăng nhập:', error);
 
-  // In thông tin lỗi chi tiết
-  if (error.message) {
-    console.error('Message:', error.message);
-  }
+  // // In thông tin lỗi chi tiết
+  // if (error.message) {
+  //   console.error('Message:', error.message);
+  // }
 
-  if (error.code) {
-    console.error('Code:', error.code);
-  }
-    }
-  }
+  // if (error.code) {
+  //   console.error('Code:', error.code);
+  // }
+  //   }
+  // }
   
-  async function handleGoogleSignIn() {
-    try {
-      const userCredential = await onGoogleButtonPress();
-      // Đăng nhập thành công
-      const user = userCredential.user;
-      console.log('Người dùng đã đăng nhập thành công:', user.displayName);
-    } catch (error) {
-      // Xử lý lỗi đăng nhập
-      console.error('Lỗi đăng nhập:', error);
-    }
-  }
+  // async function handleGoogleSignIn() {
+  //   try {
+  //     const userCredential = await onGoogleButtonPress();
+  //     // Đăng nhập thành công
+  //     const user = userCredential.user;
+  //     console.log('Người dùng đã đăng nhập thành công:', user.displayName);
+  //   } catch (error) {
+  //     // Xử lý lỗi đăng nhập
+  //     console.error('Lỗi đăng nhập:', error);
+  //   }
+  // }
 
 
 
@@ -177,7 +176,8 @@ export default Login = props => {
       AsyncStorage.setItem('token', user.token);
 
       // Điều hướng sau khi đăng nhập thành công
-      navigation.navigate('BottomTab');
+      // navigation.navigate('BottomTab');
+      navigation.goBack();
 
       // Hiển thị thông báo thành công
       //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);

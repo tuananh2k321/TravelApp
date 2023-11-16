@@ -7,7 +7,7 @@ const initialState = {
     dataVerifyOTP: {},
     dataChangePassword: {},
     dataEditProfile: {},
-    user: {},
+    user: null,
     token: ""
 }
 

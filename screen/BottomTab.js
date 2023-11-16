@@ -20,11 +20,13 @@ import Payment_Method from './booking/Payment_Method';
 import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
-import Mybooking from './tab_app/Mybooking';
+import SearchTourName from './tab_app/Home/SearchTourName';
+import Mybooking from './tab_app/Profile/Mybooking';
+import Login from './auth/Login';
+import Register from './auth/Register';
 
 import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
-import SearchTourName from './tab_app/Home/SearchTourName';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -66,7 +68,7 @@ const StackHomes = () => {
     }
   )
   return (
-    <Stack.Navigator initialRouteName="HomeMain" screenOptions={{headerShown: false}}>
+    <Stack.Navigator initialRouteName="HomeMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
@@ -75,12 +77,14 @@ const StackHomes = () => {
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name='SearchTourName' component={SearchTourName}/>
       {/* stack booking */}
-      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("")}/>
+      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhập đặt tour")} />
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
-      <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")}/>
+      <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
-      <Stack.Screen name="Available_Date" component={Available_Date}/>
+      <Stack.Screen name="Available_Date" component={Available_Date} />
       <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   )
 }
@@ -94,6 +98,7 @@ const StackBooking = () => {
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
       <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
+      <Stack.Screen name="SearchTourName" component={SearchTourName} />
     </Stack.Navigator>
   )
 }
