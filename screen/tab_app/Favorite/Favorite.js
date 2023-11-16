@@ -28,7 +28,9 @@ const Favorite = (props) => {
     if (user) {
       console.log('Profile user: ' + JSON.stringify(user));
         setLoading(false)
-        setIdUser(user.id)
+        console.log()
+        setIdUser(user._id)
+        getApi()
     } else {
       setLoading (true)
     }
@@ -50,7 +52,7 @@ const Favorite = (props) => {
 
   const getApi = async () => {
     try {
-      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" +idUser );
+      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" +user._id );
 
       console.log('response', response.favorite)
       
@@ -63,9 +65,6 @@ const Favorite = (props) => {
       console.log('error>>>', error)
     } 
   }
-  useEffect(() => {
-    getApi()
-  }, [])
 
   // console.log("data", data)
 

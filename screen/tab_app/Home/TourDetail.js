@@ -56,6 +56,8 @@ export default TourDetail = props => {
   const [isLoading, setIsLoading] = useState(true);
   const sampleText = description;
   const user = useSelector(state => state.user);
+  const user2 = useSelector(state => state.user.user)
+  const [idUser, setIdUser] = useState()
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
   //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
@@ -95,8 +97,9 @@ export default TourDetail = props => {
   const handleLike = async () => {
     try {
       const tourId = params.id;
-      const user_id = '650712a41cc623753c664aa2';
+      const user_id = user2._id;
       console.log('tour id', tourId);
+      console.log('user_id', user_id);
       // Thực hiện cuộc gọi API bằng axios hoặc thư viện HTTP client khác
       const response = await AxiosIntance().get(
         `favorite/api/${user_id}/${tourId}/addFavorite`,
