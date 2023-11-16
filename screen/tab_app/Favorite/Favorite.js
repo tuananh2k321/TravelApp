@@ -8,7 +8,8 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import AxiosIntance from '../../../constant/AxiosIntance'
 import { log } from 'console'
-
+import Loading from '../../Loading'
+import { useSelector } from 'react-redux'
 
 handleDelete = (itemId) => {
   // Xử lý xóa item với id được truyền vào
@@ -18,9 +19,22 @@ const Favorite = (props) => {
   const { navigation } = props;
   const [data, setData] = useState([])
   const [isLoading, setLoading] = useState(true)
-
+  const user = useSelector(state => state.user.user)
+  const [idUser, setIdUser] = useState()
 
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() =>{
+    if (user) {
+      console.log('Profile user: ' + JSON.stringify(user));
+        setLoading(false)
+        setIdUser(user.id)
+    } else {
+      setLoading (true)
+    }
+  },[])
+
+  
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -36,19 +50,18 @@ const Favorite = (props) => {
 
   const getApi = async () => {
     try {
-      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" + "650712a41cc623753c664aa2");
+      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" +idUser );
 
       console.log('response', response.favorite)
-
-      const listData = await response.favorite
-      console.log('listData', listData)
-      setData(listData)
-
+      
+        console.log(response.favorite)
+        const listData = await response.favorite
+        console.log('listData', listData)
+        setData(listData)
+      
     } catch (error) {
       console.log('error>>>', error)
-    } finally {
-      setLoading(false)
-    }
+    } 
   }
   useEffect(() => {
     getApi()
@@ -96,6 +109,12 @@ const Favorite = (props) => {
       ]
     );
   };
+
+  if (isLoading) {
+    return (
+      <Loading/>
+    )
+  }
 
 
   return (
