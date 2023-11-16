@@ -8,7 +8,10 @@ import {
   StyleSheet,
   Modal,
   Button,
+  FlatList,
 } from 'react-native';
+import { ScrollView } from 'react-native-virtualized-view';
+
 import React, { useState, useEffect } from 'react';
 import { SIZES, COLOR, ICON } from '../../../constant/Themes';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -46,6 +49,7 @@ export default TourDetail = (props) => {
   const [tourImage, settourImage] = useState([])
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [listComment, setListComment] = useState([]);
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -100,12 +104,110 @@ export default TourDetail = (props) => {
 
   }
 
+  const getComment = async () => {
+    try {
+      const tourId = params.id;
+      console.log('tourId', tourId)
+      const response = await AxiosIntance().get(`comment/api/listComment/?tour_id=${tourId}`);
 
+      // console.log("Check response commment", response)
+      const listData = await response.comments
+      // console.log('listData', listData)
+      setListComment(listData)
+    } catch (error) {
+      console.log("error:>>>>> " + error)
+    }
+  }
+
+
+  const renderItem = ({ item }) => (
+    <View
+      style={{
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: COLOR.lightBlack2,
+        padding: 15,
+        marginBottom: 20,
+        backgroundColor: 'white',
+      }}>
+      <View style={{ flexDirection: 'row' }}>
+        <Image
+          source={{ uri: item.user_id.avatar }}
+          style={{
+            width: 70,
+            height: 70,
+            borderRadius: 50,
+            marginRight: 20,
+          }}
+        />
+        <View style={{ justifyContent: 'center' }}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: COLOR.title,
+            }}>
+            {item.user_id.name}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {Array.from({ length: 5 }).map((_, index) => {
+              if (index < 3) {
+                return (
+                  <Image
+                    key={`star-${index}`}
+                    source={ICON.star_yellow}
+                    style={{ width: 16, height: 16 }}
+                  />
+                );
+              } else {
+                return (
+                  <Image
+                    key={`star-${index}`}
+                    source={ICON.star}
+                    style={{ width: 16, height: 16 }}
+                  />
+                );
+              }
+            })}
+          </View>
+        </View>
+      </View>
+
+      <Text
+        style={{
+          fontSize: 17,
+          fontWeight: '400',
+          color: COLOR.detail,
+          marginTop: 20,
+        }}>
+        {item.content}
+      </Text>
+
+      <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400' }}>
+            Đã đăng
+          </Text>
+          <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
+            10/10/2023
+          </Text>
+        </View>
+
+      </View>
+
+    </View>
+  )
 
   useEffect(() => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get("tour/api/" + params.id + "/detail");
+        // console.log("Check response getTour: " + response);
         // console.log("tour ", params.id)
         if (response.result == true) {
           settourName(response.tour.tourName)
@@ -133,6 +235,7 @@ export default TourDetail = (props) => {
         }
       }
       getTour();
+      getComment()
 
       return () => { }
     } catch (error) {
@@ -140,8 +243,11 @@ export default TourDetail = (props) => {
     }
 
   }, []);
+
+
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+
+    <ScrollView >
       <SafeAreaView
         style={{
           width: SIZES.width,
@@ -473,11 +579,6 @@ export default TourDetail = (props) => {
             }}
           />
 
-
-
-
-
-
           <Text
             style={{
               fontSize: 18,
@@ -488,89 +589,16 @@ export default TourDetail = (props) => {
             }}>
             Đánh giá
           </Text>
+          <ScrollView >
+            {/* Hiểm thị comment */}
+            <FlatList
+              data={listComment}
+              keyExtractor={item => item._id}
+              nestedScrollEnabled
+              renderItem={renderItem}
 
-          <View
-            style={{
-              borderRadius: 6,
-              borderWidth: 1,
-              borderColor: COLOR.lightBlack2,
-              padding: 15,
-              marginBottom: 20,
-              backgroundColor: 'white',
-            }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image
-                source={{
-                  uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                }}
-                style={{
-                  width: 70,
-                  height: 70,
-                  borderRadius: 50,
-                  marginRight: 20,
-                }}
-              />
-              <View style={{ justifyContent: 'center' }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: COLOR.title,
-                  }}>
-                  Trần Tuấn Anh
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  {Array.from({ length: 5 }).map((_, index) => {
-                    if (index < 3) {
-                      return (
-                        <Image
-                          key={`star-${index}`}
-                          source={ICON.star_yellow}
-                          style={{ width: 16, height: 16 }}
-                        />
-                      );
-                    } else {
-                      return (
-                        <Image
-                          key={`star-${index}`}
-                          source={ICON.star}
-                          style={{ width: 16, height: 16 }}
-                        />
-                      );
-                    }
-                  })}
-                </View>
-              </View>
-            </View>
-
-            <Text
-              style={{
-                fontSize: 17,
-                fontWeight: '400',
-                color: COLOR.detail,
-                marginTop: 20,
-              }}>
-              ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq weqweq111111111111111111111111
-            </Text>
-
-            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400' }}>
-                  Đã đăng
-                </Text>
-                <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
-                  10/10/2023
-                </Text>
-              </View>
-
-            </View>
-
-          </View>
+            />
+          </ScrollView>
 
           <TouchableOpacity
             style={{
@@ -656,7 +684,10 @@ export default TourDetail = (props) => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    </KeyboardAwareScrollView>
+    </ScrollView>
+
+
+
   );
 };
 const styles = StyleSheet.create({

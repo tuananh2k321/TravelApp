@@ -90,7 +90,7 @@ const App = () => {
 
   return (
     <Provider store={Store}>
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <Stack.Navigator
           initialRouteName={"BottomTab"}
           screenOptions={{ headerShown: false }}>
@@ -104,11 +104,11 @@ const App = () => {
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="VerifyCode2" component={Verifycode2} />
           <Stack.Screen name="Successfully" component={Successfully} /> */}
-      {/* <Stack.Screen name="BottomTab" component={BottomTab} /> */}
-      {/* </Stack.Navigator> */}
-      {/* </NavigationContainer> */}
+          <Stack.Screen name="BottomTab" component={BottomTab} />
+        </Stack.Navigator>
+      </NavigationContainer>
       {/* <Mybooking/> */}
-      <AddComment />
+      {/* <AddComment /> */}
       {/* <EditProfile /> */}
     </Provider>
   );
