@@ -61,15 +61,15 @@ const App = () => {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={"BottomTab"}
+          initialRouteName={"Login"}
           screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="VerifyCode" component={VerifyCode} />
           <Stack.Screen name="VerifyCode2" component={Verifycode2} />
-          <Stack.Screen name="Successfully" component={Successfully} /> */}
+          <Stack.Screen name="Successfully" component={Successfully} /> 
           <Stack.Screen name="BottomTab" component={BottomTab} />
         </Stack.Navigator>
       </NavigationContainer>
