@@ -112,7 +112,7 @@ export default TourDetail = (props) => {
 
       // console.log("Check response commment", response)
       const listData = await response.comments
-      // console.log('listData', listData)
+      console.log('listData', listData)
       setListComment(listData)
     } catch (error) {
       console.log("error:>>>>> " + error)
@@ -187,6 +187,33 @@ export default TourDetail = (props) => {
         }}>
         {item.content}
       </Text>
+      <View style={{ flexDirection: "row" }}>
+        <Image
+          source={{ uri: item?.image[0] }}
+          style={{
+            width: 70,
+            height: 70,
+            marginRight: 20,
+          }}
+        />
+        <Image
+          source={{ uri: item?.image[1] }}
+          style={{
+            width: 70,
+            height: 70,
+            marginRight: 20,
+          }}
+        />
+        <Image
+          source={{ uri: item?.image[2] }}
+          style={{
+            width: 70,
+            height: 70,
+            marginRight: 20,
+          }}
+        />
+      </View>
+
 
       <View style={{ flexDirection: 'row', marginTop: 20 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
