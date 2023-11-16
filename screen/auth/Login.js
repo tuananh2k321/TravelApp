@@ -43,6 +43,7 @@ export default Login = props => {
 
   // LOGIN FACEBOOK
   async function onFacebookButtonPress() {
+    
     try {
       // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
