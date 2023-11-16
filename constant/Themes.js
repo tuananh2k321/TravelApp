@@ -69,6 +69,8 @@ export const ICON = {
     camera: require('../assets/icon/icons8-camera-50.png'),
     deal: require('../assets/icon/dealsLight.png'),
     deal_d: require('../assets/icon/dealdark.png'),
+    camera: require('../assets/icon/camera.png'),
+    camera_library: require('../assets/icon/library.png'),
 }
 
 export const IMAGES = {

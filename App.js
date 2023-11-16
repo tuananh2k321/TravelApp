@@ -33,6 +33,8 @@ import Payment from './screen/booking/Payment';
 import Detail_Booking from './screen/booking/Detail_Booking';
 import Loading from './screen/Loading';
 import Mybooking from './screen/tab_app/Mybooking';
+import AddComment from './screen/comment/AddComment';
+import EditProfile from './screen/tab_app/Profile/EditProfile';
 
 
 const Stack = createNativeStackNavigator();
@@ -58,12 +60,12 @@ const App = () => {
               return;
             }
           }
-  
+
           // Token vẫn còn hợp lệ, dispatch action và cập nhật initialRoute
           //console.log("App token: " + token);
           Store.dispatch(setToken(token));
           setInitialRoute('BottomTab');
-  
+
           setTokenChecked(true);
         } else {
           // Không có token, tiếp tục với quá trình khởi động bình thường
@@ -74,12 +76,12 @@ const App = () => {
         setTokenChecked(true);
       }
     };
-  
+
     checkTokenAndStartApp();
   }, []);
-  
 
-  
+
+
 
   // Nếu chưa kiểm tra xong token, bạn có thể hiển thị một màn hình loading
   // if (!tokenChecked) {
@@ -88,7 +90,7 @@ const App = () => {
 
   return (
     <Provider store={Store}>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator
           initialRouteName={"BottomTab"}
           screenOptions={{ headerShown: false }}>
@@ -102,10 +104,12 @@ const App = () => {
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="VerifyCode2" component={Verifycode2} />
           <Stack.Screen name="Successfully" component={Successfully} /> */}
-          <Stack.Screen name="BottomTab" component={BottomTab} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      {/* <Stack.Screen name="BottomTab" component={BottomTab} /> */}
+      {/* </Stack.Navigator> */}
+      {/* </NavigationContainer> */}
       {/* <Mybooking/> */}
+      <AddComment />
+      {/* <EditProfile /> */}
     </Provider>
   );
 };
