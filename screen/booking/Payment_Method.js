@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 const windowWidth = Dimensions.get('window').width - 90;
 import AxiosIntance from '../../constant/AxiosIntance';
 import { useStripe } from '@stripe/stripe-react-native';
+import { useSelector } from 'react-redux';
 
 const Payment_Method = (props) => {
     const { navigation, route } = props;
@@ -14,6 +15,7 @@ const Payment_Method = (props) => {
     let count = Number(adult) + Number(children);
     const [totalPrice, settotalPrice] = useState(amount);
     const [quantity, setQuantity] = useState(count);
+    const user = useSelector((state) => state.user);
     const chooses = [
         {
             id: 1,
@@ -89,7 +91,8 @@ const Payment_Method = (props) => {
             Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
             return;
         } else {
-            Alert.alert('Success', 'Your order is confirmed!');
+            // Alert.alert('Success', 'Your order is confirmed!');
+            onBooking();
         }
         // 4. If payment ok -> create the order
         // onCreateOrder();

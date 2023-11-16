@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#0FA3E2',
         position: 'relative',
+        justificontent: "center",
+        alignItem: "center"
     },
     title: {
         fontSize: 36,
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     image: {
         width: 111,
         height: 108,
-        marginTop: 250,
+        marginTop: 180,
         marginBottom: 19
     },
     group_Content: {

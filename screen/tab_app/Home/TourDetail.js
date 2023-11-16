@@ -65,26 +65,18 @@ export default TourDetail = props => {
   //     // Thêm các hình ảnh khác tại đây
   //   ];
   const onBooking = () => {
-    // if (user.user == null) {
-    //   navigation.navigate('Login');
-    // } else {
-    //   navigation.navigate('Detail_Booking', {
-    //     id: params.id,
-    //     childrenPrice: childrenPrice,
-    //     adultPrice: adultPrice,
-    //     image: tourImage[0],
-    //     tourName: tourName,
-    //     limitedPerson: limitedPerson,
-    //   });
-    // }
-    navigation.navigate('Detail_Booking', {
-      id: params.id,
-      childrenPrice: childrenPrice,
-      adultPrice: adultPrice,
-      image: tourImage[0],
-      tourName: tourName,
-      limitedPerson: limitedPerson,
-    });
+    if (user.user == null) {
+      navigation.navigate('Login');
+    } else {
+      navigation.navigate('Detail_Booking', {
+        id: params.id,
+        childrenPrice: childrenPrice,
+        adultPrice: adultPrice,
+        image: tourImage[0],
+        tourName: tourName,
+        limitedPerson: limitedPerson,
+      });
+    }
   };
 
   let images = tourImage;
