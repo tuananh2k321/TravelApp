@@ -274,7 +274,7 @@ export default TourDetail = (props) => {
 
   return (
 
-    <ScrollView >
+    <ScrollView showsVerticalScrollIndicator={true} >
       <SafeAreaView
         style={{
           width: SIZES.width,
