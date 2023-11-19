@@ -11,6 +11,7 @@ import {
   FlatList,
 } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
+import { AirbnbRating, Rating } from 'react-native-ratings';
 
 import React, { useState, useEffect } from 'react';
 import { SIZES, COLOR, ICON } from '../../../constant/Themes';
@@ -26,6 +27,9 @@ import { log } from 'console';
 import { set } from 'immer/dist/internal';
 
 export default TourDetail = (props) => {
+  try {
+
+  
   const { navigation, route } = props;
   const { params } = route;
   const [tourName, settourName] = useState("")
@@ -50,6 +54,7 @@ export default TourDetail = (props) => {
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [listComment, setListComment] = useState([]);
+  const [ratings, setRatings] = useState(0)
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -104,14 +109,30 @@ export default TourDetail = (props) => {
 
   }
 
-  const getComment = async () => {
+  // const getComment = async () => {
+  //   try {
+  //     const tourId = params.id;
+  //     console.log('tourId', tourId)
+  //     const response = await AxiosIntance().get(`comment/api/listComment/?tour_id=${tourId}`);
+
+  //     // console.log("Check response commment", response)
+  //     const listData = await response.comments
+  //     console.log('listData', listData)
+  //     setListComment(listData)
+  //   } catch (error) {
+  //     console.log("error:>>>>> " + error)
+  //   }
+  // }
+
+  const getTopComment = async () => {
     try {
       const tourId = params.id;
       console.log('tourId', tourId)
-      const response = await AxiosIntance().get(`comment/api/listComment/?tour_id=${tourId}`);
+      const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`);
 
-      // console.log("Check response commment", response)
+      
       const listData = await response.comments
+      console.log("Check response commment", listData)
       console.log('listData', listData)
       setListComment(listData)
     } catch (error) {
@@ -120,115 +141,106 @@ export default TourDetail = (props) => {
   }
 
 
-  const renderItem = ({ item }) => (
-    <View
-      style={{
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: COLOR.lightBlack2,
-        padding: 15,
-        marginBottom: 20,
-        backgroundColor: 'white',
-      }}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image
-          source={{ uri: item.user_id.avatar }}
-          style={{
-            width: 70,
-            height: 70,
-            borderRadius: 50,
-            marginRight: 20,
-          }}
-        />
-        <View style={{ justifyContent: 'center' }}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: COLOR.title,
-            }}>
-            {item.user_id.name}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {Array.from({ length: 5 }).map((_, index) => {
-              if (index < 3) {
-                return (
-                  <Image
-                    key={`star-${index}`}
-                    source={ICON.star_yellow}
-                    style={{ width: 16, height: 16 }}
-                  />
-                );
-              } else {
-                return (
-                  <Image
-                    key={`star-${index}`}
-                    source={ICON.star}
-                    style={{ width: 16, height: 16 }}
-                  />
-                );
-              }
-            })}
-          </View>
-        </View>
-      </View>
+  // const renderItem = ({ item }) => (
+  //   <View
+  //     style={{
+  //       borderRadius: 6,
+  //       borderWidth: 1,
+  //       borderColor: COLOR.lightBlack2,
+  //       padding: 15,
+  //       marginBottom: 20,
+  //       backgroundColor: 'white',
+  //     }}>
+  //     <View style={{ flexDirection: 'row' }}>
+  //       <Image
+  //         source={{ uri: item.user_id.avatar }}
+  //         style={{
+  //           width: 70,
+  //           height: 70,
+  //           borderRadius: 50,
+  //           marginRight: 20,
+  //         }}
+  //       />
+  //       <View style={{ justifyContent: 'center' }}>
+  //         <Text
+  //           style={{
+  //             fontSize: 18,
+  //             fontWeight: 'bold',
+  //             color: COLOR.title,
+  //           }}>
+  //           {item.user_id.name}
+  //         </Text>
+  //         <View
+  //           style={{
+  //             flexDirection: 'row',
+  //             justifyContent: 'center',
+  //             alignItems: 'center',
+  //           }}>
+  //           <Rating
+  //             ratingCount={5}
+  //             showReadOnlyText={false}
+  //             fractions={1}
+  //             startingValue={0}
+  //             jumpValue={0.1}
+  //             imageSize={12}
+  //             showRating={true}
+  //             onFinishRating={rating => { setRatings(rating) }}
+  //           />
+  //         </View>
+  //       </View>
+  //     </View>
 
-      <Text
-        style={{
-          fontSize: 17,
-          fontWeight: '400',
-          color: COLOR.detail,
-          marginTop: 20,
-        }}>
-        {item.content}
-      </Text>
-      <View style={{ flexDirection: "row" }}>
-        <Image
-          source={{ uri: item?.image[0] }}
-          style={{
-            width: 70,
-            height: 70,
-            marginRight: 20,
-          }}
-        />
-        <Image
-          source={{ uri: item?.image[1] }}
-          style={{
-            width: 70,
-            height: 70,
-            marginRight: 20,
-          }}
-        />
-        <Image
-          source={{ uri: item?.image[2] }}
-          style={{
-            width: 70,
-            height: 70,
-            marginRight: 20,
-          }}
-        />
-      </View>
+  //     <Text
+  //       style={{
+  //         fontSize: 17,
+  //         fontWeight: '400',
+  //         color: COLOR.detail,
+  //         marginTop: 20,
+  //       }}>
+  //       {item.content}
+  //     </Text>
+  //     <View style={{ flexDirection: "row" }}>
+  //       <Image
+  //         source={{ uri: item?.image[0] }}
+  //         style={{
+  //           width: 70,
+  //           height: 70,
+  //           marginRight: 20,
+  //         }}
+  //       />
+  //       <Image
+  //         source={{ uri: item?.image[1] }}
+  //         style={{
+  //           width: 70,
+  //           height: 70,
+  //           marginRight: 20,
+  //         }}
+  //       />
+  //       <Image
+  //         source={{ uri: item?.image[2] }}
+  //         style={{
+  //           width: 70,
+  //           height: 70,
+  //           marginRight: 20,
+  //         }}
+  //       />
+  //     </View>
 
 
-      <View style={{ flexDirection: 'row', marginTop: 20 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-          <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400' }}>
-            Đã đăng
-          </Text>
-          <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
-            10/10/2023
-          </Text>
-        </View>
+  //     <View style={{ flexDirection: 'row', marginTop: 20 }}>
+  //       <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+  //         <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400' }}>
+  //           Đã đăng
+  //         </Text>
+  //         <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
+  //           10/10/2023
+  //         </Text>
+  //       </View>
 
-      </View>
+  //     </View>
 
-    </View>
-  )
+  //   </View>
+  // )
 
   useEffect(() => {
     try {
@@ -262,7 +274,8 @@ export default TourDetail = (props) => {
         }
       }
       getTour();
-      getComment()
+      getTopComment();
+      // getComment()
 
       return () => { }
     } catch (error) {
@@ -616,16 +629,118 @@ export default TourDetail = (props) => {
             }}>
             Đánh giá
           </Text>
-          <ScrollView >
-            {/* Hiểm thị comment */}
-            <FlatList
-              data={listComment}
-              keyExtractor={item => item._id}
-              nestedScrollEnabled
-              renderItem={renderItem}
 
-            />
-          </ScrollView>
+
+          {/* Đánh Giá */}
+          <TouchableOpacity>
+            <View
+              style={{
+                borderRadius: 6,
+                borderWidth: 1,
+                borderColor: COLOR.lightBlack2,
+                padding: 15,
+                marginBottom: 20,
+                backgroundColor: 'white',
+              }}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={{ uri: listComment.user_id.avatar }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 50,
+                    marginRight: 20,
+                  }}
+                />
+                <View style={{ justifyContent: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      color: COLOR.title,
+                    }}>
+                    {listComment.user_id.name}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Rating
+                      ratingCount={5}
+                      showReadOnlyText={false}
+                      fractions={1}
+                      startingValue={0}
+                      jumpValue={0.1}
+                      imageSize={12}
+                      showRating={true}
+                      onFinishRating={rating => { setRatings(rating) }}
+                    />
+                  </View>
+                </View>
+              </View>
+
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: '400',
+                  color: COLOR.detail,
+                  marginTop: 20,
+                }}>
+                {listComment.content}
+              </Text>
+              <FlatList
+                data={listComment.image}
+                horizontal
+                renderItem={item => <Image style={{
+                  width: 70,
+                  height: 70,
+                }} source={{ uri: item }} />}
+                keyExtractor={index => index}
+              />
+              {/* <View style={{ flexDirection: "row" }}>
+                <Image
+                  source={{ uri: listComment?.image[0] }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    marginRight: 20,
+                  }}
+                />
+                <Image
+                  source={{ uri: listComment?.image[1] }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    marginRight: 20,
+                  }}
+                />
+                <Image
+                  source={{ uri: listComment?.image[2] }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    marginRight: 20,
+                  }}
+                />
+              </View> */}
+
+
+              <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                  <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400' }}>
+                    Đã đăng
+                  </Text>
+                  <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
+                    10/10/2023
+                  </Text>
+                </View>
+
+              </View>
+
+            </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={{
@@ -716,6 +831,9 @@ export default TourDetail = (props) => {
 
 
   );
+} catch(e) {
+  console.log(e);
+}
 };
 const styles = StyleSheet.create({
   modalContainer: {
