@@ -42,91 +42,80 @@ export default Login = props => {
   const [messageLogin, setMessageLogin] = useState('');
 
   // LOGIN FACEBOOK
-  // async function onFacebookButtonPress() {
-  //   try {
-  //     // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
-  //     const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
+  async function onFacebookButtonPress() {
+    try {
+      // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
       
-  //     if (result.isCancelled) {
-  //       throw new Error('User cancelled the login process');
-  //     }
+      if (result.isCancelled) {
+        throw new Error('User cancelled the login process');
+      }
   
-  //     // Lấy AccessToken
-  //     const data = await AccessToken.getCurrentAccessToken();
+      // Lấy AccessToken
+      const data = await AccessToken.getCurrentAccessToken();
   
-  //     if (!data) {
-  //       throw new Error('Something went wrong obtaining access token');
-  //     }
+      if (!data) {
+        throw new Error('Something went wrong obtaining access token');
+      }
   
-  //     // Lấy thông tin người dùng từ Facebook
-  //     const responseInfoCallback = (error, result) => {
-  //       if (error) {
-  //         throw new Error('Error fetching user info: ' + error.toString());
-  //       } else {
-  //         console.log('User info:', result);
-  //         disPath({
-  //           type: "LOGIN-FB",
-  //           payload: [result.id, result.name]
-  //         })
-  //         setIsLoading(true)
-  //       }
-  //     };
+      // Lấy thông tin người dùng từ Facebook
+      const responseInfoCallback = (error, result) => {
+        if (error) {
+          throw new Error('Error fetching user info: ' + error.toString());
+        } else {
+          console.log('User info:', result);
+          disPath({
+            type: "LOGIN-FB",
+            payload: [result.id, result.name]
+          })
+          setIsLoading(true)
+        }
+      };
   
-  //     const infoRequest = new GraphRequest('/me', {
-  //       parameters: {
-  //         fields: {
-  //           string: 'id,name,picture'
-  //         }
-  //       }
-  //     }, responseInfoCallback);
+      const infoRequest = new GraphRequest('/me', {
+        parameters: {
+          fields: {
+            string: 'id,name,picture'
+          }
+        }
+      }, responseInfoCallback);
   
-  //     new GraphRequestManager().addRequest(infoRequest).start();
+      new GraphRequestManager().addRequest(infoRequest).start();
   
-  //     return data;
-  //   } catch (error) {
-  //     console.error('Facebook login error:', error);
-  //     throw error;
-  //   }
-  // }
+      return data;
+    } catch (error) {
+      console.error('Facebook login error:', error);
+      throw error;
+    }
+  }
 
   // LOGIN GOOGLE
-  // GoogleSignin.configure({
-  //   webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
-  // });
+  GoogleSignin.configure({
+    webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
+  });
   
-  // async function onGoogleButtonPress() {
-  //   try {
-  //     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-  //     const { idToken } = await GoogleSignin.signIn();
-  //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  //     const userCredential = await auth().signInWithCredential(googleCredential);
-  //     return userCredential;
-  //   } catch (error) {
-  //     // Xem thông tin lỗi chi tiết
-  // console.error('Lỗi đăng nhập:', error);
 
-  // // In thông tin lỗi chi tiết
-  // if (error.message) {
-  //   console.error('Message:', error.message);
-  // }
 
-  // if (error.code) {
-  //   console.error('Code:', error.code);
-  // }
-  //   }
-  // }
   
-  // async function handleGoogleSignIn() {
-  //   try {
-  //     const userCredential = await onGoogleButtonPress();
-  //     // Đăng nhập thành công
-  //     const user = userCredential.user;
-  //     console.log('Người dùng đã đăng nhập thành công:', user.displayName);
-  //   } catch (error) {
-  //     // Xử lý lỗi đăng nhập
-  //     console.error('Lỗi đăng nhập:', error);
-  //   }
-  // }
+  async function handleGoogleSignIn() {
+    try {
+      // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      // Xử lý lỗi đăng nhập
+      disPath({
+        type: "LOGIN-FB",
+        payload: ["123", "Anh Tran"]
+      })
+      console.log(error);
+    }
+  }
 
 
 
