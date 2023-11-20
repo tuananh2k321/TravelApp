@@ -8,6 +8,12 @@ import {name as appName} from './app.json';
 import Splash from './screen/tab_app/Splash';
 import Onboarding from './screen/tab_app/Onboarding/Onboarding';
 import { Component } from 'react';
+import messaging from '@react-native-firebase/messaging';
+
+// Register background handler
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+  });
 
 
 class Main extends Component{
@@ -25,4 +31,4 @@ class Main extends Component{
     }
 }
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => Main);

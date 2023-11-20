@@ -17,25 +17,9 @@ import { Store } from './redux/Store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setToken } from './redux/reducer/UserSlice';
 import { StripeProvider } from '@stripe/stripe-react-native';
-import {
-  SafeAreaView,
-  Image,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ToastAndroid
-} from 'react-native';
-import SearchScreen from './screen/tab_app/Home/SearchScreen';
-import AddCard from './screen/booking/AddCard';
-import Payment_Method from './screen/booking/Payment_Method';
-import Item_card from './component/Tab_item/Item_card';
-import Payment from './screen/booking/Payment';
-import Detail_Booking from './screen/booking/Detail_Booking';
-import Booking_Successfully from './screen/booking/Booking_Successfully';
-import Loading from './screen/Loading';
-import SearchTourName from './screen/tab_app/Home/SearchTourName';
-import Mybooking from './screen/tab_app/Profile/Mybooking';
+import messaging from '@react-native-firebase/messaging';
+import { getToken, notificationListeners, requestUserPermission } from './constant/Util';
+import { Alert } from 'react-native';
 
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +27,20 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   const [initialRoute, setInitialRoute] = useState('BottomTab'); // Khởi tạo initialRoute là 'Login'
   const [tokenChecked, setTokenChecked] = useState(false); // Khởi tạo biến để kiểm tra token
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    requestUserPermission()
+    notificationListeners()
+    getToken()
+  }, []);
 
   useEffect(() => {
     const checkTokenAndStartApp = async () => {
