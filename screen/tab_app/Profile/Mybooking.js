@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
         padding: 15,
         width: SIZES.width,
         backgroundColor: COLOR.white,
+        paddingBottom: 50
     },
     wishlist: {
         fontStyle: 'normal',

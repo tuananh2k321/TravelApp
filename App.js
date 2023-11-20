@@ -16,6 +16,7 @@ import { Provider } from 'react-redux';
 import { Store } from './redux/Store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setToken } from './redux/reducer/UserSlice';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import {
   SafeAreaView,
   Image,
@@ -31,6 +32,7 @@ import Payment_Method from './screen/booking/Payment_Method';
 import Item_card from './component/Tab_item/Item_card';
 import Payment from './screen/booking/Payment';
 import Detail_Booking from './screen/booking/Detail_Booking';
+import Booking_Successfully from './screen/booking/Booking_Successfully';
 import Loading from './screen/Loading';
 import SearchTourName from './screen/tab_app/Home/SearchTourName';
 import Mybooking from './screen/tab_app/Profile/Mybooking';
@@ -59,12 +61,12 @@ const App = () => {
               return;
             }
           }
-  
+
           // Token vẫn còn hợp lệ, dispatch action và cập nhật initialRoute
           //console.log("App token: " + token);
           Store.dispatch(setToken(token));
           setInitialRoute('BottomTab');
-  
+
           setTokenChecked(true);
         } else {
           // Không có token, tiếp tục với quá trình khởi động bình thường
@@ -75,38 +77,39 @@ const App = () => {
         setTokenChecked(true);
       }
     };
-  
+
     checkTokenAndStartApp();
   }, []);
-  
 
-  
+
+
 
   // Nếu chưa kiểm tra xong token, bạn có thể hiển thị một màn hình loading
   // if (!tokenChecked) {
   //   return <Text>Loading...</Text>; // Replace with your loading component
   // }
-
+  const STRIPE_KEY = 'pk_test_51OAMNGANZv3Twwu9pzJzF1umKF8axh0rzphoESMxaGlGaIa0NDb1q4v18l8WugkxdR72EqNfzDrRKGr1VWv9N2Z400vuFz9UB4';
   return (
     <Provider store={Store}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={"BottomTab"}
-          screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="GoToLogin" component={GoToLogin} />
-          <Stack.Screen name="SelectOptions" component={SelectOptions} />
-          <Stack.Screen name="PasswordByEmail" component={PasswordByEmail} />
-          <Stack.Screen name="PasswordByPhoneNumber" component={PasswordByPhoneNumber} />
-          <Stack.Screen name="VerifyCode" component={VerifyCode} />
-          <Stack.Screen name="NewPassword" component={NewPassword} />
-          <Stack.Screen name="VerifyCode2" component={Verifycode2} />
-          <Stack.Screen name="Successfully" component={Successfully} /> */}
-          <Stack.Screen name="BottomTab" component={BottomTab} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      {/* <Mybooking/> */}
+      <StripeProvider publishableKey={STRIPE_KEY}>
+        <NavigationContainer >
+          <Stack.Navigator
+            initialRouteName={"BottomTab"}
+            screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Register" component={Register} />
+              <Stack.Screen name="GoToLogin" component={GoToLogin} />
+              <Stack.Screen name="SelectOptions" component={SelectOptions} />
+              <Stack.Screen name="PasswordByEmail" component={PasswordByEmail} />
+              <Stack.Screen name="PasswordByPhoneNumber" component={PasswordByPhoneNumber} />
+              <Stack.Screen name="VerifyCode" component={VerifyCode} />
+              <Stack.Screen name="NewPassword" component={NewPassword} />
+              <Stack.Screen name="VerifyCode2" component={Verifycode2} />
+              <Stack.Screen name="Successfully" component={Successfully} />
+              <Stack.Screen name="BottomTab" component={BottomTab} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </StripeProvider>
     </Provider>
   );
 };

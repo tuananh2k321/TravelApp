@@ -279,6 +279,7 @@ const SearchScreen = props => {
       ) : (
             <FlatList
               style={{marginTop: 10, flex: 1}}
+              
               horizontal
               data={TourRating}
               renderItem={({item}) => (
@@ -306,9 +307,20 @@ const SearchScreen = props => {
                   }}>
                   Kết quả tìm kiếm
                 </Text>
-                {TourNam.map(item => (
+                {/* {TourNam.map(item => (
                   <ItemSearch dulieu={item} navigation={navigation} />
-                ))}
+                ))} */}
+                <FlatList
+              style={{marginTop: 10, flex: 1}}
+              
+              scrollEnabled={false}
+              data={TourNam}
+              renderItem={({item}) => (
+                <ItemSearch dulieu={item} navigation={navigation} />
+              )}
+              keyExtractor={item => item._id}
+              showsHorizontalScrollIndicator={false}
+            />
                
               </View>
             )}

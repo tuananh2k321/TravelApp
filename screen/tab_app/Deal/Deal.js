@@ -6,17 +6,19 @@ import { useState } from 'react';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemDeals from '../../../component/Tab_item/ItemDeals'
 import React from 'react'
-
+import Loading from '../../Loading';
 const Deal = (props) => {
   const [TourDeal, setTourDeal] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
       const getTourDeal = async () => {
+        setLoading(true);
         const respone = await AxiosIntance().get("/tour/api/get-all-tour");
         if (respone.result) {
           setTourDeal(respone.tours);
-
+          setLoading(false)
         } else {
           ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
         }
@@ -28,6 +30,12 @@ const Deal = (props) => {
       console.log('errrrrrrror', error)
     }
   }, []);
+
+  if (loading) {
+    return(
+      <Loading/>
+    )
+  }
 
 
   return (

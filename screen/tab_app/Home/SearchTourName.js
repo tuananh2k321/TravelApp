@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useSelector } from 'react-redux';
 import ItemActive from '../../../component/Tab_item/ItemActive';
@@ -8,21 +8,24 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
-
+import Loading from '../../Loading';
 const SearchTourName = (props) => {
   const { navigation, route } = props;
   const { nameDomain } = route.params;
-
+  const [loading, setLoading] = useState(false)
   const namee = nameDomain;
   const [SearchNameTour, setSearchNameTour] = useState([])
 
   useEffect(() => {
     try {
-      const getSearchTour = async () => {
-        const respone = await AxiosIntance().get("/tour/api/search/name?keyword= " + namee + "");
-        if (respone.result) {
-          setSearchNameTour(respone.tours);
 
+      const getSearchTour = async () => {
+        setLoading(true)
+        const respone = await AxiosIntance().get("/tour/api/list/name?keyword=" + namee + "");
+        console.log(respone)
+        if (respone) {
+          setSearchNameTour(respone.tours);
+          setLoading(false)
         } else {
           ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
         }
@@ -34,6 +37,12 @@ const SearchTourName = (props) => {
       console.log('errrrrrrror', error)
     }
   }, []);
+
+  if (loading) {
+    return(
+    <Loading></Loading>
+    )
+  }
 
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 10}}>

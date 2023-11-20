@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Dimensions, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -53,69 +53,70 @@ const Detail_Booking = (props) => {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.groupName}>
-        <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
-        <View style={{ marginStart: 10 }}>
-          <Text style={styles.name}>
-            {
-              tourName.length > 40 ? tourName.slice(0, 90) + "..." : tourName
-            }
-          </Text>
-          <Text style={styles.order}>Order number #{id}</Text>
+        <ScrollView>
+        <View style={styles.groupName}>
+          <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
+          <View style={{ marginStart: 10 }}>
+            <Text style={styles.name}>
+              {
+                tourName.length > 40 ? tourName.slice(0, 90) + "..." : tourName
+              }
+            </Text>
+            <Text style={styles.order}>Order number #{id}</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.groupTotalPrice}>
-        <View style={styles.groupPrice}>
-          <Text style={styles.totalPrice}>Tổng tiền </Text>
-          <Text style={[styles.totalPrice, { fontSize: 10 }]}>(incl VAT)</Text>
+        <View style={styles.groupTotalPrice}>
+          <View style={styles.groupPrice}>
+            <Text style={styles.totalPrice}>Tổng tiền </Text>
+            <Text style={[styles.totalPrice, { fontSize: 10 }]}>(incl VAT)</Text>
+          </View>
+          <View style={styles.groupPrice}>
+            <Text style={styles.money}>{price}/</Text>
+            <Text style={[styles.money, { fontWeight: '400' }]}>{quantity}Người</Text>
+          </View>
         </View>
-        <View style={styles.groupPrice}>
-          <Text style={styles.money}>{price}/</Text>
-          <Text style={[styles.money, { fontWeight: '400' }]}>{quantity}Người</Text>
-        </View>
-      </View>
 
-      <View style={styles.groupForm}>
-        <Text style={styles.lable}>Tên khách hàng</Text>
+        <View style={styles.groupForm}>
+          <Text style={styles.lable}>Tên khách hàng</Text>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => {
-            setErrorName(isValidName(text) == true ?
-              `` : 'Tên khách hàng không được trống');
-            setName(text)
-          }} />
-        <Text style={styles.error}>{errorName}</Text>
-      </View>
-      <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between" }]}>
-        <View style={{ width: '48%' }}>
-          <Text style={styles.lable}>Số lượng người lớn</Text>
           <TextInput
             style={styles.input}
-            keyboardType="numeric"
             onChangeText={(text) => {
-              // setErrorQuantity(isValidQuantity(text) == true ?
-              //   `` : 'Số khách hàng không được trống');
-              setErrorQuantity(isValidQuantity(text) == true ?
-                `` : 'Số khách hàng không được trống');
-              setQuantityAdult(text)
-            }}
-            value={quantityAdult} />
-          <Text style={styles.error}>{errorQuantity}</Text>
+              setErrorName(isValidName(text) == true ?
+                `` : 'Tên khách hàng không được trống');
+              setName(text)
+            }} />
+          <Text style={styles.error}>{errorName}</Text>
         </View>
-        <View style={{ width: '48%' }}>
-          <Text style={styles.lable}>Số lượng trẻ em</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            onChangeText={(text) => {
-              setQuantityChildren(text)
-            }}
-            value={quantityChildren} />
+        <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between" }]}>
+          <View style={{ width: '48%' }}>
+            <Text style={styles.lable}>Số lượng người lớn</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              onChangeText={(text) => {
+                // setErrorQuantity(isValidQuantity(text) == true ?
+                //   `` : 'Số khách hàng không được trống');
+                setErrorQuantity(isValidQuantity(text) == true ?
+                  `` : 'Số khách hàng không được trống');
+                setQuantityAdult(text)
+              }}
+              value={quantityAdult} />
+            <Text style={styles.error}>{errorQuantity}</Text>
+          </View>
+          <View style={{ width: '48%' }}>
+            <Text style={styles.lable}>Số lượng trẻ em</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              onChangeText={(text) => {
+                setQuantityChildren(text)
+              }}
+              value={quantityChildren} />
+          </View>
         </View>
-      </View>
-      {/* <View style={styles.groupForm}>
+        {/* <View style={styles.groupForm}>
         <Text style={styles.lable}>Số điện thoại</Text>
         <TextInput
           style={styles.input}
@@ -154,7 +155,9 @@ const Detail_Booking = (props) => {
         </View>
 
       </View> */}
-      <View style={styles.groupButton}>
+        
+        </ScrollView>
+        <View style={styles.groupButton}>
         <TouchableOpacity style={[styles.button,
         { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
           disabled={isValidOK() == false}
@@ -162,7 +165,7 @@ const Detail_Booking = (props) => {
           <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </View>
   )
 }
 
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    padding: 15
+    padding: 15,
   },
   title: {
     fontSize: 18,

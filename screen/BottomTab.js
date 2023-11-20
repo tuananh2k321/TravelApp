@@ -27,6 +27,7 @@ import Register from './auth/Register';
 
 import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
+import AddComment from './comment/AddComment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -114,8 +115,9 @@ const StackFavorites = () => {
 
 const StackNotification = () => {
   return (
-    <Stack.Navigator initialRouteName="NotificationMain" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="AddComment" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="NotificationMain" component={Notification} />
+      <Stack.Screen name="AddComment" component={AddComment} />
     </Stack.Navigator>
   )
 }
@@ -194,6 +196,7 @@ const BottomTab = () => {
                   style={{
                     color: focused ? COLOR.primary : COLOR.detail,
                     fontWeight: 'bold',
+                    fontSize: 12
                   }}>{label}</Animatable.Text>
                   :
                   <Text

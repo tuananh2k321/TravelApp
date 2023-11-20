@@ -94,31 +94,28 @@ export default Login = props => {
     webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
   });
   
-  async function onGoogleButtonPress() {
+
+
+  
+  async function handleGoogleSignIn() {
     try {
       // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    
-    setIsLoading(true)
-  
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
     } catch (error) {
+      // Xử lý lỗi đăng nhập
       disPath({
         type: "LOGIN-FB",
         payload: ["123", "Anh Tran"]
       })
       console.log(error);
     }
-    
   }
-  
 
 
 
@@ -168,7 +165,8 @@ export default Login = props => {
       AsyncStorage.setItem('token', user.token);
 
       // Điều hướng sau khi đăng nhập thành công
-      navigation.navigate('BottomTab');
+      // navigation.navigate('BottomTab');
+      navigation.goBack();
 
       // Hiển thị thông báo thành công
       //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
@@ -338,7 +336,7 @@ export default Login = props => {
             marginTop: 25,
           }}>
           <TouchableOpacity
-            onPress={() => onGoogleButtonPress()}
+            onPress={() => handleGoogleSignIn()}
             style={{flex: 1, marginRight: 10}}>
             <View
               style={{

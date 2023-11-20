@@ -8,17 +8,25 @@ import {
   StyleSheet,
   Modal,
   Button,
+  FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {SIZES, COLOR, ICON} from '../../../constant/Themes';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { ScrollView } from 'react-native-virtualized-view';
+import { AirbnbRating, Rating } from 'react-native-ratings';
+
+import React, { useState, useEffect } from 'react';
+import { SIZES, COLOR, ICON } from '../../../constant/Themes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
+import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { log } from 'console';
+import { set } from 'immer/dist/internal';
+
 
 export default TourDetail = props => {
   const {navigation, route} = props;
@@ -44,6 +52,7 @@ export default TourDetail = props => {
   const [tourImage, settourImage] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -51,6 +60,8 @@ export default TourDetail = props => {
   const [isLoading, setIsLoading] = useState(true);
   const sampleText = description;
   const user = useSelector(state => state.user);
+  const user2 = useSelector(state => state.user.user)
+  const [idUser, setIdUser] = useState()
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
   //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
@@ -90,8 +101,9 @@ export default TourDetail = props => {
   const handleLike = async () => {
     try {
       const tourId = params.id;
-      const user_id = '650712a41cc623753c664aa2';
+      const user_id = user2._id;
       console.log('tour id', tourId);
+      console.log('user_id', user_id);
       // Thực hiện cuộc gọi API bằng axios hoặc thư viện HTTP client khác
       const response = await AxiosIntance().get(
         `favorite/api/${user_id}/${tourId}/addFavorite`,
@@ -148,12 +160,16 @@ export default TourDetail = props => {
         }
       };
       getTour();
+      getTopComment();
+      // getComment()
 
       return () => {};
     } catch (error) {
       console.log('errrrrrrror', error);
     }
   }, []);
+
+
   return (
     <>
       {isLoading == true ? (
@@ -783,7 +799,8 @@ export default TourDetail = props => {
       )}
     </>
   );
-};
+} 
+
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,

@@ -13,9 +13,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
 import ImageOverlay from "react-native-image-overlay-prop-types-fixed";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Loading from "../../Loading";
 import { onPress } from "deprecated-react-native-prop-types/DeprecatedTextPropTypes";
 import { useNavigation } from '@react-navigation/native';
-
 
 
 export default function Home() {
@@ -24,34 +24,35 @@ export default function Home() {
     const [TourBac, setTourBac] = useState([])
     const [TourTrung, setTourTrung] = useState([])
     const [TourNam, setTourNam] = useState([])
-
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         try {
             const getTour = async () => {
+                setLoading(true)
                 const respone = await AxiosIntance().get("tour/api/list/tourRating");
                 if (respone.result) {
                     setTourRating(respone.tours);
-
+                    setLoading(false)
                 } else {
                     ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
                 }
                 const respone1 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Bac");
                 if (respone1.result) {
                     setTourBac(respone1.tours);
-
+                    setLoading(false)
                 } else {
                     ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
                 } const respone2 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Trung");
                 if (respone2.result) {
                     setTourTrung(respone2.tours);
-
+                    setLoading(false)
                 } else {
                     ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
                 }
                 const respone3 = await AxiosIntance().get("tour/api/listDomain/isdomain?keyword=Mien Nam");
                 if (respone3.result) {
                     setTourNam(respone3.tours);
-
+                    setLoading(false)
                 } else {
                     ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
                 }
@@ -66,12 +67,20 @@ export default function Home() {
     }, []);
 
 
+
+
     const [searchValue, setSearchValue] = useState('');
 
     const handleSearch = (text) => {
         setSearchValue(text);
         // Xử lý tìm kiếm
     };
+
+    if (loading) {
+        return (
+            <Loading/>
+        )
+    }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>

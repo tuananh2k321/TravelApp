@@ -6,6 +6,8 @@ import { ICON } from '../../constant/Themes';
 const Item_Booking = (props) => {
     const { item } = props;
     const dateReplace = (item.bookingDate);
+    let price = item.totalPrice;
+    price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
     let dateSlice = "";
     // let dateArray = [];
     if (dateReplace.length > 10) {
@@ -65,7 +67,7 @@ const Item_Booking = (props) => {
                     }
                 </Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.item_price}>{item.tour_id.adultPrice}đ</Text>
+                    <Text style={styles.item_price}>{price}</Text>
                 </View>
                 <View style={styles.item_days}>
                     <Text style={styles.item_days_text}>{item.tour_id.limitedDay} ngày {Number(item.tour_id.limitedDay) - 1} đêm</Text>
