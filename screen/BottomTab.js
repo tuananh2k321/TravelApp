@@ -196,6 +196,7 @@ const BottomTab = () => {
                   style={{
                     color: focused ? COLOR.primary : COLOR.detail,
                     fontWeight: 'bold',
+                    fontSize: 12
                   }}>{label}</Animatable.Text>
                   :
                   <Text
