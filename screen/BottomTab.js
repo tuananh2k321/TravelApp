@@ -77,7 +77,7 @@ const StackHomes = () => {
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name='SearchTourName' component={SearchTourName}/>
       {/* stack booking */}
-      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhập đặt tour")} />
+      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhận đặt tour")} />
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
@@ -116,6 +116,8 @@ const StackNotification = () => {
   return (
     <Stack.Navigator initialRouteName="NotificationMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="NotificationMain" component={Notification} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   )
 }

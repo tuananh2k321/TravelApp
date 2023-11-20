@@ -177,7 +177,7 @@ export default Login = props => {
 
       // Điều hướng sau khi đăng nhập thành công
       // navigation.navigate('BottomTab');
-      navigation.goBack();
+      navigation.pop();
 
       // Hiển thị thông báo thành công
       //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);

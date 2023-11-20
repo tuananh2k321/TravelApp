@@ -11,7 +11,7 @@ const Item_notification = props => {
             <View style={styles.list_product_text}>
                 <Text numberOfLines={1} style={styles.title}>{dulieu.title}</Text>
                 <Text numberOfLines={1} style={styles.content}>{dulieu.content}</Text>
-                <Text style={styles.days}>{dulieu.days}</Text>
+                <Text style={styles.days}>{dulieu.timestamp}</Text>
             </View>
         <TouchableOpacity style={styles.button_view}>
             <Text style={styles.button_view_text}>View</Text>
