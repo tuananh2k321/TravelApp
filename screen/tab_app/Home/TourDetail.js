@@ -10,23 +10,22 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-import { ScrollView } from 'react-native-virtualized-view';
-import { AirbnbRating, Rating } from 'react-native-ratings';
+import {ScrollView} from 'react-native-virtualized-view';
+import {AirbnbRating, Rating} from 'react-native-ratings';
 
-import React, { useState, useEffect } from 'react';
-import { SIZES, COLOR, ICON } from '../../../constant/Themes';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, {useState, useEffect} from 'react';
+import {SIZES, COLOR, ICON} from '../../../constant/Themes';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
-import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
-import { useSelector } from 'react-redux';
-import { log } from 'console';
-import { set } from 'immer/dist/internal';
-
+import {useSelector} from 'react-redux';
+import {log} from 'console';
+import {set} from 'immer/dist/internal';
 
 export default TourDetail = props => {
   const {navigation, route} = props;
@@ -43,7 +42,9 @@ export default TourDetail = props => {
   const [limitedPerson, setlimitedPerson] = useState('');
   const [offer, setoffer] = useState('');
   const [vehicle, setvehicle] = useState('');
-  const [rating, setrating] = useState('');
+  const [rating, setrating] = useState(0);
+  const [booking, setBooking] = useState('');
+  const [reviews, setReviews] = useState('');
   const [isdomain, setisdomain] = useState('');
   const [hotel_id, sethotel_id] = useState({});
   const [tourGuide_id, settourGuide_id] = useState({});
@@ -60,8 +61,8 @@ export default TourDetail = props => {
   const [isLoading, setIsLoading] = useState(true);
   const sampleText = description;
   const user = useSelector(state => state.user);
-  const user2 = useSelector(state => state.user.user)
-  const [idUser, setIdUser] = useState()
+  const user2 = useSelector(state => state.user.user);
+  const [idUser, setIdUser] = useState();
   // const images = [
   //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
   //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
@@ -125,7 +126,10 @@ export default TourDetail = props => {
       console.log('error: ' + error);
     }
   };
-
+  const handleRating = ratedValue => {
+    // Xử lý khi người dùng đánh giá
+    setrating(ratedValue);
+  };
   // tourDetail
   useEffect(() => {
     try {
@@ -159,16 +163,37 @@ export default TourDetail = props => {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
       };
-      getTour();
-      getTopComment();
-      // getComment()
+      const getAllBooking = async () => {
+        const response = await AxiosIntance().get(
+          'booking/api/tourIsBooking/' + params.id,
+        );
 
-      return () => {};
+        if (response.result == true) {
+          setBooking(response.soLan);
+        } else {
+          ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
+        }
+      };
+      const getAllReviews = async () => {
+        const response = await AxiosIntance().get(
+          `comment/api/listComment?tour_id=${params.id}`,
+        );
+        if (response.result == true) {
+          setReviews(response.quantity);
+        } else {
+          ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
+        }
+      };
+      getTour();
+      //  getTopComment();
+      getAllBooking();
+      getAllReviews();
+      // getComment()
     } catch (error) {
       console.log('errrrrrrror', error);
     }
   }, []);
-
+  useEffect;
 
   return (
     <>
@@ -259,25 +284,15 @@ export default TourDetail = props => {
               </Text>
 
               <View style={{flexDirection: 'row'}}>
-                {Array.from({length: 5}).map((_, index) => {
-                  if (index < 3) {
-                    return (
-                      <Image
-                        key={`star-${index}`}
-                        source={ICON.star_yellow}
-                        style={{width: 18, height: 18}}
-                      />
-                    );
-                  } else {
-                    return (
-                      <Image
-                        key={`star-${index}`}
-                        source={ICON.star}
-                        style={{width: 18, height: 18}}
-                      />
-                    );
-                  }
-                })}
+                <Rating
+                  readonly
+                  ratingCount={5}
+                  showReadOnlyText={false}
+                  fractions={1}
+                  startingValue={rating}
+                  jumpValue={0.1}
+                  imageSize={20}
+                />
 
                 <Text
                   style={{
@@ -286,7 +301,7 @@ export default TourDetail = props => {
                     color: COLOR.detail,
                     marginLeft: 10,
                   }}>
-                  100 đánh giá
+                  {reviews == 0 ? 0 : reviews} đánh giá
                 </Text>
 
                 <Text
@@ -296,7 +311,7 @@ export default TourDetail = props => {
                     color: COLOR.detail,
                     marginLeft: 10,
                   }}>
-                  300 lượt đặt
+                  {booking == 0 ? 0 : booking} lượt đặt
                 </Text>
               </View>
 
@@ -546,19 +561,29 @@ export default TourDetail = props => {
                 }}>
                 Một số điểm tham quan
               </Text>
-              
-                {destination_id.map((item, index) => (
-                  <View style={{justifyContent:'center',alignItems:'center',marginVertical:5}} key={index}>
-                    <Image
-                      source={{uri: item.destinationImage}}
-                      style={{ width: '100%',
-                  height: 300,
+
+              {destination_id.map((item, index) => (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginVertical: 5,
                   }}
-                    />
-                    <Text style={{fontSize:16,fontWeight:'500',color:COLOR.title}}>{item.description}</Text>
-                  </View>
-                ))}
-              
+                  key={index}>
+                  <Image
+                    source={{uri: item.destinationImage}}
+                    style={{width: '100%', height: 300}}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '500',
+                      color: COLOR.title,
+                    }}>
+                    {item.description}
+                  </Text>
+                </View>
+              ))}
 
               <View
                 style={{
@@ -799,7 +824,7 @@ export default TourDetail = props => {
       )}
     </>
   );
-} 
+};
 
 const styles = StyleSheet.create({
   modalContainer: {
