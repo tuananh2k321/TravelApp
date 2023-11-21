@@ -8,10 +8,14 @@ import {
   StyleSheet,
   Modal,
   Button,
+  FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {SIZES, COLOR, ICON} from '../../../constant/Themes';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { ScrollView } from 'react-native-virtualized-view';
+import { AirbnbRating, Rating } from 'react-native-ratings';
+
+import React, { useState, useEffect } from 'react';
+import { SIZES, COLOR, ICON } from '../../../constant/Themes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
@@ -156,12 +160,16 @@ export default TourDetail = props => {
         }
       };
       getTour();
+      getTopComment();
+      // getComment()
 
       return () => {};
     } catch (error) {
       console.log('errrrrrrror', error);
     }
   }, []);
+
+
   return (
     <>
       {isLoading == true ? (
@@ -791,7 +799,8 @@ export default TourDetail = props => {
       )}
     </>
   );
-};
+} 
+
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
