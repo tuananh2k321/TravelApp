@@ -720,7 +720,7 @@ export default TourDetail = props => {
                     fontWeight: 'bold',
                     color: '#000000',
                   }}>
-                  Thêm +20 đánh giá
+                  Thêm +{reviews} đánh giá
                 </Text>
               </TouchableOpacity>
             </View>
