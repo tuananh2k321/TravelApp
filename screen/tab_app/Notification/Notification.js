@@ -22,30 +22,7 @@ const Notification = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
   const user = useSelector((state) => state.user);
-  const notification = useSelector((state) => state.notification);
   const isFocused = useIsFocused();
-  // setDataNotification(notification);
-  const dispatch = useDispatch();
-  // const getNotification = async () => {
-  //   const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + user.user._id);
-  //   // const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + "6545e7c10adb8f6b9612ae8d");
-  //   console.log(response);
-  //   if (response.result == true) {
-  //     setIsLoading(false);
-  //     setIsLogin(true);
-  //     dispatch(addNotificationAction(response.notify))
-  //   } else {
-  //     setIsLogin(false);
-  //   }
-
-  // }
-  // if (user.user == null) {
-  //   setIsLoading(true);
-  //   setIsLogin(false);
-  // }
-  // else {
-  //   getNotification();
-  // }
 
   useEffect(() => {
     const getNotifi = async () => {
@@ -56,7 +33,6 @@ const Notification = (props) => {
           setDataNotification(response.notify);
           setIsLoading(false);
           setIsLogin(true);
-          // dispatch(addNotificationAction(response.notify))
         } else {
           setIsLogin(false);
         }

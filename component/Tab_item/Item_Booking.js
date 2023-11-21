@@ -9,7 +9,6 @@ const Item_Booking = (props) => {
     let price = item.totalPrice;
     price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
     let dateSlice = "";
-    // let dateArray = [];
     if (dateReplace.length > 10) {
         dateSlice = dateReplace.slice(0, 10);
     } else {
@@ -28,13 +27,7 @@ const Item_Booking = (props) => {
         return tong;
     }
 
-    getTotalDate(arr) // Output: 8700000
-    console.log(getTotalDate(arr))
-    // for (let i = 0; i < arrLength; i++) {
-    //         // date + arr[i];
-    //     console.log(arr[i]);
-
-    //     }
+    getTotalDate(arr) 
     return (
         <><View style={styles.item}>
             <Image style={styles.item_left} source={{ uri: item.tour_id.tourImage[0] }}></Image>

@@ -11,6 +11,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { AirbnbRating, Rating } from 'react-native-ratings';
 import { openPicker } from '@baronha/react-native-multiple-image-picker'; import storage from '@react-native-firebase/storage';
 import AxiosIntance from '../../constant/AxiosIntance';
+import { useSelector } from 'react-redux';
 
 const AddComment = (props) => {
     const { navigation, route } = props;
@@ -24,8 +25,10 @@ const AddComment = (props) => {
     // const [imageCamera, setImageCamera] = useState([])
     const [selectedImage, setSelectedImage] = useState([])
 
-    const [user, setUser] = useState();
-    const [tourId, setTourId] = useState()
+    // const [user, setUser] = useState();
+    // const [tourId, setTourId] = useState()
+    const user = useSelector((state) => state.user);
+    const {tourID} = route.params;
 
     const options2 = {
         mediaType: 'photo', // Chỉ chọn ảnh, bạn có thể sử dụng 'video' để chọn video.
@@ -117,11 +120,11 @@ const AddComment = (props) => {
                 content: content,
                 image: uriFirebase,
                 rating: rating,
-                user_id: "650855ae3a2d79f9717a80f7",
-                tour_id: "652bf0bf98feb6019beb442b"
+                user_id: user.user._id,
+                tour_id: tourID
             })
             if (response.result) {
-                //navigation.pop()
+                navigation.pop();
                 console.log(response.result)
             }
         } catch (error) {

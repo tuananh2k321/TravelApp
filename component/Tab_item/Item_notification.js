@@ -1,9 +1,19 @@
 import { StyleSheet, Text, View,Image,TouchableOpacity,Dimensions } from 'react-native'
 import React from 'react'
 import { SIZES } from '../../constant/Themes';
+import { useNavigation } from '@react-navigation/native';
 
 const Item_notification = props => {
     const {dulieu} = props;
+    const navigation = useNavigation();
+    const onClickView = () => {
+        if(dulieu.type == 'feedback') {
+            navigation.navigate('AddComment', {tourID: dulieu.tour_id});
+        }
+        else if( dulieu.type == 'new-tour') {
+            navigation.navigate('TourDetail', { id: dulieu.tour_id })
+        }
+    }
   return (
     
         <View style={styles.list_product}>
@@ -13,8 +23,8 @@ const Item_notification = props => {
                 <Text numberOfLines={1} style={styles.content}>{dulieu.content}</Text>
                 <Text style={styles.days}>{dulieu.timestamp}</Text>
             </View>
-        <TouchableOpacity style={styles.button_view}>
-            <Text style={styles.button_view_text}>View</Text>
+        <TouchableOpacity style={styles.button_view} onPress={onClickView}>
+            <Text style={styles.button_view_text}>Xem</Text>
         </TouchableOpacity>
     </View>
     

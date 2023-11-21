@@ -20,6 +20,7 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getToken, notificationListeners, requestUserPermission } from './constant/Util';
 import { Alert } from 'react-native';
+import Booking_Successfully from './screen/booking/Booking_Successfully';
 
 
 const Stack = createNativeStackNavigator();
@@ -104,6 +105,7 @@ const App = () => {
               <Stack.Screen name="NewPassword" component={NewPassword} />
               <Stack.Screen name="VerifyCode2" component={Verifycode2} />
               <Stack.Screen name="Successfully" component={Successfully} />
+              <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
               <Stack.Screen name="BottomTab" component={BottomTab} />
           </Stack.Navigator>
         </NavigationContainer>
