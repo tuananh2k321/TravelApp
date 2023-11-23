@@ -22,7 +22,13 @@ const Profile = (props) => {
       }, [user]);
 
       if (isLoading) {
-        return <Loading></Loading>; 
+        return <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={{ backgroundColor: "#39C4FF", borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10 }}>
+          <Text style={{ fontSize: 16, fontWeight: '700', color: "white" }}>Đăng nhập trước khi xem</Text>
+        </TouchableOpacity>
+      </View>; 
       }
   return (
     <ScrollView>

@@ -27,7 +27,7 @@ import Register from './auth/Register';
 
 import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
-import AddComment from './comment/AddComment';
+import AddComment from '../screen/comment/AddComment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
