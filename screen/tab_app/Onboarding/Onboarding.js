@@ -90,23 +90,23 @@ const styles = StyleSheet.create({
 const slides = [
   {
     key: 's1',
-    description: 'Find thousans of tourist destinations ready for you to visit',
-    title: 'Get ready for the next trip',
+    description: 'Tìm hàng nghìn địa điểm du lịch sẵn sàng chào đón bạn ghé thăm',
+    title: 'Chuẩn bị cho chuyến đi tiếp theo',
     image: require('../../../assets/images/onboard1.jpg')
 
   },
 
   {
     key: 's2',
-    title: 'Visit tourist attractions',
-    description: 'Find thousans of tourist destinations ready for you to visit',
+    title: 'Thăm các điểm du lịch',
+    description: 'Tìm hàng nghìn địa điểm du lịch sẵn sàng chào đón bạn ghé thăm',
     image: require('../../../assets/images/onboard2.jpg')
 
   },
   {
     key: 's3',
-    title: 'Lets explore the world',
-    description: 'Find thousans of tourist destinations ready for you to visit',
+    title: 'Hãy khám phá thế giới',
+    description: 'Tìm hàng nghìn địa điểm du lịch sẵn sàng chào đón bạn ghé thăm',
     image: require('../../../assets/images/onboard3.jpg')
   },
 ];

@@ -101,25 +101,15 @@ const HotelDetail = (props) => {
           </Text>
           {/* đánh giá */}
           <View style={{flexDirection: 'row'}}>
-            {Array.from({length: 5}).map((_, index) => {
-              if (index < params.dulieu.rating) {
-                return (
-                  <Image
-                    key={`star-${index}`}
-                    source={ICON.star_yellow}
-                    style={{width: 18, height: 18}}
-                  />
-                );
-              } else {
-                return (
-                  <Image
-                    key={`star-${index}`}
-                    source={ICON.star}
-                    style={{width: 18, height: 18}}
-                  />
-                );
-              }
-            })}
+          <Rating
+                  readonly
+                  ratingCount={5}
+                  showReadOnlyText={false}
+                  fractions={1}
+                  startingValue={params.dulieu.rating}
+                  jumpValue={0.1}
+                  imageSize={20}
+                />
             <Text
               style={{
                 fontSize: 16,
@@ -177,7 +167,7 @@ const HotelDetail = (props) => {
                 marginTop: 25,
                 marginBottom: 10,
               }}>
-              Miêu tả
+              Mô tả
             </Text>
             <Text
               style={{
