@@ -18,7 +18,6 @@ const Mybooking = (props) => {
     useEffect(() => {
         const getNews = async () => {
             const response = await AxiosIntance().get("/booking/api/getListBooking?userID=" + user.user._id);
-            console.log(response);
             setDataMyBooking(response.booking);
             setIsLoading(false);
         }

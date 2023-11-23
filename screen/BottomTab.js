@@ -78,14 +78,12 @@ const StackHomes = () => {
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name='SearchTourName' component={SearchTourName}/>
       {/* stack booking */}
-      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhập đặt tour")} />
+      <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhận đặt tour")} />
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
-      <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
+      
     </Stack.Navigator>
   )
 }
@@ -115,7 +113,7 @@ const StackFavorites = () => {
 
 const StackNotification = () => {
   return (
-    <Stack.Navigator initialRouteName="AddComment" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="NotificationMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="NotificationMain" component={Notification} />
       <Stack.Screen name="AddComment" component={AddComment} />
     </Stack.Navigator>
