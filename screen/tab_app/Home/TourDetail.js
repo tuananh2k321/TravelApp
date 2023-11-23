@@ -10,26 +10,26 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-import {ScrollView} from 'react-native-virtualized-view';
-import {AirbnbRating, Rating} from 'react-native-ratings';
+import { ScrollView } from 'react-native-virtualized-view';
+import { AirbnbRating, Rating } from 'react-native-ratings';
 
-import React, {useState, useEffect} from 'react';
-import {SIZES, COLOR, ICON} from '../../../constant/Themes';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React, { useState, useEffect } from 'react';
+import { SIZES, COLOR, ICON } from '../../../constant/Themes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
-import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
-import {useSelector} from 'react-redux';
-import {log} from 'console';
-import {set} from 'immer/dist/internal';
+import { useSelector } from 'react-redux';
+import { log } from 'console';
+import { set } from 'immer/dist/internal';
 
 export default TourDetail = props => {
-  const {navigation, route} = props;
-  const {params} = route;
+  const { navigation, route } = props;
+  const { params } = route;
   const [tourName, settourName] = useState('');
   const [adultPrice, setadultPrice] = useState('');
   const [childrenPrice, setchildrenPrice] = useState('');
@@ -53,7 +53,7 @@ export default TourDetail = props => {
   const [tourImage, settourImage] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const [listComment, setListComment] = useState([])
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -130,6 +130,25 @@ export default TourDetail = props => {
     // Xử lý khi người dùng đánh giá
     setrating(ratedValue);
   };
+
+  //get TopComemnet
+
+  const getTopComment = async () => {
+    try {
+      const tourId = params.id;
+      console.log('tourId', tourId)
+      const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`);
+
+
+      const listData = await response.comments
+      console.log("Check response commment", listData)
+      setListComment(listData)
+    } catch (error) {
+      console.log("error:>>>>> " + error)
+    }
+  }
+
+
   // tourDetail
   useEffect(() => {
     try {
@@ -185,7 +204,7 @@ export default TourDetail = props => {
         }
       };
       getTour();
-      //  getTopComment();
+      getTopComment();
       getAllBooking();
       getAllReviews();
       // getComment()
@@ -207,8 +226,8 @@ export default TourDetail = props => {
               backgroundColor: COLOR.white,
             }}>
             <ImageBackground
-              source={{uri: tourImage[0] !== '' ? tourImage[0] : undefined}}
-              style={{width: SIZES.width, height: 300, padding: 15}}>
+              source={{ uri: tourImage[0] !== '' ? tourImage[0] : undefined }}
+              style={{ width: SIZES.width, height: 300, padding: 15 }}>
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -227,7 +246,7 @@ export default TourDetail = props => {
                   <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
                 </TouchableOpacity>
 
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <View
                     style={{
                       width: 36,
@@ -256,7 +275,7 @@ export default TourDetail = props => {
                     }}>
                     <TouchableOpacity
                       onPress={handleLike}
-                      // style={[styles.heart, isLiked && styles.heartFilled]}
+                    // style={[styles.heart, isLiked && styles.heartFilled]}
                     >
                       <FontAwesome
                         name={isLiked ? 'heart' : 'heart-o'}
@@ -283,7 +302,7 @@ export default TourDetail = props => {
                 {tourName}
               </Text>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Rating
                   readonly
                   ratingCount={5}
@@ -381,7 +400,7 @@ export default TourDetail = props => {
                 Bao gồm
               </Text>
               {/* Bao gồm */}
-              <View style={{flexDirection: 'column'}}>
+              <View style={{ flexDirection: 'column' }}>
                 <ItemIncluded
                   icon={'bus-alt'}
                   title={vehicle}
@@ -571,8 +590,8 @@ export default TourDetail = props => {
                   }}
                   key={index}>
                   <Image
-                    source={{uri: item.destinationImage}}
-                    style={{width: '100%', height: 300}}
+                    source={{ uri: item.destinationImage }}
+                    style={{ width: '100%', height: 300 }}
                   />
                   <Text
                     style={{
@@ -613,7 +632,7 @@ export default TourDetail = props => {
                   marginBottom: 20,
                   backgroundColor: 'white',
                 }}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={{
                       uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
@@ -625,41 +644,28 @@ export default TourDetail = props => {
                       marginRight: 20,
                     }}
                   />
-                  <View style={{justifyContent: 'center'}}>
+                  <View style={{ justifyContent: 'center' }}>
                     <Text
                       style={{
                         fontSize: 18,
                         fontWeight: 'bold',
                         color: COLOR.title,
                       }}>
-                      Trần Tuấn Anh
+                      {/* {listComment.user_id.avatar} */}
+
+                      asdasd
+
                     </Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      {Array.from({length: 5}).map((_, index) => {
-                        if (index < 3) {
-                          return (
-                            <Image
-                              key={`star-${index}`}
-                              source={ICON.star_yellow}
-                              style={{width: 16, height: 16}}
-                            />
-                          );
-                        } else {
-                          return (
-                            <Image
-                              key={`star-${index}`}
-                              source={ICON.star}
-                              style={{width: 16, height: 16}}
-                            />
-                          );
-                        }
-                      })}
-                    </View>
+                    <Rating
+                      readonly
+                      ratingCount={5}
+                      showReadOnlyText={false}
+                      fractions={1}
+                      // startingValue={dulieu.rating}
+                      jumpValue={0.1}
+                      imageSize={12} />
+
+
                   </View>
                 </View>
 
@@ -674,7 +680,7 @@ export default TourDetail = props => {
                   weqweq111111111111111111111111
                 </Text>
 
-                <View style={{flexDirection: 'row', marginTop: 20}}>
+                <View style={{ flexDirection: 'row', marginTop: 20 }}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -741,7 +747,7 @@ export default TourDetail = props => {
                 paddingVertical: 20,
               }}>
               <Text
-                style={{fontSize: 18, color: COLOR.title, fontWeight: '600'}}>
+                style={{ fontSize: 18, color: COLOR.title, fontWeight: '600' }}>
                 Độ tuổi qui định
               </Text>
               <View
