@@ -131,32 +131,15 @@ export default TourDetail = props => {
     setrating(ratedValue);
   };
 
-  //get TopComemnet
-
-  const getTopComment = async () => {
-    try {
-      const tourId = params.id;
-      console.log('tourId', tourId)
-      const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`);
 
 
-      const listData = await response.comments
-      console.log("Check response commment", listData)
-      setListComment(listData)
-    } catch (error) {
-      console.log("error:>>>>> " + error)
-    }
-  }
-
-
-  // tourDetail
   useEffect(() => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get(
           'tour/api/' + params.id + '/detail',
         );
-        console.log('tour ', params.id);
+        // console.log('tour ', params.id);
         if (response.result == true) {
           settourName(response.tour.tourName);
           setadultPrice(response.tour.adultPrice);
@@ -182,6 +165,19 @@ export default TourDetail = props => {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
       };
+      const getTopComment = async () => {
+        const tourId = params.id;
+        console.log("tourId>>>>", tourId);
+        const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`,);
+
+        // const listData = response.comments
+        // console.log("Check response commment", listData)
+        if (response.result == true) {
+          setListComment(response.comments)
+          console.log("listcomment", listComment)
+        }
+      }
+
       const getAllBooking = async () => {
         const response = await AxiosIntance().get(
           'booking/api/tourIsBooking/' + params.id,
@@ -203,17 +199,18 @@ export default TourDetail = props => {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
       };
+
+
       getTour();
-      getTopComment();
-      getAllBooking();
+      getTopComment()
+      // getAllBooking();
       getAllReviews();
+
       // getComment()
     } catch (error) {
       console.log('errrrrrrror', error);
     }
   }, []);
-  useEffect;
-
   return (
     <>
       {isLoading == true ? (
@@ -334,19 +331,6 @@ export default TourDetail = props => {
                 </Text>
               </View>
 
-              {/* <Text
-            style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              color: COLOR.detail,
-              marginTop: 10,
-            }}
-            numberOfLines={4}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis
-            condimentum morbi non egestas enim amet sagittis. Proin sed aliquet
-            rhoncus ut pellentesque ullamcorper sit eget ac.Sit nisi, cras amet
-            varius eget egestas pellentesque. Cursus gravida euismod non
-          </Text> */}
               <Text
                 style={{
                   fontSize: 14,
@@ -447,98 +431,7 @@ export default TourDetail = props => {
                 Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
               </Text>
 
-              {/* <Image
-                style={{
-                  width: '100%',
-                  height: 300,
-                  marginTop: 10,
-                }}
-                source={{
-                  uri: 'https://www.google.com/maps/d/thumbnail?mid=1sTvpmQyZI2YRtqSyEdCJeBS9KQU&hl=en_US',
-                }}
-              /> */}
 
-              {/* checkin */}
-              {/* <View style={{flexDirection: 'row', marginTop: 20}}>
-                <View
-                  style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
-                  <Image
-                    source={{
-                      uri: tourImage[0] !== '' ? tourImage[0] : undefined,
-                    }}
-                    style={{
-                      height: 200,
-                      resizeMode: 'cover',
-                      marginBottom: 10,
-                      borderRadius: 10,
-                    }}
-                  />
-
-                  <Image
-                    source={{
-                      uri: tourImage[1] !== '' ? tourImage[1] : undefined,
-                    }}
-                    style={{height: 200, resizeMode: 'cover', borderRadius: 10}}
-                  />
-                </View>
-
-                <Image
-                  source={{uri: tourImage[2] !== '' ? tourImage[2] : undefined}}
-                  style={{
-                    height: 410,
-                    resizeMode: 'cover',
-                    borderRadius: 10,
-                    flex: 1,
-                  }}
-                />
-              </View> */}
-              {/* seeall image */}
-              {/* <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-                style={{
-                  flexDirection: 'row',
-                  width: 200,
-                  height: 50,
-                  borderRadius: 6,
-                  marginTop: 20,
-                  borderWidth: 1,
-                  borderColor: '#000000',
-                  backgroundColor: COLOR.white,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: '#000000',
-                  }}>
-                  See all +20 photos
-                </Text>
-                <Modal
-                  visible={isModalVisible}
-                  transparent={true}
-                  animationType="slide">
-                  <View style={styles.modalContainer}>
-                    <Button
-                      title="Đóng"
-                      onPress={() => setModalVisible(false)}
-                    />
-                    <KeyboardAwareScrollView
-                      showsVerticalScrollIndicator={false}>
-                      <View style={styles.imageContainer}>
-                        {tourImage.map((image, index) => (
-                          <Image
-                            key={index}
-                            source={{uri: image !== '' ? image : undefined}}
-                            style={styles.image}
-                          />
-                        ))}
-                      </View>
-                    </KeyboardAwareScrollView>
-                  </View>
-                </Modal>
-              </TouchableOpacity> */}
               <View
                 style={{
                   borderWidth: 1,
@@ -652,9 +545,7 @@ export default TourDetail = props => {
                         color: COLOR.title,
                       }}>
                       {/* {listComment.user_id.avatar} */}
-
-                      asdasd
-
+                      aaaaasds
                     </Text>
                     <Rating
                       readonly
@@ -676,8 +567,9 @@ export default TourDetail = props => {
                     color: COLOR.detail,
                     marginTop: 20,
                   }}>
-                  ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq
-                  weqweq111111111111111111111111
+                  {listComment.content}
+                  {/* adasdasdsd */}
+
                 </Text>
 
                 <View style={{ flexDirection: 'row', marginTop: 20 }}>
@@ -708,6 +600,7 @@ export default TourDetail = props => {
               </View>
 
               <TouchableOpacity
+                onPress={() => navigation.navigate("ListComment", { id: params.id })}
                 style={{
                   flexDirection: 'row',
                   width: 200,

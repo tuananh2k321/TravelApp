@@ -28,6 +28,7 @@ import Register from './auth/Register';
 import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
 import AddComment from './comment/AddComment';
+import ListComment from './comment/ListComment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -72,18 +73,19 @@ const StackHomes = () => {
     <Stack.Navigator initialRouteName="HomeMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
+      <Stack.Screen name="ListComment" component={ListComment} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
-      <Stack.Screen name='SearchTourName' component={SearchTourName}/>
+      <Stack.Screen name='SearchTourName' component={SearchTourName} />
       {/* stack booking */}
       <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhận đặt tour")} />
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
-      
+
     </Stack.Navigator>
   )
 }
@@ -144,7 +146,7 @@ const BottomTab = () => {
             } else if (route.name === 'Deal') {
               iconName = ICON.deal_d;
               label = 'Deal'
-            }else if (route.name === 'Favorite') {
+            } else if (route.name === 'Favorite') {
               iconName = ICON.heart;
               label = 'Favorite'
             } else if (route.name === 'Notification') {
@@ -224,7 +226,7 @@ const BottomTab = () => {
         })}
     >
       <Tab.Screen name="Home" component={StackHomes} />
-      <Tab.Screen name='Deal' component={Deal}/>
+      <Tab.Screen name='Deal' component={Deal} />
       <Tab.Screen name="Favorite" component={StackFavorites} />
       <Tab.Screen name="Notification" component={StackNotification} />
       <Tab.Screen name="Profile" component={StackProfile} />
