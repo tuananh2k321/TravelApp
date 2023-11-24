@@ -66,7 +66,7 @@ const Payment_Method = (props) => {
         // 1. Create a payment intent
         const response = await AxiosIntance()
             .post("/payments/intent",
-                { amount: Math.floor(amountInUSD * 100) });
+                { amount: totalPrice });
         console.log(response);
         if (response.error) {
             Alert.alert("Đã xảy ra sự cố!");
@@ -88,7 +88,8 @@ const Payment_Method = (props) => {
         const { error: paymentError } = await presentPaymentSheet();
 
         if (paymentError) {
-            Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
+            // Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
+            Alert.alert(`Giao dịch bị hủy bỏ`, "Thanh toán đã bị hủy. Vui lòng thanh toán nếu muốn tiếp tục");
             return;
         } else {
             // Alert.alert('Success', 'Your order is confirmed!');
