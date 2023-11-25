@@ -10,26 +10,26 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-import {ScrollView} from 'react-native-virtualized-view';
-import {AirbnbRating, Rating} from 'react-native-ratings';
+import { ScrollView } from 'react-native-virtualized-view';
+import { AirbnbRating, Rating } from 'react-native-ratings';
 
-import React, {useState, useEffect} from 'react';
-import {SIZES, COLOR, ICON} from '../../../constant/Themes';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React, { useState, useEffect } from 'react';
+import { SIZES, COLOR, ICON } from '../../../constant/Themes';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
-import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
-import {useSelector} from 'react-redux';
-import {log} from 'console';
-import {set} from 'immer/dist/internal';
+import { useSelector } from 'react-redux';
+import { log } from 'console';
+import { set } from 'immer/dist/internal';
 
 export default TourDetail = props => {
-  const {navigation, route} = props;
-  const {params} = route;
+  const { navigation, route } = props;
+  const { params } = route;
   const [tourName, settourName] = useState('');
   const [adultPrice, setadultPrice] = useState('');
   const [childrenPrice, setchildrenPrice] = useState('');
@@ -53,7 +53,7 @@ export default TourDetail = props => {
   const [tourImage, settourImage] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const [listComment, setListComment] = useState([])
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -130,14 +130,16 @@ export default TourDetail = props => {
     // Xử lý khi người dùng đánh giá
     setrating(ratedValue);
   };
-  // tourDetail
+
+
+
   useEffect(() => {
     try {
       const getTour = async () => {
         const response = await AxiosIntance().get(
           'tour/api/' + params.id + '/detail',
         );
-        console.log('tour ', params.id);
+        // console.log('tour ', params.id);
         if (response.result == true) {
           settourName(response.tour.tourName);
           setadultPrice(response.tour.adultPrice);
@@ -163,6 +165,21 @@ export default TourDetail = props => {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
       };
+      const getTopComment = async () => {
+        const tourId = params.id;
+        // console.log("tourId>>>>", tourId);
+        const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`,);
+
+        // const listData = response.comments
+        // console.log("Check response commment", listData)
+        if (response.result == true) {
+          setListComment(response.comments)
+          console.log("listcomment top>>>>>>>>>>", listComment)
+          console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
+
+        }
+      }
+
       const getAllBooking = async () => {
         const response = await AxiosIntance().get(
           'booking/api/tourIsBooking/' + params.id,
@@ -184,17 +201,18 @@ export default TourDetail = props => {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
       };
+
+
       getTour();
-      //  getTopComment();
-      getAllBooking();
+      getTopComment()
+      // getAllBooking();
       getAllReviews();
-      // getComment()
+
+
     } catch (error) {
       console.log('errrrrrrror', error);
     }
   }, []);
-  useEffect;
-
   return (
     <>
       {isLoading == true ? (
@@ -207,8 +225,8 @@ export default TourDetail = props => {
               backgroundColor: COLOR.white,
             }}>
             <ImageBackground
-              source={{uri: tourImage[0] !== '' ? tourImage[0] : undefined}}
-              style={{width: SIZES.width, height: 300, padding: 15}}>
+              source={{ uri: tourImage[0] !== '' ? tourImage[0] : undefined }}
+              style={{ width: SIZES.width, height: 300, padding: 15 }}>
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -227,7 +245,7 @@ export default TourDetail = props => {
                   <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
                 </TouchableOpacity>
 
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <View
                     style={{
                       width: 36,
@@ -256,7 +274,7 @@ export default TourDetail = props => {
                     }}>
                     <TouchableOpacity
                       onPress={handleLike}
-                      // style={[styles.heart, isLiked && styles.heartFilled]}
+                    // style={[styles.heart, isLiked && styles.heartFilled]}
                     >
                       <FontAwesome
                         name={isLiked ? 'heart' : 'heart-o'}
@@ -283,7 +301,7 @@ export default TourDetail = props => {
                 {tourName}
               </Text>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Rating
                   readonly
                   ratingCount={5}
@@ -315,19 +333,6 @@ export default TourDetail = props => {
                 </Text>
               </View>
 
-              {/* <Text
-            style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              color: COLOR.detail,
-              marginTop: 10,
-            }}
-            numberOfLines={4}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis
-            condimentum morbi non egestas enim amet sagittis. Proin sed aliquet
-            rhoncus ut pellentesque ullamcorper sit eget ac.Sit nisi, cras amet
-            varius eget egestas pellentesque. Cursus gravida euismod non
-          </Text> */}
               <Text
                 style={{
                   fontSize: 14,
@@ -381,7 +386,7 @@ export default TourDetail = props => {
                 Bao gồm
               </Text>
               {/* Bao gồm */}
-              <View style={{flexDirection: 'column'}}>
+              <View style={{ flexDirection: 'column' }}>
                 <ItemIncluded
                   icon={'bus-alt'}
                   title={vehicle}
@@ -428,98 +433,7 @@ export default TourDetail = props => {
                 Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
               </Text>
 
-              {/* <Image
-                style={{
-                  width: '100%',
-                  height: 300,
-                  marginTop: 10,
-                }}
-                source={{
-                  uri: 'https://www.google.com/maps/d/thumbnail?mid=1sTvpmQyZI2YRtqSyEdCJeBS9KQU&hl=en_US',
-                }}
-              /> */}
 
-              {/* checkin */}
-              {/* <View style={{flexDirection: 'row', marginTop: 20}}>
-                <View
-                  style={{flexDirection: 'column', flex: 1, marginRight: 10}}>
-                  <Image
-                    source={{
-                      uri: tourImage[0] !== '' ? tourImage[0] : undefined,
-                    }}
-                    style={{
-                      height: 200,
-                      resizeMode: 'cover',
-                      marginBottom: 10,
-                      borderRadius: 10,
-                    }}
-                  />
-
-                  <Image
-                    source={{
-                      uri: tourImage[1] !== '' ? tourImage[1] : undefined,
-                    }}
-                    style={{height: 200, resizeMode: 'cover', borderRadius: 10}}
-                  />
-                </View>
-
-                <Image
-                  source={{uri: tourImage[2] !== '' ? tourImage[2] : undefined}}
-                  style={{
-                    height: 410,
-                    resizeMode: 'cover',
-                    borderRadius: 10,
-                    flex: 1,
-                  }}
-                />
-              </View> */}
-              {/* seeall image */}
-              {/* <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-                style={{
-                  flexDirection: 'row',
-                  width: 200,
-                  height: 50,
-                  borderRadius: 6,
-                  marginTop: 20,
-                  borderWidth: 1,
-                  borderColor: '#000000',
-                  backgroundColor: COLOR.white,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: '#000000',
-                  }}>
-                  See all +20 photos
-                </Text>
-                <Modal
-                  visible={isModalVisible}
-                  transparent={true}
-                  animationType="slide">
-                  <View style={styles.modalContainer}>
-                    <Button
-                      title="Đóng"
-                      onPress={() => setModalVisible(false)}
-                    />
-                    <KeyboardAwareScrollView
-                      showsVerticalScrollIndicator={false}>
-                      <View style={styles.imageContainer}>
-                        {tourImage.map((image, index) => (
-                          <Image
-                            key={index}
-                            source={{uri: image !== '' ? image : undefined}}
-                            style={styles.image}
-                          />
-                        ))}
-                      </View>
-                    </KeyboardAwareScrollView>
-                  </View>
-                </Modal>
-              </TouchableOpacity> */}
               <View
                 style={{
                   borderWidth: 1,
@@ -571,8 +485,8 @@ export default TourDetail = props => {
                   }}
                   key={index}>
                   <Image
-                    source={{uri: item.destinationImage}}
-                    style={{width: '100%', height: 300}}
+                    source={{ uri: item.destinationImage }}
+                    style={{ width: '100%', height: 300 }}
                   />
                   <Text
                     style={{
@@ -613,10 +527,10 @@ export default TourDetail = props => {
                   marginBottom: 20,
                   backgroundColor: 'white',
                 }}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={{
-                      uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                      uri: listComment[0].user_id.avatar
                     }}
                     style={{
                       width: 70,
@@ -625,41 +539,25 @@ export default TourDetail = props => {
                       marginRight: 20,
                     }}
                   />
-                  <View style={{justifyContent: 'center'}}>
+                  <View style={{ justifyContent: 'center' }}>
                     <Text
                       style={{
                         fontSize: 18,
                         fontWeight: 'bold',
                         color: COLOR.title,
                       }}>
-                      Trần Tuấn Anh
+                      {listComment[0].user_id.name}
                     </Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      {Array.from({length: 5}).map((_, index) => {
-                        if (index < 3) {
-                          return (
-                            <Image
-                              key={`star-${index}`}
-                              source={ICON.star_yellow}
-                              style={{width: 16, height: 16}}
-                            />
-                          );
-                        } else {
-                          return (
-                            <Image
-                              key={`star-${index}`}
-                              source={ICON.star}
-                              style={{width: 16, height: 16}}
-                            />
-                          );
-                        }
-                      })}
-                    </View>
+                    <Rating
+                      readonly
+                      ratingCount={5}
+                      showReadOnlyText={false}
+                      fractions={1}
+                      startingValue={listComment[0].rating}
+                      jumpValue={0.1}
+                      imageSize={12} />
+
+
                   </View>
                 </View>
 
@@ -670,11 +568,13 @@ export default TourDetail = props => {
                     color: COLOR.detail,
                     marginTop: 20,
                   }}>
-                  ewqweq ewqewq ewqewq ewqewq ewqewq ewqewq eqewqe weqewqeq
-                  weqweq111111111111111111111111
+                  {listComment[0].content}
+                  {/* adasdasdsd */}
+                  {/* Content */}
+
                 </Text>
 
-                <View style={{flexDirection: 'row', marginTop: 20}}>
+                <View style={{ flexDirection: 'row', marginTop: 20 }}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -702,6 +602,7 @@ export default TourDetail = props => {
               </View>
 
               <TouchableOpacity
+                onPress={() => navigation.navigate("ListComment", { id: params.id })}
                 style={{
                   flexDirection: 'row',
                   width: 200,
@@ -741,7 +642,7 @@ export default TourDetail = props => {
                 paddingVertical: 20,
               }}>
               <Text
-                style={{fontSize: 18, color: COLOR.title, fontWeight: '600'}}>
+                style={{ fontSize: 18, color: COLOR.title, fontWeight: '600' }}>
                 Độ tuổi qui định
               </Text>
               <View
