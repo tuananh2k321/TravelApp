@@ -151,7 +151,8 @@ const ListComment = ({ navigation, route }) => {
                         position: 'absolute',
                         left: '50%',
                         transform: [{ translateX: -60 }],
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        textAlign: "center"
                     }}>
                     Danh sách phản hồi
                 </Text>

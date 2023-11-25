@@ -175,7 +175,7 @@ export default TourDetail = props => {
         if (response.result == true) {
           setListComment(response.comments)
           console.log("listcomment top>>>>>>>>>>", listComment)
-          console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
+          // console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
 
         }
       }
@@ -518,7 +518,7 @@ export default TourDetail = props => {
                 Đánh giá
               </Text>
 
-              <View
+              {listComment.length > 0 && <View
                 style={{
                   borderRadius: 6,
                   borderWidth: 1,
@@ -599,7 +599,7 @@ export default TourDetail = props => {
                     </Text>
                   </View>
                 </View>
-              </View>
+              </View>}
 
               <TouchableOpacity
                 onPress={() => navigation.navigate("ListComment", { id: params.id })}
