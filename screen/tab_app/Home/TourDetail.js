@@ -167,14 +167,16 @@ export default TourDetail = props => {
       };
       const getTopComment = async () => {
         const tourId = params.id;
-        console.log("tourId>>>>", tourId);
+        // console.log("tourId>>>>", tourId);
         const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`,);
 
         // const listData = response.comments
         // console.log("Check response commment", listData)
         if (response.result == true) {
           setListComment(response.comments)
-          console.log("listcomment", listComment)
+          console.log("listcomment top>>>>>>>>>>", listComment)
+          console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
+
         }
       }
 
@@ -206,7 +208,7 @@ export default TourDetail = props => {
       // getAllBooking();
       getAllReviews();
 
-      // getComment()
+
     } catch (error) {
       console.log('errrrrrrror', error);
     }
@@ -528,7 +530,7 @@ export default TourDetail = props => {
                 <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={{
-                      uri: 'https://images.pexels.com/photos/2873992/pexels-photo-2873992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                      uri: listComment[0].user_id.avatar
                     }}
                     style={{
                       width: 70,
@@ -544,15 +546,14 @@ export default TourDetail = props => {
                         fontWeight: 'bold',
                         color: COLOR.title,
                       }}>
-                      {/* {listComment.user_id.avatar} */}
-                      aaaaasds
+                      {listComment[0].user_id.name}
                     </Text>
                     <Rating
                       readonly
                       ratingCount={5}
                       showReadOnlyText={false}
                       fractions={1}
-                      // startingValue={dulieu.rating}
+                      startingValue={listComment[0].rating}
                       jumpValue={0.1}
                       imageSize={12} />
 
@@ -567,8 +568,9 @@ export default TourDetail = props => {
                     color: COLOR.detail,
                     marginTop: 20,
                   }}>
-                  {listComment.content}
+                  {listComment[0].content}
                   {/* adasdasdsd */}
+                  {/* Content */}
 
                 </Text>
 

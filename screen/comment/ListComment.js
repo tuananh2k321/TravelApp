@@ -33,7 +33,7 @@ const ListComment = ({ navigation, route }) => {
 
             // console.log("Check response commment", response)
             const listData = await response.comments
-            console.log('listData', listData)
+            console.log('listData list comments', listData)
             setComments(listData)
         } catch (error) {
             console.log("error:>>>>> " + error)
@@ -83,12 +83,9 @@ const ListComment = ({ navigation, route }) => {
                             }}>
                             <Rating
                                 ratingCount={5}
-                                showReadOnlyText={false}
-                                fractions={1}
-                                startingValue={0}
                                 jumpValue={0.1}
                                 imageSize={12}
-                                showRating={true}
+                                startingValue={item.rating}
                                 onFinishRating={rating => { setRatings(rating) }}
                             />
                         </View>
@@ -119,7 +116,6 @@ const ListComment = ({ navigation, route }) => {
                             }}
                         />
                     ))}
-
                 </View>
 
 
