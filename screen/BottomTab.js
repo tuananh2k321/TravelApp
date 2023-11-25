@@ -121,10 +121,20 @@ const StackNotification = () => {
 }
 
 const StackProfile = () => {
+  const header = (title) => (
+    {
+      title: title,
+      headerTitleAlign: "center",
+      headerTitleStyle: {
+        color: "#0FA3E2",
+      },
+      headerShown: true
+    }
+  )
   return (
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
-      <Stack.Screen name="Mybooking" component={Mybooking} />
+      <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")}/>
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   )
@@ -140,19 +150,19 @@ const BottomTab = () => {
             let iconName = focused
             if (route.name === 'Home') {
               iconName = ICON.home
-              label = 'Home'
+              label = 'Trang chủ'
             } else if (route.name === 'Deal') {
               iconName = ICON.deal_d;
-              label = 'Deal'
+              label = 'Khuyến mãi'
             }else if (route.name === 'Favorite') {
               iconName = ICON.heart;
-              label = 'Favorite'
+              label = 'Yêu thích'
             } else if (route.name === 'Notification') {
               iconName = ICON.notification_d;
-              label = 'Notification'
+              label = 'Thông báo'
             } else if (route.name === 'Profile') {
               iconName = ICON.user;
-              label = 'Profile'
+              label = 'Tôi'
             }
 
             // You can return any component that you like here!
@@ -224,7 +234,7 @@ const BottomTab = () => {
         })}
     >
       <Tab.Screen name="Home" component={StackHomes} />
-      <Tab.Screen name='Deal' component={Deal}/>
+      <Tab.Screen name='Deal' component={Deal} />
       <Tab.Screen name="Favorite" component={StackFavorites} />
       <Tab.Screen name="Notification" component={StackNotification} />
       <Tab.Screen name="Profile" component={StackProfile} />

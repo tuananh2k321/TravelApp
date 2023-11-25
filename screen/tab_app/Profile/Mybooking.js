@@ -54,7 +54,6 @@ const Mybooking = (props) => {
             {
                 isLoading == true ? (<Loading/>) :
                 (<View>
-                    <Text style={styles.wishlist}>My booking</Text>
                     <View style={styles.wishlist_list}>
                         <SwipeListView style={{ bottom: 20 }}
                             showsVerticalScrollIndicator={false}
