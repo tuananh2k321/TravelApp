@@ -87,6 +87,8 @@ export default TourDetail = props => {
         image: tourImage[0],
         tourName: tourName,
         limitedPerson: limitedPerson,
+        adultAge: adultAge,
+        childrenAge: childrenAge
       });
     }
   };
@@ -213,502 +215,514 @@ export default TourDetail = props => {
       console.log('errrrrrrror', error);
     }
   }, []);
+  let priceChildren = Number(childrenPrice);
+  priceChildren = priceChildren.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  let priceAdult = Number(adultPrice);
+  priceAdult = priceAdult.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   return (
     <>
       {isLoading == true ? (
         <Loading />
       ) : (
-        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-          <SafeAreaView
-            style={{
-              width: SIZES.width,
-              backgroundColor: COLOR.white,
-            }}>
-            <ImageBackground
-              source={{ uri: tourImage[0] !== '' ? tourImage[0] : undefined }}
-              style={{ width: SIZES.width, height: 300, padding: 15 }}>
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                }}>
-                <TouchableOpacity
-                  onPress={() => navigation.goBack(null)}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 50,
-                    backgroundColor: COLOR.white,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
-                </TouchableOpacity>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <View
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 50,
-                      backgroundColor: COLOR.white,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginRight: 10,
-                    }}>
-                    <FontAwesome5
-                      name={'share-alt'}
-                      size={16}
-                      color="#000000"
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 50,
-                      backgroundColor: COLOR.white,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <TouchableOpacity
-                      onPress={handleLike}
-                    // style={[styles.heart, isLiked && styles.heartFilled]}
-                    >
-                      <FontAwesome
-                        name={isLiked ? 'heart' : 'heart-o'}
-                        size={16}
-                        color={isLiked ? 'red' : '#000000'} // Sử dụng màu đỏ khi yêu thích, màu đen khi chưa yêu thích
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </ImageBackground>
-            <View
+        <View>
+          <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+            <SafeAreaView
               style={{
-                paddingHorizontal: 15,
+                width: SIZES.width,
+                backgroundColor: COLOR.white,
               }}>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: '600',
-                  color: COLOR.title,
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}>
-                {tourName}
-              </Text>
-
-              <View style={{ flexDirection: 'row' }}>
-                <Rating
-                  readonly
-                  ratingCount={5}
-                  showReadOnlyText={false}
-                  fractions={1}
-                  startingValue={rating}
-                  jumpValue={0.1}
-                  imageSize={20}
-                />
-
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: COLOR.detail,
-                    marginLeft: 10,
-                  }}>
-                  {reviews == 0 ? 0 : reviews} đánh giá
-                </Text>
-
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: COLOR.detail,
-                    marginLeft: 10,
-                  }}>
-                  {booking == 0 ? 0 : booking} lượt đặt
-                </Text>
-              </View>
-
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: '400',
-                  color: COLOR.detail,
-                  marginTop: 10,
-                }}>
-                {showMore ? sampleText : sampleText.slice(0, maxChars)}
-                {!showMore && sampleText.length > maxChars && (
-                  <Text
-                    onPress={toggleShowMore}
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '600',
-                      color: COLOR.title,
-                      textDecorationLine: 'underline',
-                    }}>
-                    Đọc hết
-                  </Text>
-                )}
-                {showMore && (
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '600',
-                      color: COLOR.title,
-                      textDecorationLine: 'underline',
-                      marginLeft: 10,
-                    }}
-                    onPress={toggleShowMore}>
-                    Đọc ít
-                  </Text>
-                )}
-              </Text>
-
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  marginVertical: 30,
-                }}
-              />
-
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: COLOR.title,
-                  marginBottom: 10,
-                }}>
-                Bao gồm
-              </Text>
-              {/* Bao gồm */}
-              <View style={{ flexDirection: 'column' }}>
-                <ItemIncluded
-                  icon={'bus-alt'}
-                  title={vehicle}
-                  content={'Phương tiện di chuyển'}
-                />
-                <ItemIncluded
-                  icon={'calendar-alt'}
-                  title={departmentDate}
-                  content={'Ngày khởi hành của tour du lịch'}
-                />
-                <ItemIncluded
-                  icon={'child'}
-                  title={limitedPerson}
-                  content={'Tối thiểu người đi tuor'}
-                />
-                <ItemIncluded
-                  icon={'clock'}
-                  title={limitedDay}
-                  content={'Thời gian đi của tour du lịch'}
-                />
-                <ItemIncluded
-                  icon={'calendar-alt'}
-                  title={operatingDay}
-                  content={'Khoản thời gian mà tour còn hoạt động'}
-                />
-              </View>
-
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: COLOR.title,
-                  marginBottom: 10,
-                }}>
-                Địa điểm khởi hành
-              </Text>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: '400',
-                  color: COLOR.detail,
-                  marginBottom: 10,
-                }}>
-                Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
-              </Text>
-
-
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  marginTop: 30,
-                }}
-              />
-              {/* ItemLink */}
-              <ItemLink
-                dulieu={hotel_id}
-                screen={'HotelDetail'}
-                icon={'hotel'}
-                tile={'Khách sạn'}
-                name={hotel_id.hotelName}
-                content={hotel_id.description}
-              />
-              <ItemLink
-                dulieu={tourGuide_id}
-                screen={'TourGuideDetail'}
-                icon={'child'}
-                tile={'Hướng dẫn viên'}
-                name={tourGuide_id.name}
-                content={tourGuide_id.phoneNumber}
-              />
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  marginTop: 30,
-                }}
-              />
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: COLOR.title,
-                  marginBottom: 20,
-                  marginTop: 30,
-                }}>
-                Một số điểm tham quan
-              </Text>
-
-              {destination_id.map((item, index) => (
+              <ImageBackground
+                source={{ uri: tourImage[0] !== '' ? tourImage[0] : undefined }}
+                style={{ width: SIZES.width, height: 300, padding: 15 }}>
                 <View
                   style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginVertical: 5,
-                  }}
-                  key={index}>
-                  <Image
-                    source={{ uri: item.destinationImage }}
-                    style={{ width: '100%', height: 300 }}
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack(null)}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 50,
+                      backgroundColor: COLOR.white,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
+                  </TouchableOpacity>
+
+                  <View style={{ flexDirection: 'row' }}>
+                    <View
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 50,
+                        backgroundColor: COLOR.white,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginRight: 10,
+                      }}>
+                      <FontAwesome5
+                        name={'share-alt'}
+                        size={16}
+                        color="#000000"
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 50,
+                        backgroundColor: COLOR.white,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity
+                        onPress={handleLike}
+                      // style={[styles.heart, isLiked && styles.heartFilled]}
+                      >
+                        <FontAwesome
+                          name={isLiked ? 'heart' : 'heart-o'}
+                          size={16}
+                          color={isLiked ? 'red' : '#000000'} // Sử dụng màu đỏ khi yêu thích, màu đen khi chưa yêu thích
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </ImageBackground>
+              <View
+                style={{
+                  paddingHorizontal: 15,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontWeight: '600',
+                    color: COLOR.title,
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}>
+                  {tourName}
+                </Text>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Rating
+                    readonly
+                    ratingCount={5}
+                    showReadOnlyText={false}
+                    fractions={1}
+                    startingValue={rating}
+                    jumpValue={0.1}
+                    imageSize={20}
                   />
+
                   <Text
                     style={{
                       fontSize: 16,
-                      fontWeight: '500',
-                      color: COLOR.title,
+                      fontWeight: 'bold',
+                      color: COLOR.detail,
+                      marginLeft: 10,
                     }}>
-                    {item.description}
+                    {reviews == 0 ? 0 : reviews} đánh giá
                   </Text>
-                </View>
-              ))}
 
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  marginTop: 30,
-                }}
-              />
-
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: COLOR.title,
-                  marginBottom: 20,
-                  marginTop: 30,
-                }}>
-                Đánh giá
-              </Text>
-
-              {listComment.length > 0 && <View
-                style={{
-                  borderRadius: 6,
-                  borderWidth: 1,
-                  borderColor: COLOR.lightBlack2,
-                  padding: 15,
-                  marginBottom: 20,
-                  backgroundColor: 'white',
-                }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Image
-                    source={{
-                      uri: listComment[0].user_id.avatar
-                    }}
+                  <Text
                     style={{
-                      width: 70,
-                      height: 70,
-                      borderRadius: 50,
-                      marginRight: 20,
-                    }}
-                  />
-                  <View style={{ justifyContent: 'center' }}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: 'bold',
-                        color: COLOR.title,
-                      }}>
-                      {listComment[0].user_id.name}
-                    </Text>
-                    <Rating
-                      readonly
-                      ratingCount={5}
-                      showReadOnlyText={false}
-                      fractions={1}
-                      startingValue={listComment[0].rating}
-                      jumpValue={0.1}
-                      imageSize={12} />
-
-
-                  </View>
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: COLOR.detail,
+                      marginLeft: 10,
+                    }}>
+                    {booking == 0 ? 0 : booking} lượt đặt
+                  </Text>
                 </View>
 
                 <Text
                   style={{
-                    fontSize: 17,
+                    fontSize: 14,
                     fontWeight: '400',
                     color: COLOR.detail,
-                    marginTop: 20,
+                    marginTop: 10,
                   }}>
-                  {listComment[0].content}
-                  {/* adasdasdsd */}
-                  {/* Content */}
-
+                  {showMore ? sampleText : sampleText.slice(0, maxChars)}
+                  {!showMore && sampleText.length > maxChars && (
+                    <Text
+                      onPress={toggleShowMore}
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '600',
+                        color: COLOR.title,
+                        textDecorationLine: 'underline',
+                      }}>
+                      Đọc hết
+                    </Text>
+                  )}
+                  {showMore && (
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '600',
+                        color: COLOR.title,
+                        textDecorationLine: 'underline',
+                        marginLeft: 10,
+                      }}
+                      onPress={toggleShowMore}>
+                      Đọc ít
+                    </Text>
+                  )}
                 </Text>
 
-                <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                    }}>
-                    <Text
-                      style={{
-                        color: COLOR.detail,
-                        fontSize: 14,
-                        fontWeight: '400',
-                      }}>
-                      Đã đăng
-                    </Text>
-                    <Text
-                      style={{
-                        color: COLOR.detail,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        marginLeft: 10,
-                      }}>
-                      10/10/2023
-                    </Text>
-                  </View>
-                </View>
-              </View>}
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: COLOR.lightBlack2,
+                    marginVertical: 30,
+                  }}
+                />
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate("ListComment", { id: params.id })}
-                style={{
-                  flexDirection: 'row',
-                  width: 200,
-                  height: 50,
-                  borderRadius: 6,
-                  marginTop: 10,
-                  borderWidth: 1,
-                  borderColor: '#000000',
-                  backgroundColor: COLOR.white,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
                 <Text
                   style={{
                     fontSize: 18,
                     fontWeight: 'bold',
-                    color: '#000000',
+                    color: COLOR.title,
+                    marginBottom: 10,
                   }}>
-                  Thêm +{reviews} đánh giá
+                  Bao gồm
                 </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: COLOR.lightBlack2,
-                marginTop: 30,
-                marginHorizontal: 15,
-              }}
-            />
-            {/* độ tuổi qui định */}
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                paddingHorizontal: 15,
-                paddingVertical: 20,
-              }}>
-              <Text
-                style={{ fontSize: 18, color: COLOR.title, fontWeight: '600' }}>
-                Độ tuổi qui định
-              </Text>
+                {/* Bao gồm */}
+                <View style={{ flexDirection: 'column' }}>
+                  <ItemIncluded
+                    icon={'bus-alt'}
+                    title={vehicle}
+                    content={'Phương tiện di chuyển'}
+                  />
+                  <ItemIncluded
+                    icon={'calendar-alt'}
+                    title={departmentDate}
+                    content={'Ngày khởi hành của tour du lịch'}
+                  />
+                  <ItemIncluded
+                    icon={'child'}
+                    title={limitedPerson}
+                    content={'Tối thiểu người đi tuor'}
+                  />
+                  <ItemIncluded
+                    icon={'clock'}
+                    title={limitedDay}
+                    content={'Thời gian đi của tour du lịch'}
+                  />
+                  <ItemIncluded
+                    icon={'calendar-alt'}
+                    title={operatingDay}
+                    content={'Khoản thời gian mà tour còn hoạt động'}
+                  />
+                </View>
+
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: COLOR.title,
+                    marginBottom: 10,
+                  }}>
+                  Địa điểm khởi hành
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: '400',
+                    color: COLOR.detail,
+                    marginBottom: 10,
+                  }}>
+                  Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
+                </Text>
+
+
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: COLOR.lightBlack2,
+                    marginTop: 30,
+                  }}
+                />
+                {/* ItemLink */}
+                <ItemLink
+                  dulieu={hotel_id}
+                  screen={'HotelDetail'}
+                  icon={'hotel'}
+                  tile={'Khách sạn'}
+                  name={hotel_id.hotelName}
+                  content={hotel_id.description}
+                />
+                <ItemLink
+                  dulieu={tourGuide_id}
+                  screen={'TourGuideDetail'}
+                  icon={'child'}
+                  tile={'Hướng dẫn viên'}
+                  name={tourGuide_id.name}
+                  content={tourGuide_id.phoneNumber}
+                />
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: COLOR.lightBlack2,
+                    marginTop: 30,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: COLOR.title,
+                    marginBottom: 20,
+                    marginTop: 30,
+                  }}>
+                  Một số điểm tham quan
+                </Text>
+
+                {destination_id.map((item, index) => (
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginVertical: 5,
+                    }}
+                    key={index}>
+                    <Image
+                      source={{ uri: item.destinationImage }}
+                      style={{ width: '100%', height: 300 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '500',
+                        color: COLOR.title,
+                      }}>
+                      {item.description}
+                    </Text>
+                  </View>
+                ))}
+
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: COLOR.lightBlack2,
+                    marginTop: 30,
+                  }}
+                />
+
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: COLOR.title,
+                    marginBottom: 20,
+                    marginTop: 30,
+                  }}>
+                  Đánh giá
+                </Text>
+
+                {listComment.length > 0 && <View
+                  style={{
+                    borderRadius: 6,
+                    borderWidth: 1,
+                    borderColor: COLOR.lightBlack2,
+                    padding: 15,
+                    marginBottom: 20,
+                    backgroundColor: 'white',
+                  }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Image
+                      source={{
+                        uri: listComment[0].user_id.avatar
+                      }}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        borderRadius: 50,
+                        marginRight: 20,
+                      }}
+                    />
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontWeight: 'bold',
+                          color: COLOR.title,
+                        }}>
+                        {listComment[0].user_id.name}
+                      </Text>
+                      <Rating
+                        readonly
+                        ratingCount={5}
+                        showReadOnlyText={false}
+                        fractions={1}
+                        startingValue={listComment[0].rating}
+                        jumpValue={0.1}
+                        imageSize={12} />
+
+
+                    </View>
+                  </View>
+
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      fontWeight: '400',
+                      color: COLOR.detail,
+                      marginTop: 20,
+                    }}>
+                    {listComment[0].content}
+                    {/* adasdasdsd */}
+                    {/* Content */}
+
+                  </Text>
+
+                  <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                      }}>
+                      <Text
+                        style={{
+                          color: COLOR.detail,
+                          fontSize: 14,
+                          fontWeight: '400',
+                        }}>
+                        Đã đăng
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLOR.detail,
+                          fontSize: 14,
+                          fontWeight: '400',
+                          marginLeft: 10,
+                        }}>
+                        10/10/2023
+                      </Text>
+                    </View>
+                  </View>
+                </View>}
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ListComment", { id: params.id })}
+                  style={{
+                    flexDirection: 'row',
+                    width: 200,
+                    height: 50,
+                    borderRadius: 6,
+                    marginTop: 10,
+                    borderWidth: 1,
+                    borderColor: '#000000',
+                    backgroundColor: COLOR.white,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      color: '#000000',
+                    }}>
+                    Thêm +{reviews} đánh giá
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: 7,
+                  borderWidth: 1,
+                  borderColor: COLOR.lightBlack2,
+                  marginTop: 30,
+                  marginHorizontal: 15,
+                }}
+              />
+              {/* độ tuổi qui định */}
+              <View
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  paddingHorizontal: 15,
+                  paddingVertical: 20,
                 }}>
                 <Text
-                  style={{
-                    fontSize: 14,
-                    color: COLOR.detail,
-                    fontWeight: '400',
-                  }}>
-                  Trẻ em: {childrenAge} tuổi
+                  style={{ fontSize: 18, color: COLOR.title, fontWeight: '600' }}>
+                  Độ tuổi qui định
                 </Text>
-                <Text
+                <View
                   style={{
-                    fontSize: 20,
-                    color: COLOR.primary,
-                    fontWeight: '600',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 7,
                   }}>
-                  {childrenPrice}/Trẻ em
-                </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: COLOR.detail,
+                      fontWeight: '400',
+                    }}>
+                    Trẻ em: {childrenAge} tuổi
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: COLOR.primary,
+                      fontWeight: '600',
+                    }}>
+                    {priceChildren}/Trẻ em
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 7,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: COLOR.detail,
+                      fontWeight: '400',
+                    }}>
+                    Người lớn: {adultAge} tuổi
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: COLOR.primary,
+                      fontWeight: '600',
+                    }}>
+                    {priceAdult}/Người lớn
+                  </Text>
+                </View>
               </View>
               <View
                 style={{
                   flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: 7,
+                  backgroundColor: 'white',
+                  paddingVertical: 20,
+                  paddingHorizontal: 10,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: COLOR.detail,
-                    fontWeight: '400',
-                  }}>
-                  Người lớn: {adultAge} tuổi
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: COLOR.primary,
-                    fontWeight: '600',
-                  }}>
-                  {adultPrice}/Người lớn
-                </Text>
+
               </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                backgroundColor: 'white',
-                paddingVertical: 20,
-                paddingHorizontal: 10,
-              }}>
-              <TouchableOpacity
+              
+            </SafeAreaView>
+
+          </KeyboardAwareScrollView>
+          <TouchableOpacity
                 onPress={onBooking}
                 style={{
-                  flex: 1,
                   height: 52,
                   backgroundColor: COLOR.primary,
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 15,
                   padding: 10,
+                  position: "absolute",
+                  bottom: 10, left: 10, right: 10
                 }}>
                 <Text
                   style={{
@@ -719,9 +733,7 @@ export default TourDetail = props => {
                   Đặt ngay
                 </Text>
               </TouchableOpacity>
-            </View>
-          </SafeAreaView>
-        </KeyboardAwareScrollView>
+        </View>
       )}
     </>
   );

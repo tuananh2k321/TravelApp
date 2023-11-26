@@ -16,7 +16,7 @@ const windowWidth = Dimensions.get('window').width - 90;
 
 const Detail_Booking = (props) => {
   const { navigation, route } = props;
-  const { id, childrenPrice, adultPrice, image, tourName, limitedPerson } = route.params;
+  const { id, childrenPrice, adultPrice, image, tourName, limitedPerson, adultAge, childrenAge } = route.params;
   //State for validating
   const [errorName, setErrorName] = useState('');
   const [errorQuantity, setErrorQuantity] = useState('');
@@ -34,26 +34,18 @@ const Detail_Booking = (props) => {
   const quantity = Number(quantityAdult) + Number(quantityChildren);
   let price = Number(quantityAdult) * Number(adultPrice) + Number(quantityChildren) * Number(childrenPrice);
   price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  let priceChildren = Number(childrenPrice);
+  priceChildren = priceChildren.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  let priceAdult = Number(adultPrice);
+  priceAdult = priceAdult.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   const isValidOK = () => name.length > 0 && quantityAdult.length > 0
     && isValidName(name) == true && isValidQuantity(quantityAdult) == true && isLimitPerson(quantity, limitedPerson) == true
-  // const isValidOK = () => email.length > 0 && name.length > 0 && quantity.length > 0
-  //   && phoneNumber.length > 0 && numberId.length > 0 && validateEmail(email) == true
-  //   && isValidName(name) == true && isValidNumberId(numberId) == true && validatePhoneNumber(phoneNumber) == true
-  //   && isValidQuantity(quantity) == true
-  // const quantity = () => {
-  //   if((quantityAdult + quantityChildren) > limitedPerson) {
-  //     return Alert.alert("Số lượng cho phép là "+limitedPerson+" người");
-  //   }
-  //   if(quantityAdult.length < 0) {
-  //     return "Tên khách hàng không được trống"
-  //   }
-  // };
   if (isLimitPerson(quantity, limitedPerson) == false) {
     Alert.alert("Số lượng cho phép là " + limitedPerson + " người");
   }
   return (
     <View style={styles.container}>
-        <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.groupName}>
           <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
           <View style={{ marginStart: 10 }}>
@@ -66,14 +58,25 @@ const Detail_Booking = (props) => {
           </View>
         </View>
 
-        <View style={styles.groupTotalPrice}>
-          <View style={styles.groupPrice}>
-            <Text style={styles.totalPrice}>Tổng tiền </Text>
-            <Text style={[styles.totalPrice, { fontSize: 10 }]}>(incl VAT)</Text>
+        <View style={{borderBottomColor: "gray", borderBottomWidth: 1, paddingBottom: 10}}>
+          <View style={styles.groupTotalPrice}>
+            <View style={styles.groupPrice}>
+              <Text style={styles.totalPrice}>Giá người lớn </Text>
+              <Text style={[styles.totalPrice, { fontSize: 14 }]}>({adultAge} tuổi):</Text>
+            </View>
+            <View style={styles.groupPrice}>
+              <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{priceAdult}</Text>
+            </View>
           </View>
-          <View style={styles.groupPrice}>
-            <Text style={styles.money}>{price}/</Text>
-            <Text style={[styles.money, { fontWeight: '400' }]}>{quantity}Người</Text>
+
+          <View style={styles.groupTotalPrice}>
+            <View style={styles.groupPrice}>
+              <Text style={styles.totalPrice}>Giá trẻ em </Text>
+              <Text style={[styles.totalPrice, { fontSize: 14 }]}>({childrenAge} tuổi):</Text>
+            </View>
+            <View style={styles.groupPrice}>
+              <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{priceChildren}</Text>
+            </View>
           </View>
         </View>
 
@@ -89,15 +92,13 @@ const Detail_Booking = (props) => {
             }} />
           <Text style={styles.error}>{errorName}</Text>
         </View>
-        <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between" }]}>
+        <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between", }]}>
           <View style={{ width: '48%' }}>
             <Text style={styles.lable}>Số lượng người lớn</Text>
             <TextInput
               style={styles.input}
               keyboardType="numeric"
               onChangeText={(text) => {
-                // setErrorQuantity(isValidQuantity(text) == true ?
-                //   `` : 'Số khách hàng không được trống');
                 setErrorQuantity(isValidQuantity(text) == true ?
                   `` : 'Số khách hàng không được trống');
                 setQuantityAdult(text)
@@ -116,48 +117,13 @@ const Detail_Booking = (props) => {
               value={quantityChildren} />
           </View>
         </View>
-        {/* <View style={styles.groupForm}>
-        <Text style={styles.lable}>Số điện thoại</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => {
-            setErrorPhoneNumber(validatePhoneNumber(text) == true ?
-              `` : 'Số điện thoại không đúng định dạng');
-            setPhoneNumber(text)
-          }} />
-        <Text style={styles.error}>{errorPhoneNumber}</Text>
-      </View>
-      <View style={styles.groupForm}>
-        <Text style={styles.lable}>Email</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => {
-            setErrorEmail(validateEmail(text) == true ?
-              `` : 'Email không hợp lệ');
-            setEmail(text)
-          }} />
-        <Text style={styles.error}>{errorEmail}</Text>
-      </View>
-      <View style={styles.groupForm}>
-        <Text style={styles.lable}>Số ID</Text>
-        <View style={styles.groupID}>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            secureTextEntry={true}
-            onChangeText={(text) => {
-              setErrorNumberId(isValidNumberId(text) == true ?
-                `` : 'Số ID lớn hơn 10 kí tự');
-              setNumberId(text)
-            }} />
-          <Text style={styles.error}>{errorNumberId}</Text>
-          <Ionicons style={styles.iconEye} name="eye" size={20} color="#000000" />
+        <View style={{height: 50}}></View>
+      </ScrollView>
+      <View style={styles.groupButton}>
+        <View style={styles.groupPrice}>
+          <Text style={styles.money}>{price}/</Text>
+          <Text style={[styles.money, { fontWeight: '400', fontSize: 14 }]}>{quantity}Người</Text>
         </View>
-
-      </View> */}
-        
-        </ScrollView>
-        <View style={styles.groupButton}>
         <TouchableOpacity style={[styles.button,
         { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
           disabled={isValidOK() == false}
@@ -165,7 +131,7 @@ const Detail_Booking = (props) => {
           <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>
-      </View>
+    </View>
   )
 }
 
@@ -193,7 +159,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   lable: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400',
     lineHeight: 18,
     letterSpacing: -0.17,
@@ -206,13 +172,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#0000001A',
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
+    marginTop: 4
   },
   groupForm: {
     marginTop: 15
   },
   button: {
-    width: '100%',
+    width: '50%',
     height: 52,
     borderRadius: 15,
     backgroundColor: '#0FA3E2',
@@ -256,6 +223,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  money: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#0A7BAB",
+    lineHeight: 18
+  },
   groupID: {
     position: 'relative',
   },
@@ -292,11 +265,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 18,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: "#0000001A",
-    marginTop: 18
+    marginTop: 8
   },
   name: {
     width: windowWidth,
