@@ -30,6 +30,7 @@ import Deal from './tab_app/Deal/Deal';
 import AddComment from '../screen/comment/AddComment';
 import FormAll from './booking/FormAll1';
 import Abcd from './booking/AAbf';
+import ListComment from './comment/ListComment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,11 +75,12 @@ const StackHomes = () => {
     <Stack.Navigator initialRouteName="HomeMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
+      <Stack.Screen name="ListComment" component={ListComment} />
       <Stack.Screen name="HotelDetail" component={HotelDetail} />
       <Stack.Screen name="DestinationDetail" component={DestinationDetail} />
       <Stack.Screen name="TourGuideDetail" component={TourGuideDetail} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
-      <Stack.Screen name='SearchTourName' component={SearchTourName}/>
+      <Stack.Screen name='SearchTourName' component={SearchTourName} />
       {/* stack booking */}
       <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhận đặt tour")} />
       <Stack.Screen name="FormAll" component={FormAll} options={header("Thông tin khách")} />
@@ -87,7 +89,7 @@ const StackHomes = () => {
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
-      
+
     </Stack.Navigator>
   )
 }
@@ -138,7 +140,7 @@ const StackProfile = () => {
   return (
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
-      <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")}/>
+      <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   )
@@ -158,7 +160,7 @@ const BottomTab = () => {
             } else if (route.name === 'Deal') {
               iconName = ICON.deal_d;
               label = 'Khuyến mãi'
-            }else if (route.name === 'Favorite') {
+            } else if (route.name === 'Favorite') {
               iconName = ICON.heart;
               label = 'Yêu thích'
             } else if (route.name === 'Notification') {
