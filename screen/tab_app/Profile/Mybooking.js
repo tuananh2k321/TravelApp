@@ -11,7 +11,7 @@ import Item_Booking from '../../../component/Tab_item/Item_Booking'
 import Loading from '../../Loading'
 
 const Mybooking = (props) => {
-    const { navigation } = props;
+    const { navigation, route } = props;
     const [dataMyBooking, setDataMyBooking] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const user = useSelector((state) => state.user);
@@ -52,37 +52,40 @@ const Mybooking = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             {
-                isLoading == true ? (<Loading/>) :
-                (<View>
-                    <View style={styles.wishlist_list}>
-                        <SwipeListView style={{ bottom: 20 }}
-                            showsVerticalScrollIndicator={false}
-                            data={dataMyBooking}
-                            renderItem={({ item }) => <Item_Booking item={item} />}
-                            renderHiddenItem={({ item }) => (
-                                <TouchableOpacity
-                                    onPress={() => { onDeleteBooking(item._id) }}
-                                    style={{
-                                        position: 'absolute',
-                                        right: 0,
-                                        width: 75,
-                                        height: 80,
-                                        backgroundColor: '#FFFFFF',
-                                        marginTop: 10,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}>
-                                    <Ionicons name='trash' size={30} color={"red"} />
-                                </TouchableOpacity>
-                            )}
-                            rightOpenValue={-75}
-                            keyExtractor={item => item._id}
-                        />
-    
-                    </View>
-                </View>)
+                isLoading == true ? (<Loading />) :
+                    (
+
+                        <View>
+                            <View style={styles.wishlist_list}>
+                                <SwipeListView style={{ bottom: 20 }}
+                                    showsVerticalScrollIndicator={false}
+                                    data={dataMyBooking}
+                                    renderItem={({ item }) => <Item_Booking item={item} navigation={navigation} route={route} />}
+                                    renderHiddenItem={({ item }) => (
+                                        <TouchableOpacity
+                                            onPress={() => { onDeleteBooking(item._id) }}
+                                            style={{
+                                                position: 'absolute',
+                                                right: 0,
+                                                width: 75,
+                                                height: 80,
+                                                backgroundColor: '#FFFFFF',
+                                                marginTop: 10,
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}>
+                                            <Ionicons name='trash' size={30} color={"red"} />
+                                        </TouchableOpacity>
+                                    )}
+                                    rightOpenValue={-75}
+                                    keyExtractor={item => item._id}
+                                />
+
+                            </View>
+                        </View>
+                    )
             }
-            
+
         </SafeAreaView>
     )
 }

@@ -29,6 +29,8 @@ import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
 import AddComment from '../screen/comment/AddComment';
 import ListComment from './comment/ListComment';
+import SeeMyBooking from './booking/SeeMyBooking';
+import Reason from './booking/Reason';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -86,6 +88,7 @@ const StackHomes = () => {
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
 
+
     </Stack.Navigator>
   )
 }
@@ -138,6 +141,9 @@ const StackProfile = () => {
       <Stack.Screen name="ProfileMain" component={Profile} />
       <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
+      <Stack.Screen name="Reason" component={Reason} />
+
     </Stack.Navigator>
   )
 }

@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { ICON } from '../../constant/Themes';
 
 const Item_Booking = (props) => {
-    const { item } = props;
+    const { item, navigation, route } = props;
+    const { params } = route;
     const dateReplace = (item.bookingDate);
     let price = item.totalPrice;
     price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
@@ -22,52 +23,57 @@ const Item_Booking = (props) => {
         var ordersLength = orders.length;
 
         for (var i = ordersLength - 1; i >= 0; i--) {
-            tong += orders[i]+"/";
+            tong += orders[i] + "/";
         }
         return tong;
     }
 
-    getTotalDate(arr) 
+    console.log('first>>>>>', item)
+    getTotalDate(arr)
     return (
-        <><View style={styles.item}>
-            <Image style={styles.item_left} source={{ uri: item.tour_id.tourImage[0] }}></Image>
-            <View style={styles.item_right}>
-                <Text numberOfLines={2} style={styles.item_title}>{item.tour_id.tourName}</Text>
-                <View style={styles.item_start_view}>
-                    {Array.from({ length: 5 }).map((_, index) => {
-                        if (index < 4) {
-                            return (
-                                <Image
-                                    key={`star-${index}`}
-                                    source={ICON.star_yellow}
-                                    style={{ width: 13, height: 13 }}
-                                />
-                            );
-                        } else {
-                            return (
-                                <Image
-                                    key={`star-${index}`}
-                                    source={ICON.star} style={{ width: 13, height: 13 }} />
-                            );
-                        }
-                    })}
+        <>
+            <TouchableOpacity onPress={() => navigation.navigate("SeeMyBooking", { id: item._id })}>
+                <View style={styles.item}>
+                    <Image style={styles.item_left} source={{ uri: item.tour_id.tourImage[0] }}></Image>
+                    <View style={styles.item_right}>
+                        <Text numberOfLines={2} style={styles.item_title}>{item.tour_id.tourName}</Text>
+                        <View style={styles.item_start_view}>
+                            {Array.from({ length: 5 }).map((_, index) => {
+                                if (index < 4) {
+                                    return (
+                                        <Image
+                                            key={`star-${index}`}
+                                            source={ICON.star_yellow}
+                                            style={{ width: 13, height: 13 }}
+                                        />
+                                    );
+                                } else {
+                                    return (
+                                        <Image
+                                            key={`star-${index}`}
+                                            source={ICON.star} style={{ width: 13, height: 13 }} />
+                                    );
+                                }
+                            })}
+                        </View>
+                        <Text style={styles.item_address}>{item.tour_id.isdomain}</Text>
+                        <Text style={styles.item_address}>
+                            {
+                                // date.length > 10 ? date.slice(0, 10) : date
+                                getTotalDate(arr).length > 10 ? getTotalDate(arr).slice(0, 10) : getTotalDate(arr)
+                            }
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.item_price}>{price}</Text>
+                        </View>
+                        <View style={styles.item_days}>
+                            <Text style={styles.item_days_text}>{item.tour_id.limitedDay} ngày {Number(item.tour_id.limitedDay) - 1} đêm</Text>
+                        </View>
+                    </View>
                 </View>
-                <Text style={styles.item_address}>{item.tour_id.isdomain}</Text>
-                <Text style={styles.item_address}>
-                    {
-                        // date.length > 10 ? date.slice(0, 10) : date
-                        getTotalDate(arr).length>10? getTotalDate(arr).slice(0, 10) : getTotalDate(arr)
-                    }
-                </Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.item_price}>{price}</Text>
-                </View>
-                <View style={styles.item_days}>
-                    <Text style={styles.item_days_text}>{item.tour_id.limitedDay} ngày {Number(item.tour_id.limitedDay) - 1} đêm</Text>
-                </View>
-            </View>
-        </View>
-            <View style={{ borderWidth: 0.5, borderColor: 'rgba(0, 0, 0, 0.2)', width: '100%', marginVertical: 15 }}></View></>
+                <View style={{ borderWidth: 0.5, borderColor: 'rgba(0, 0, 0, 0.2)', width: '100%', marginVertical: 15 }}></View>
+            </TouchableOpacity>
+        </>
     )
 }
 
