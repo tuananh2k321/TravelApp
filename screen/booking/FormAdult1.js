@@ -7,7 +7,7 @@ import { validateDateOfBirth } from '../../constant/Validation';
 import DatePicker from 'react-native-date-picker';
 import { useEffect } from 'react';
 
-const FormAdult = () => {
+const FormAdult = ({ index, onDataChange }) => {
 
   const [lastName, setLastName] = useState('');
   const [dob, setDob] = useState('');
@@ -19,6 +19,10 @@ const FormAdult = () => {
   const [isValid, setIsvalid] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
+  const handleInputChange = () => {
+    const formData = { lastName, dob, gender };
+    onDataChange(index, formData);
+  };
 
   const checkForm = (
     dob,
@@ -46,6 +50,7 @@ const FormAdult = () => {
         style={styles.input}
         onChangeText={(text) => setLastName(text)}
         value={lastName}
+        onBlur={handleInputChange}
         placeholder="Nhập tên"
       />
       <Text style={{
@@ -65,7 +70,8 @@ const FormAdult = () => {
         setDob(text);
         setErrorBirthday(validateDateOfBirth(text));
         setIsvalid(true);
-      }}/>
+      }}
+      onBlur={handleInputChange}/>
       {!errorBirthday && (
           <Text
             style={{
@@ -83,6 +89,7 @@ const FormAdult = () => {
           style={styles.picker}
           selectedValue={gender}
           onValueChange={(itemValue) => setGender(itemValue)}
+          onBlur={handleInputChange}
         >
           <Picker.Item label="Chọn giới tính" value="" />
           <Picker.Item label="Nam" value="Nam" />

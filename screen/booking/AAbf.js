@@ -6,13 +6,10 @@ const Abcd = (props) => {
     const { formData } = route.params;
   return (
     <View>
-      <Text>Form Data:</Text>
-      {/* Display form data */}
-      {formData.map((form, index) => (
+      <Text>Dữ liệu từ các form:</Text>
+      {formData.map((data, index) => (
         <View key={index}>
-          <Text>Name: {form.lastName}</Text>
-          <Text>Date of Birth: {form.dob}</Text>
-          <Text>Gender: {form.gender}</Text>
+          <Text>{`Form ${index + 1}: ${JSON.stringify(data)}`}</Text>
         </View>
       ))}
     </View>
