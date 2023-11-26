@@ -58,6 +58,10 @@ export default TourDetail = props => {
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
   const [isLoading, setIsLoading] = useState(true);
   const sampleText = description;
   const user = useSelector(state => state.user);
@@ -140,8 +144,8 @@ export default TourDetail = props => {
         console.log('tour ', params.id);
         if (response.result == true) {
           settourName(response.tour.tourName);
-          setadultPrice(response.tour.adultPrice);
-          setchildrenPrice(response.tour.childrenPrice);
+          setadultPrice(VND.format(response.tour.adultPrice));
+          setchildrenPrice(VND.format(response.tour.childrenPrice));
           setadultAge(response.tour.adultAge);
           setchildrenAge(response.tour.childrenAge);
           setdepartmentPlace(response.tour.departmentPlace);
@@ -756,7 +760,7 @@ export default TourDetail = props => {
                     color: COLOR.detail,
                     fontWeight: '400',
                   }}>
-                  Trẻ em: {childrenAge} tuổi
+                  Trẻ em: { childrenAge} tuổi
                 </Text>
                 <Text
                   style={{

@@ -11,6 +11,10 @@ const ItemSearch = (props) => {
     console.log('Click Item');
     navigation.navigate('TourDetail', {id: dulieu._id});
   };
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
 
   return (
     <TouchableOpacity onPress={clickItem}>
@@ -54,7 +58,7 @@ const ItemSearch = (props) => {
                 fontWeight:'400',
                 marginTop:7
               }}>
-              {dulieu.adultPrice} VNĐ / người lớn
+              {VND.format(dulieu.adultPrice)}/ người lớn
             </Text>
             <Text
               style={{
@@ -63,7 +67,7 @@ const ItemSearch = (props) => {
                 fontWeight:'400',
                 marginTop:7
               }}>
-              {dulieu.childrenPrice} VNĐ / trẻ em
+              {VND.format(dulieu.childrenPrice)}/ trẻ em
             </Text>
             <View style={styles.item_days}>
               <Text style={styles.item_days_text}>{dulieu.limitedDay}</Text>
