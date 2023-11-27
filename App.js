@@ -23,6 +23,7 @@ import { Alert } from 'react-native';
 import Booking_Successfully from './screen/booking/Booking_Successfully';
 import FormAdult from './screen/booking/FormAdult1';
 
+import Profile from './screen/tab_app/Profile/Profile';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,7 +34,7 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      //Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     return unsubscribe;
@@ -110,6 +111,7 @@ const App = () => {
               <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
               <Stack.Screen name="BottomTab" component={BottomTab} />
               <Stack.Screen name="abc" component={FormAdult} />
+              <Stack.Screen name="Profile" component={Profile} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

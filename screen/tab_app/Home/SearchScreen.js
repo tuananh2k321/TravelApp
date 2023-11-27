@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Searchbar} from 'react-native-paper';
@@ -16,6 +17,7 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemPopular from '../../../component/Tab_item/ItemPopular';
 import ItemSearch from '../../../component/Tab_item/ItemSearch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ModalDropdown from 'react-native-modal-dropdown';
 import Loading from '../../Loading';
 
 const SearchScreen = props => {
@@ -25,9 +27,28 @@ const SearchScreen = props => {
   const [searchHistory, setSearchHistory] = useState([]);
   const [TourRating, setTourRating] = useState([]);
   const [TourNam, setTourNam] = useState([]);
+  const [tourTime, setTourTime] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const nameDomain = route.params?.nameDomain;
+  const [sortOrder, setSortOrder] = useState('asc'); // lọc theo giá
+  // lọc theo thời gian
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [regions, setRegions] = useState([
+    '4 ngày',
+    '3 ngày',
+    '2 ngày',
+    '1 ngày',
+  ]); // Thay đổi các khu vực theo nhu cầu của bạn
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
+  // lọc theo khu vực
+  const [selectedDomain, setSelectedDomain] = useState('');
+  const [domain, setDomain] = useState([
+    'Mien Nam',
+    'Mien Bac',
+    'Mien Trung'
+  ]); // Thay đổi các khu vực theo nhu cầu của bạn
+  const [isModalDomain, setIsModalDomain] = useState(false);
   // api danh sách theo rating
   useEffect(() => {
     try {
@@ -68,15 +89,17 @@ const SearchScreen = props => {
   const performSearch = async query => {
     // Thực hiện tìm kiếm dựa trên nội dung `query` và cập nhật `searchResults`
     // Ví dụ: bạn có thể gọi một API hoặc tìm kiếm trong dữ liệu của mình ở đây
-    const response = await AxiosIntance().get(
-      'tour/api/search/name?q=' + query,
-    );
-    if (response.result) {
-      setTourNam(response.tours);
-      setIsLoading(false);
-    } else {
-      ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
-    }
+    // const response = await AxiosIntance().get(
+    //   'tour/api/search/name?q=' + query
+    // );
+    // if (response.result) {
+    //   setTourNam(response.tours);
+    //   setTourTime(TourNam);
+    //   setIsLoading(false);
+    // } else {
+    //   ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
+    // }
+    fetchData(query,"","")
   };
   const handleHistoryItemPress = item => {
     // Gọi hàm tìm kiếm lại với nội dung của mục đã chọn
@@ -126,6 +149,88 @@ const SearchScreen = props => {
       // Xử lý lỗi khi ghi vào AsyncStorage
     }
   };
+  const fetchData = async (query,byDate,byDomain) => {
+    try {
+      const response = await AxiosIntance().get(
+        'tour/api/list/search?q=' + query + '&byDate=' + byDate + '&byDomain=' + byDomain,
+      );
+      if (response.result) {
+        setTourNam(response.sortedtTours);
+        setIsLoading(false);
+      } else {
+        ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  // sắp xếp theo giá
+  const toggleSortOrder = () => {
+    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortOrder(newSortOrder);
+
+    const sortedProducts = [...TourNam].sort((a, b) => {
+      if (newSortOrder === 'asc') {
+        return a.adultPrice - b.adultPrice;
+      } else {
+        return b.adultPrice - a.adultPrice;
+      }
+    });
+
+    setTourNam(sortedProducts);
+  };
+
+  // lọc theo thời gian
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const onRegionSelect =async (region) => {
+    setSelectedRegion(region);
+    toggleModal();
+   fetchData(searchQuery,region,selectedDomain)
+    // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
+    // const  sortedProducts = [...TourNam].filter(item => item.limitedDay.includes(region));
+    
+    // setTourTime(sortedProducts);
+  };
+  
+  const renderItemTime = ({item}) => (
+    <TouchableOpacity onPress={() => onRegionSelect(item)}>
+      <Text style={{fontSize:18,fontWeight:'400',color:'#000000',backgroundColor:'#CACACA',padding:5,margin:5}}>{item}</Text>
+    </TouchableOpacity>
+  );
+
+  // lọc theo khu vực
+  const toggleModalDomain = () => {
+    setIsModalDomain(!isModalDomain);
+  };
+
+  const onRegionSelectDomain = (region) => {
+    setSelectedDomain(region);
+    toggleModalDomain();
+    // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
+    const sortedProducts = [...TourNam].filter(item => item.isdomain.includes(region));
+    // console.log("sortedProducts",sortedProducts)
+    
+    // setTourTime(sortedProducts);
+    fetchData(searchQuery,selectedRegion,region)
+  };
+  
+  const renderItemDomain = ({item}) => (
+    <TouchableOpacity onPress={() => onRegionSelectDomain(item)}>
+      <Text style={{fontSize:18,fontWeight:'400',color:'#000000',backgroundColor:'#CACACA',padding:5,margin:5}}>{item}</Text>
+    </TouchableOpacity>
+  );
+    // xóa thiết lập
+  const clearRegionSelection = () => {
+    setSelectedRegion(null);
+    setSelectedDomain(null);
+  };
+  useEffect(() => {
+    // Fetch initial data when the component mounts
+    fetchData(searchQuery,selectedRegion,selectedDomain);
+  },[]);
   return (
     <SafeAreaView
       style={{
@@ -274,35 +379,129 @@ const SearchScreen = props => {
               Gợi ý
             </Text>
             <>
-      {isLoading == true ? (
-        <Loading />
-      ) : (
-            <FlatList
-              style={{marginTop: 10, flex: 1}}
-              
-              horizontal
-              data={TourRating}
-              renderItem={({item}) => (
-                <ItemPopular dulieu={item} navigation={navigation} />
+              {isLoading == true ? (
+                <Loading />
+              ) : (
+                <FlatList
+                  style={{marginTop: 10, flex: 1}}
+                  horizontal
+                  data={TourRating}
+                  renderItem={({item}) => (
+                    <ItemPopular dulieu={item} navigation={navigation} />
+                  )}
+                  keyExtractor={item => item._id}
+                  showsHorizontalScrollIndicator={false}
+                />
               )}
-              keyExtractor={item => item._id}
-              showsHorizontalScrollIndicator={false}
-            />
-             )}
-    </>
+            </>
           </View>
         ) : (
           <>
-            { isLoading == true ? (
+            {isLoading == true ? (
               <Loading />
             ) : (
               <View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    marginTop: 20,
+                  }}>
+                  <TouchableOpacity style={{borderWidth: 0.3, padding: 5}} onPress={clearRegionSelection}>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>Xóa thiết lập</Text>
+                  </TouchableOpacity>
+                  <View style={{marginHorizontal:10}}>
+                    <ModalDropdown
+                      options={regions}
+                      onSelect={(index, value) => onRegionSelect(value)}
+                      style={{borderWidth: 0.3, padding: 5}}
+                      textStyle={styles.filterButtonText}>
+                      <TouchableOpacity
+                        onPress={toggleModal}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text style={{fontSize: 20, fontWeight: '400'}}>
+                          {selectedRegion || 'Chọn thời gian'}
+                        </Text>
+                        <AntDesign name="down" size={18} color="grey" />
+                      </TouchableOpacity>
+                    </ModalDropdown>
+                    <Modal
+                      visible={isModalVisible}
+                      onRequestClose={toggleModal}>
+                      <View style={styles.modalContent}>
+                        <FlatList
+                        numColumns={2}
+                          data={regions}
+                          renderItem={renderItemTime}
+                          keyExtractor={item => item}
+                        />
+                      </View>
+                    </Modal>
+                  </View>
+                  <View >
+                    <ModalDropdown
+                      options={domain}
+                      onSelect={(index, value) => onRegionSelectDomain(value)}
+                      style={{borderWidth: 0.3, padding: 5}}
+                      textStyle={styles.filterButtonText}>
+                      <TouchableOpacity
+                        onPress={toggleModalDomain}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text style={{fontSize: 20, fontWeight: '400'}}>
+                          {selectedDomain || 'Chọn khu vực'}
+                        </Text>
+                        <AntDesign name="down" size={18} color="grey" />
+                      </TouchableOpacity>
+                    </ModalDropdown>
+                    <Modal
+                      visible={isModalDomain}
+                      onRequestClose={toggleModalDomain}>
+                      <View style={styles.modalContent}>
+                        <FlatList
+                        numColumns={2}
+                          data={domain}
+                          renderItem={renderItemDomain}
+                          keyExtractor={item => item}
+                        />
+                      </View>
+                    </Modal>
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 10,
+                      borderWidth: 0.3,
+                      padding: 5,
+                      marginHorizontal:10
+                    }}
+                    onPress={toggleSortOrder}>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>Giá </Text>
+                    {sortOrder === 'asc' ? (
+                      <AntDesign name="arrowup" size={20} color="grey" />
+                    ) : (
+                      <AntDesign name="arrowdown" size={20} color="grey" />
+                    )}
+                  </TouchableOpacity>
+                  
+                </View>
+                </ScrollView>
                 <Text
                   style={{
                     fontSize: 20,
                     fontWeight: '600',
                     color: '#000000',
-                    marginTop: 35,
+                    marginTop: 25,
                     marginBottom: 20,
                   }}>
                   Kết quả tìm kiếm
@@ -311,17 +510,15 @@ const SearchScreen = props => {
                   <ItemSearch dulieu={item} navigation={navigation} />
                 ))} */}
                 <FlatList
-              style={{marginTop: 10, flex: 1}}
-              
-              scrollEnabled={false}
-              data={TourNam}
-              renderItem={({item}) => (
-                <ItemSearch dulieu={item} navigation={navigation} />
-              )}
-              keyExtractor={item => item._id}
-              showsHorizontalScrollIndicator={false}
-            />
-               
+                  style={{marginTop: 10, flex: 1}}
+                  scrollEnabled={false}
+                  data={TourNam}
+                  renderItem={({item}) => (
+                    <ItemSearch dulieu={item} navigation={navigation} />
+                  )}
+                  keyExtractor={item => item._id}
+                  showsHorizontalScrollIndicator={false}
+                />
               </View>
             )}
           </>
@@ -352,5 +549,42 @@ const styles = StyleSheet.create({
     height: 'auto',
     backgroundColor: '#ffffff',
     top: 10,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ddd',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  filterButtonText: {
+    marginRight: 5,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });

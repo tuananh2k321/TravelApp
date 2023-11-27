@@ -53,7 +53,7 @@ export default SelectOptions = props => {
             marginTop: 20,
             textAlign: 'center',
           }}>
-          Quên mật khẩu
+          Lựa chọn phương thức để đổi mật khẩu
         </Text>
 
         <View style={{width: 300, alignSelf: 'center'}}>
