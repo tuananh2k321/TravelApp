@@ -3,13 +3,39 @@ import React from 'react'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { COLOR } from '../../constant/Themes';
 import { useState } from 'react';
+import AxiosIntance from '../../constant/AxiosIntance';
+import { useEffect } from 'react';
+import {
+    isValidEmpty,
+} from '../../constant/Validation';
 
-
-const Reason = ({ navigation }) => {
+const Reason = ({ navigation, route }) => {
 
     const [errorContent, setErrorContent] = useState(true);
     const [content, setContent] = useState('');
     const [isValid, setIsvalid] = useState(false);
+    const { id } = route.params
+    console.log("CHeck id của resason", id)
+
+
+
+    const createReason = async () => {
+        try {
+            const response = await AxiosIntance().post(`/booking/api/addReason?id=${id}`, {
+                reason: content,
+            })
+            console.log("Check response", response)
+            if (response.result) {
+                console.log(response.result)
+                navigation.pop()
+            }
+
+        } catch (error) {
+            console.log("Check error", error)
+        }
+    }
+
+
 
     return (
         <ScrollView>
@@ -71,7 +97,7 @@ const Reason = ({ navigation }) => {
                         marginBottom: 20,
                     }}>
                     <TouchableOpacity
-
+                        onPress={() => createReason()}
                         style={{
                             width: "100%",
                             height: 50,

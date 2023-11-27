@@ -53,19 +53,19 @@ const SeeMyBooking = ({ navigation, route }) => {
         return (
             <View style={styles.container}>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Loại vé</Text>
+                    <Text style={styles.sectionTitle}>Loại vé: </Text>
                     <Text style={styles.sectionText}>{item.type}</Text>
                 </View>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Tên</Text>
+                    <Text style={styles.sectionTitle}>Tên: </Text>
                     <Text style={styles.sectionText}>{item.name}</Text>
                 </View>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Năm sinh</Text>
+                    <Text style={styles.sectionTitle}>Năm sinh: </Text>
                     <Text style={styles.sectionText}>{item.birthDate}</Text>
                 </View>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Giới tính</Text>
+                    <Text style={styles.sectionTitle}>Giới tính: </Text>
                     <Text style={styles.sectionText}>{item.gender}</Text>
                 </View>
 
@@ -74,7 +74,11 @@ const SeeMyBooking = ({ navigation, route }) => {
     };
 
 
-
+    const handlePress = () => {
+        if (!bookings.confirm) {
+            navigation.navigate('Reason', { id: bookings._id });
+        }
+    };
 
     return (
         <>
@@ -91,27 +95,51 @@ const SeeMyBooking = ({ navigation, route }) => {
                         </View>
                     </View>
                     <View style={{ marginHorizontal: 15 }}>
-                        <Text style={{ color: COLOR.black, fontSize: 15, fontWeight: '400' }}>Tên</Text>
-                        <Text>{bookings.name}</Text>
-                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-
-                            <Text style={{ color: COLOR.black, fontSize: 15, fontWeight: '400' }}>Số lượng trẻ em :</Text>
-                            <Text>{bookings.children}</Text>
-
-                            <Text style={{ color: COLOR.black, fontSize: 15, fontWeight: '400' }}>Số lượng người lớn :</Text>
-                            <Text>{bookings.adult}</Text>
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={{ color: COLOR.black, fontSize: 20, fontWeight: '400' }}>Tên: </Text>
+                            <Text style={{ color: COLOR.lightBlack1, fontSize: 18 }}>{bookings.name}</Text>
                         </View>
 
-                        <Text style={{ color: COLOR.black, fontSize: 15, fontWeight: '400' }}>Tổng tiền</Text>
-                        <Text>{bookings.totalPrice}</Text>
+                        <View style={{ flexDirection: "row" }}>
+
+                            <Text style={{ color: COLOR.black, fontSize: 15, fontWeight: '400' }}>Số lượng trẻ em :</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.children}</Text>
+
+                            <Text style={{ color: COLOR.black, fontSize: 15, fontWeight: '400', marginLeft: 20 }}>Số lượng người lớn :</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.adult}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={{ color: COLOR.black, fontSize: 16, fontWeight: '400' }}>Tổng tiền:   </Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.totalPrice}</Text>
+                        </View>
+
+                        {bookings.confirm ? (
+                            <Text style={{ color: "red" }}>
+                                Đã xác nhận
+                            </Text>
+                        ) : (
+                            <View>
+                                <Text style={{ color: "black", fontWeight: "bold", marginVertical: 15 }}>
+                                    Chưa xác nhận
+                                </Text>
+
+                            </View>
+                        )}
 
                         <View style={styles.container}>
-                            <FlatList
-                                data={guestInfo}
-                                keyExtractor={(item) => item._id}
-                                renderItem={renderItem}
-                                contentContainerStyle={styles.itemContainer}
-                            />
+                            {guestInfo && guestInfo.length > 0 ? (
+                                <FlatList
+                                    data={guestInfo}
+                                    keyExtractor={(item) => item._id}
+                                    renderItem={renderItem}
+                                    contentContainerStyle={styles.itemContainer}
+                                />
+                            ) : (
+                                <View >
+                                    <Text style={{ color: "black", fontWeight: "bold" }}>Chưa có thông tin</Text>
+                                </View>
+                            )}
                         </View>
                     </View>
                 </SafeAreaView>
@@ -129,8 +157,10 @@ const SeeMyBooking = ({ navigation, route }) => {
 
                 }}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("Reason")}
-                    style={{ flex: 1, marginRight: 10 }}>
+                    onPress={handlePress}
+                    style={{ flex: 1, marginRight: 10 }}
+                    disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
+                >
                     <View
                         style={{
                             flexDirection: 'row',
@@ -139,15 +169,21 @@ const SeeMyBooking = ({ navigation, route }) => {
                             alignItems: 'center',
                             borderWidth: 1,
                             borderColor: COLOR.border,
-                            backgroundColor: "red",
+                            backgroundColor: bookings.confirm ? 'grey' : 'red', // Change background color based on confirm status
                             paddingHorizontal: 10,
                             borderRadius: 10,
-                        }}>
-                        <Text style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
-                            color: 'white',
-                        }}>Hủy</Text>
+                            opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                color: bookings.confirm ? 'black' : 'white', // Change text color based on confirm status
+                            }}
+                        >
+                            {bookings.confirm ? 'Đã xác nhận' : 'Hủy'}
+                        </Text>
                     </View>
                 </TouchableOpacity>
 
@@ -185,23 +221,27 @@ export default SeeMyBooking
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#f0f0f0',
         padding: 10,
         marginBottom: 10,
         borderRadius: 8,
         alignItems: 'center', // Center horizontally
         justifyContent: 'center', // Center vertically
+        borderColor: COLOR.detail,
+        borderWidth: 0.5
     },
     itemContainer: {
         paddingHorizontal: 10, // Adjust the horizontal spacing between items
     },
     section: {
+        flexDirection: "row",
         marginBottom: 5,
     },
     sectionTitle: {
+        color: "black",
         fontWeight: 'bold',
     },
     sectionText: {
         fontSize: 16,
+        color: COLOR.black
     },
 });
