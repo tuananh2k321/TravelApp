@@ -21,7 +21,7 @@ import messaging from '@react-native-firebase/messaging';
 import { getToken, notificationListeners, requestUserPermission } from './constant/Util';
 import { Alert } from 'react-native';
 import Booking_Successfully from './screen/booking/Booking_Successfully';
-
+import TestZalopay from './screen/TestZalopay'
 
 const Stack = createNativeStackNavigator();
 
@@ -93,7 +93,7 @@ const App = () => {
       <StripeProvider publishableKey={STRIPE_KEY}>
         <NavigationContainer >
           <Stack.Navigator
-            initialRouteName={"BottomTab"}
+            initialRouteName={"TestZalopay"}
             screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Register" component={Register} />
@@ -107,6 +107,7 @@ const App = () => {
               <Stack.Screen name="Successfully" component={Successfully} />
               <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
               <Stack.Screen name="BottomTab" component={BottomTab} />
+              <Stack.Screen name="TestZalopay" component={TestZalopay} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>
