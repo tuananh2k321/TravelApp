@@ -38,4 +38,5 @@ export const getToken = async () => {
   const token = await messaging().getToken();
   // save the token to the db
   console.log("token: " + token);
+  return token
 };

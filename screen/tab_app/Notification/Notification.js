@@ -11,6 +11,7 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import Loading from '../../Loading'
 import { addNotificationAction } from '../../../redux/action/NotificationAction'
+import { getToken } from '../../../constant/Util'
 
 handleDelete = (itemId) => {
   // Xử lý xóa item với id được truyền vào
@@ -39,10 +40,25 @@ const Notification = (props) => {
       } catch (error) {
         console.log("Error: " + error);
       }
-
-
+    }
+    const addTokenNotifi = async () => {
+      try {
+        const response = await AxiosIntance().get("/tokenNotification/api/addToken?token="+getToken()+"&&userId="+user.user._id);
+        console.log(response);
+        if (response.result == true) {
+          // setDataNotification(response.notify);
+          // setIsLoading(false);
+          // setIsLogin(true);
+          console.log("add token success")
+        } else {
+          //setIsLogin(false);
+        }
+      } catch (error) {
+        console.log("Error: " + error);
+      }
     }
     getNotifi();
+    addTokenNotifi()
     return () => {
 
     }

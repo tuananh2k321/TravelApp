@@ -106,7 +106,7 @@ export default function Home() {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Tour được yêu thích nhất</Text>
                         <TouchableOpacity>
-                            <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>See more</Text>
+                            <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>Xem thêm</Text>
                         </TouchableOpacity>
                     </View>
 

@@ -19,13 +19,13 @@ const Payment_Method = (props) => {
     const chooses = [
         {
             id: 1,
-            name: 'Credit card/debit',
-            image: 'https://firebasestorage.googleapis.com/v0/b/onlinemusic-19f2b.appspot.com/o/img_card2.png?alt=media&token=277ed116-fe33-4bf3-ae0d-b58d10cb6dd8'
+            name: 'Thẻ ATM nội địa',
+            image: 'https://firebasestorage.googleapis.com/v0/b/android-networking-2a786.appspot.com/o/card_1.png?alt=media&token=3b95a619-1dcf-488e-9ed0-8f1890730819'
         },
         {
             id: 2,
-            name: 'Credit card/debit',
-            image: 'https://firebasestorage.googleapis.com/v0/b/onlinemusic-19f2b.appspot.com/o/img_card1.png?alt=media&token=63ed1d35-b3de-411e-960c-52c93d79f1b6'
+            name: 'Thẻ ATM quốc tế',
+            image: 'https://firebasestorage.googleapis.com/v0/b/android-networking-2a786.appspot.com/o/card_2.png?alt=media&token=dacde835-d4e0-4bb2-a0b6-9fe2c74bef5a'
         },
     ]
     const [selectedRadio, setSelectedRadio] = useState(1);
@@ -66,7 +66,7 @@ const Payment_Method = (props) => {
         // 1. Create a payment intent
         const response = await AxiosIntance()
             .post("/payments/intent",
-                { amount: Math.floor(amountInUSD * 100) });
+                { amount: totalPrice });
         console.log(response);
         if (response.error) {
             Alert.alert("Đã xảy ra sự cố!");
@@ -88,7 +88,8 @@ const Payment_Method = (props) => {
         const { error: paymentError } = await presentPaymentSheet();
 
         if (paymentError) {
-            Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
+            // Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
+            Alert.alert(`Giao dịch bị hủy bỏ`, "Thanh toán đã bị hủy. Vui lòng thanh toán nếu muốn tiếp tục");
             return;
         } else {
             // Alert.alert('Success', 'Your order is confirmed!');

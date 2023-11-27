@@ -52,9 +52,9 @@ const Favorite = (props) => {
 
   const getApi = async () => {
     try {
-      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user=" +user._id );
-
-      console.log('response', response.favorite)
+      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user="+user._id );
+      setLoading(true)
+      console.log('favorite', response)
       
         console.log(response.favorite)
         const listData = await response.favorite
@@ -89,7 +89,7 @@ const Favorite = (props) => {
               if (response.result === true) {
                 // Render lại dữ liệu
                 getApi();
-
+                
                 // Thông báo cho người dùng rằng tour du lịch đã được xóa khỏi danh sách yêu thích
                 Alert.alert("Xóa yêu thích thành công");
               } else {
@@ -109,11 +109,17 @@ const Favorite = (props) => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <Loading/>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     // <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
+  //     //   <TouchableOpacity
+  //     //     onPress={() => navigation.navigate("Login")}
+  //     //     style={{ backgroundColor: "#39C4FF", borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10 }}>
+  //     //     <Text style={{ fontSize: 16, fontWeight: '700', color: "white" }}>Đăng nhập trước khi xem</Text>
+  //     //   </TouchableOpacity>
+  //     // </View>
+  //   )
+  // }
 
 
   return (
