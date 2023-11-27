@@ -9,9 +9,10 @@ import { useEffect } from 'react';
 
 const FormAdult = ({ index, onDataChange }) => {
 
-  const [lastName, setLastName] = useState('');
-  const [dob, setDob] = useState('');
+  const [name, setName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [gender, setGender] = useState('');
+  const [type, setType] = useState('nguoi lon');
 
   const [date, setDate] = useState('');
   const [open, setOpen] = useState(false);
@@ -20,15 +21,15 @@ const FormAdult = ({ index, onDataChange }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const handleInputChange = () => {
-    const formData = { lastName, dob, gender };
+    const formData = { name, birthDate, gender, type };
     onDataChange(index, formData);
   };
 
   const checkForm = (
-    dob,
+    birthDate,
   ) => {
-    if (dob.length === 0) {
-      console.log('dob emty');
+    if (birthDate.length === 0) {
+      console.log('birthDate emty');
       setErrorBirthday(false);
       setIsvalid(false);
     }
@@ -42,8 +43,8 @@ const FormAdult = ({ index, onDataChange }) => {
       <Text>Tên:</Text>
       <TextInput
         style={styles.input}
-        onChangeText={(text) => setLastName(text)}
-        value={lastName}
+        onChangeText={(text) => setName(text)}
+        value={name}
         onBlur={handleInputChange}
         placeholder="Nhập tên"
       />
@@ -61,7 +62,7 @@ const FormAdult = ({ index, onDataChange }) => {
       borderError={errorBirthday}
       onChangeText={text => {
         console.log(text);
-        setDob(text);
+        setBirthDate(text);
         setErrorBirthday(validateDateOfBirth(text));
         setIsvalid(true);
       }}
@@ -106,7 +107,7 @@ const FormAdult = ({ index, onDataChange }) => {
             var month = (date.getMonth() + 1).toString().padStart(2, '0');
             var year = date.getFullYear();
             setDate(day + '/' + month + '/' + year);
-            setDob(day + '/' + month + '/' + year);
+            setBirthDate(day + '/' + month + '/' + year);
             setErrorBirthday(
               validateDateOfBirth(day + '/' + month + '/' + year),
             );

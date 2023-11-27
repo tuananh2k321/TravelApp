@@ -10,7 +10,7 @@ import Loading from '../Loading';
 
 const Payment = (props) => {
   const { navigation, route } = props;
-  const { id, name, adult, children, totalPrice } = route.params;
+  const { id, name, adult, children, totalPrice, guestInfo } = route.params;
   const [dataCards, setDataCards] = useState([]);
   //use state
   const [selectedId, setSelectedId] = useState('');
@@ -56,7 +56,7 @@ const Payment = (props) => {
     try {
       const response = await AxiosIntance()
         .post("/booking/api/addBooking",
-          { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id });
+          { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id, guestInfo: guestInfo });
       console.log(response);
       if (response.result == true) {
         navigation.push("Booking_Successfully");
