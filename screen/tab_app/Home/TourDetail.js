@@ -67,19 +67,7 @@ export default TourDetail = props => {
   const user = useSelector(state => state.user);
   const user2 = useSelector(state => state.user.user);
   const [idUser, setIdUser] = useState();
-  // const images = [
-  //     { id: 1, source: "https://nhadepso.com/wp-content/uploads/2023/01/hinh-anh-bien-dep_1.jpg" },
-  //     { id: 2, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 3, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 4, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 5, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 6, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 7, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 8, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 9, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     { id: 10, source: "https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-song-bien-2.jpg" },
-  //     // Thêm các hình ảnh khác tại đây
-  //   ];
+  
   const onBooking = () => {
     if (user.user == null) {
       navigation.navigate('Login');
@@ -159,7 +147,6 @@ export default TourDetail = props => {
           setlimitedPerson(response.tour.limitedPerson);
           setoffer(response.tour.offer);
           setvehicle(response.tour.vehicle);
-          setrating(response.tour.rating);
           setisdomain(response.tour.isdomain);
           sethotel_id(response.datahotel);
           settourGuide_id(response.dataTourGuide);
@@ -180,6 +167,7 @@ export default TourDetail = props => {
         // console.log("Check response commment", listData)
         if (response.result == true) {
           setListComment(response.comments)
+          
           console.log("listcomment top>>>>>>>>>>", listComment)
           // console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
 
@@ -203,6 +191,7 @@ export default TourDetail = props => {
         );
         if (response.result == true) {
           setReviews(response.quantity);
+          setrating(response.averageRating)
         } else {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
