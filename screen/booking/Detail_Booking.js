@@ -124,14 +124,23 @@ const Detail_Booking = (props) => {
           <Text style={styles.money}>{price}/</Text>
           <Text style={[styles.money, { fontWeight: '400', fontSize: 14 }]}>{quantity}Người</Text>
         </View>
-        <TouchableOpacity style={[styles.button,
+
+      </View>
+        <View style={styles.groupButton}>
+        {/* <TouchableOpacity style={[styles.button,
         { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
           disabled={isValidOK() == false}
           onPress={() => navigation.navigate('Payment_Method', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: quantityAdult, children: quantityChildren, image: image, tourName: tourName })}>
           <Text style={styles.textButton}>Tiếp theo</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={[styles.button,
+        { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
+          disabled={isValidOK() == false}
+          onPress={() => navigation.navigate('FormAll', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: quantityAdult, children: quantityChildren, image: image, tourName: tourName })}>
+          <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   )
 }
 
