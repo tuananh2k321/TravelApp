@@ -36,15 +36,9 @@ const FormAdult = ({ index, onDataChange }) => {
 
   return (
     <View style={styles.container}>
-        <View>
-            <Text style={{
-                fontSize: 16, fontWeight: 'bold',
-                marginBottom: 25
-            }}>Người lớn ...</Text>
-        </View>
-        <Text  style={{
+        <Text style={{
                 fontSize: 16, fontWeight: 'bold'
-            }}>Thông tin cơ bản (Bắt buộc)</Text>
+            }}>Thông tin cơ bản (Bắt buộc) Người lớn</Text>
       <Text>Tên:</Text>
       <TextInput
         style={styles.input}
