@@ -15,17 +15,39 @@ const Mybooking = (props) => {
     const [dataMyBooking, setDataMyBooking] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const user = useSelector((state) => state.user);
-    useEffect(() => {
-        const getNews = async () => {
+    const [refreshing, setRefreshing] = useState(false);
+
+
+
+    const getNews = async () => {
+        try {
             const response = await AxiosIntance().get("/booking/api/getListBooking?userID=" + user.user._id);
             setDataMyBooking(response.booking);
             setIsLoading(false);
+        } catch (error) {
+            console.log("errr", error)
         }
-        getNews();
-        return () => {
 
-        }
+    }
+
+    useEffect(() => {
+
+        getNews();
+
     }, []);
+
+
+    const handleRefresh = () => {
+        setRefreshing(true);
+
+        // Thực hiện các công việc làm mới dữ liệu ở đây, sau đó cập nhật state data
+
+        // Ví dụ: Sau 2 giây, dừng làm mới và cập nhật dữ liệu
+
+        getNews()
+        setRefreshing(false);
+
+    };
 
     const onDeleteBooking = (bookingID) => {
         return Alert.alert(
@@ -49,6 +71,8 @@ const Mybooking = (props) => {
             ]
         );
     };
+
+
     return (
         <SafeAreaView style={styles.container}>
             {
@@ -60,6 +84,9 @@ const Mybooking = (props) => {
                                 <SwipeListView style={{ bottom: 20 }}
                                     showsVerticalScrollIndicator={false}
                                     data={dataMyBooking}
+                                    onRefresh={handleRefresh}
+
+                                    refreshing={refreshing}
                                     renderItem={({ item }) => <Item_Booking item={item} navigation={navigation} route={route} />}
                                     renderHiddenItem={({ item }) => (
                                         <TouchableOpacity
