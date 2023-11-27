@@ -117,8 +117,8 @@ const Profile = props => {
               </View>
             </View>
           </TouchableOpacity>
-          {/* change lauguage */}
-          <TouchableOpacity>
+         
+          {/* <TouchableOpacity>
             <View style={styles.button_setting}>
               <View style={styles.button_setting_left}>
                 <Image
@@ -134,7 +134,7 @@ const Profile = props => {
               </View>
             </View>
           </TouchableOpacity>
-          {/* color mode */}
+          
           <TouchableOpacity>
             <View style={styles.button_setting}>
               <View style={styles.button_setting_left}>
@@ -147,7 +147,7 @@ const Profile = props => {
                 <Ionicons name="calendar-outline" size={24} color={'#111'} />
               </View>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Derleng Legal */}
@@ -159,8 +159,8 @@ const Profile = props => {
             marginTop: 30,
           }}></View>
         <View style={styles.account_setting}>
-          {/* edit profile */}
-          <TouchableOpacity>
+
+          {/* <TouchableOpacity>
             <View style={styles.button_setting_2}>
               <View style={styles.button_setting_left}>
                 <Image
@@ -176,7 +176,6 @@ const Profile = props => {
                 source={require('../../../assets/icon/icon-link.png')}></Image>
             </View>
           </TouchableOpacity>
-          {/* change lauguage */}
           <TouchableOpacity>
             <View style={styles.button_setting_2}>
               <View style={styles.button_setting_left}>
@@ -191,7 +190,7 @@ const Profile = props => {
                 style={{marginLeft: 10, marginTop: -10}}
                 source={require('../../../assets/icon/icon-link.png')}></Image>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <TouchableOpacity
@@ -215,11 +214,12 @@ export default Profile;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 15,
     width: SIZES.width,
+    height: SIZES.height,
     flexDirection: 'column',
     backgroundColor: COLOR.white,
-    justifyContent: 'center',
   },
   infomation: {
     flexDirection: 'row',
