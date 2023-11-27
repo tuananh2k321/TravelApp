@@ -233,7 +233,7 @@ export default TourDetail = props => {
                   flexDirection: 'row',
                 }}>
                 <TouchableOpacity
-                  onPress={() => navigation.goBack(null)}
+                  onPress={() => navigation.pop()}
                   style={{
                     width: 36,
                     height: 36,

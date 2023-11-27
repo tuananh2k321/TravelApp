@@ -154,6 +154,7 @@ const SeeMyBooking = ({ navigation, route }) => {
                     position: "absolute",
                     bottom: 10,
                     right: 0,
+                    marginHorizontal: 15
 
                 }}>
                 <TouchableOpacity
