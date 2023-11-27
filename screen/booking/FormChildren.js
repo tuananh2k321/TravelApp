@@ -7,7 +7,8 @@ import { validateDateOfBirth } from '../../constant/Validation';
 import DatePicker from 'react-native-date-picker';
 import { useEffect } from 'react';
 
-const FormChildren = () => {
+const FormChildren = ({ index, onDataChange }) => {
+
   const [lastName, setLastName] = useState('');
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
@@ -18,6 +19,10 @@ const FormChildren = () => {
   const [isValid, setIsvalid] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
+  const handleInputChange = () => {
+    const formData = { lastName, dob, gender };
+    onDataChange(index, formData);
+  };
 
   const checkForm = (
     dob,
@@ -30,21 +35,16 @@ const FormChildren = () => {
   };
 
   return (
-    <View style={styles.containerForm}>
-        <View>
-            <Text style={{
-                fontSize: 16, fontWeight: 'bold',
-                marginBottom: 25
-            }}>Trẻ em ...</Text>
-        </View>
-        <Text  style={{
+    <View style={styles.container}>
+        <Text style={{
                 fontSize: 16, fontWeight: 'bold'
-            }}>Thông tin cơ bản (Bắt buộc)</Text>
+            }}>Thông tin cơ bản (Bắt buộc) Trẻ nhỏ</Text>
       <Text>Tên:</Text>
       <TextInput
         style={styles.input}
         onChangeText={(text) => setLastName(text)}
         value={lastName}
+        onBlur={handleInputChange}
         placeholder="Nhập tên"
       />
       <Text style={{
@@ -64,7 +64,8 @@ const FormChildren = () => {
         setDob(text);
         setErrorBirthday(validateDateOfBirth(text));
         setIsvalid(true);
-      }}/>
+      }}
+      onBlur={handleInputChange}/>
       {!errorBirthday && (
           <Text
             style={{
@@ -82,6 +83,7 @@ const FormChildren = () => {
           style={styles.picker}
           selectedValue={gender}
           onValueChange={(itemValue) => setGender(itemValue)}
+          onBlur={handleInputChange}
         >
           <Picker.Item label="Chọn giới tính" value="" />
           <Picker.Item label="Nam" value="Nam" />
@@ -95,7 +97,7 @@ const FormChildren = () => {
         open={open}
         androidVariant="iosClone"
         mode="date"
-        minimumDate={new Date('1990-12-31')}
+        minimumDate={new Date('1950-12-31')}
         maximumDate={new Date('2005-12-31')}
         date={currentDate}
         onConfirm={date => {
@@ -118,8 +120,10 @@ const FormChildren = () => {
 };
 
 const styles = StyleSheet.create({
-  containerForm: {
+  container: {
     flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
     padding: 20,
   },
   input: {
