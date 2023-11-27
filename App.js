@@ -21,6 +21,7 @@ import messaging from '@react-native-firebase/messaging';
 import { getToken, notificationListeners, requestUserPermission } from './constant/Util';
 import { Alert } from 'react-native';
 import Booking_Successfully from './screen/booking/Booking_Successfully';
+import Profile from './screen/tab_app/Profile/Profile';
 
 
 const Stack = createNativeStackNavigator();
@@ -31,7 +32,7 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      //Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     return unsubscribe;
@@ -107,6 +108,7 @@ const App = () => {
               <Stack.Screen name="Successfully" component={Successfully} />
               <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
               <Stack.Screen name="BottomTab" component={BottomTab} />
+              <Stack.Screen name="Profile" component={Profile} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>
