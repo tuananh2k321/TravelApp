@@ -62,7 +62,7 @@ public class MainApplication extends Application implements ReactApplication {
     // If you opted-in for the New Architecture, we enable the TurboModule system
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
-    ZaloPaySDK.init(2553, Environment.SANDBOX);
+    ZaloPaySDK.init(554, Environment.SANDBOX);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
