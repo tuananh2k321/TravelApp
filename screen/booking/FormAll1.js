@@ -43,7 +43,7 @@ const FormAll1 = (props) => {
   };
 
   return (
-    <View style ={{flex: 1}}>
+    <View style ={{flex: 1, backgroundColor: "#ffffff"}}>
       <ScrollView >
         <View style={{ paddingBottom: 50, }}>
           {[...Array(adult1)].map((_, index) => (
