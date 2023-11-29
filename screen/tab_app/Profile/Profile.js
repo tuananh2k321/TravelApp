@@ -39,7 +39,7 @@ const Profile = props => {
           backgroundColor: 'white',
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('Login', {onChange: false})}
           style={{
             backgroundColor: '#39C4FF',
             borderRadius: 5,
@@ -196,7 +196,7 @@ const Profile = props => {
         <TouchableOpacity
           onPress={() => {
             //navigation.pop();
-            navigation.navigate('Login');
+            navigation.navigate('Login', {onChange: true});
           }}>
           <View style={styles.button_logout}>
             <Text style={styles.button_logout_text}>Đăng Xuất</Text>

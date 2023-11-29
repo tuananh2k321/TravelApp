@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   Image,
@@ -8,24 +8,25 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import { COLOR, ICON, IMAGES, SIZES } from '../../constant/Themes';
 import UITextInput from '../../component/UITextInput';
 import UIButtonPrimary from '../../component/UIButtonPrimary';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk-next';
 import {
   isValidEmpty,
   validateEmail,
 } from '../../constant/Validation';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../Loading'
 
 
 export default Login = props => {
 
-  const {navigation} = props;
+  const { navigation, route } = props;
+  const { onChange } = route.params;
   const [isHidePassword, setIsHidePassword] = useState(true);
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
@@ -40,24 +41,25 @@ export default Login = props => {
   const disPath = useDispatch();
 
   const [messageLogin, setMessageLogin] = useState('');
+  const [isLogout, setIsLogout] = useState(onChange);
 
   // LOGIN FACEBOOK
   async function onFacebookButtonPress() {
     try {
       // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
-      
+
       if (result.isCancelled) {
         throw new Error('User cancelled the login process');
       }
-  
+
       // Lấy AccessToken
       const data = await AccessToken.getCurrentAccessToken();
-  
+
       if (!data) {
         throw new Error('Something went wrong obtaining access token');
       }
-  
+
       // Lấy thông tin người dùng từ Facebook
       const responseInfoCallback = (error, result) => {
         if (error) {
@@ -71,7 +73,7 @@ export default Login = props => {
           setIsLoading(true)
         }
       };
-  
+
       const infoRequest = new GraphRequest('/me', {
         parameters: {
           fields: {
@@ -79,9 +81,9 @@ export default Login = props => {
           }
         }
       }, responseInfoCallback);
-  
+
       new GraphRequestManager().addRequest(infoRequest).start();
-  
+
       return data;
     } catch (error) {
       console.error('Facebook login error:', error);
@@ -93,20 +95,20 @@ export default Login = props => {
   GoogleSignin.configure({
     webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
   });
-  
 
 
-  
+
+
   async function handleGoogleSignIn() {
     try {
       // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
     } catch (error) {
       // Xử lý lỗi đăng nhập
       disPath({
@@ -157,23 +159,52 @@ export default Login = props => {
 
   // Sử dụng useEffect để theo dõi thay đổi trong Redux store
   useEffect(() => {
-    // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
-    if (user.data.result) {
-      console.log('Login user: ' + JSON.stringify(user.user));
-      setIsLoading(false)
-      // Lưu token vào AsyncStorage
-      AsyncStorage.setItem('token', user.token);
 
-      // Điều hướng sau khi đăng nhập thành công
-      // navigation.navigate('BottomTab');
-      navigation.pop();
+    if (isLogout) {
+      // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
 
-      // Hiển thị thông báo thành công
-      //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
-    } else {
-      // Xử lý trường hợp đăng nhập thất bại
-      //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
-      setMessageLogin(user.data.message);
+      if (user.data.result) {
+        console.log('Login user: ' + JSON.stringify(user.user));
+        setIsLoading(false)
+        // Lưu token vào AsyncStorage
+        AsyncStorage.setItem('token', user.token);
+
+        // Điều hướng sau khi đăng nhập thành công
+        // navigation.navigate('BottomTab');
+        navigation.navigate("Home", {onChange: true});
+        // navigation.popToTop();
+        console.log("IsLogout 1: ", isLogout);
+
+
+        // Hiển thị thông báo thành công
+        //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+      } else {
+        // Xử lý trường hợp đăng nhập thất bại
+        //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+        setMessageLogin(user.data.message);
+      }
+    } else if(isLogout == false){
+
+      // Kiểm tra nếu user.data.result là true, tức là đăng nhập thành công
+
+      if (user.data.result) {
+        console.log('Login user: ' + JSON.stringify(user.user));
+        setIsLoading(false)
+        // Lưu token vào AsyncStorage
+        AsyncStorage.setItem('token', user.token);
+
+        // Điều hướng sau khi đăng nhập thành công
+        // navigation.navigate('BottomTab');
+        navigation.goBack();
+        console.log("IsLogout 2: ", isLogout);
+
+        // Hiển thị thông báo thành công
+        //ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.LONG);
+      } else {
+        // Xử lý trường hợp đăng nhập thất bại
+        //ToastAndroid.show('Đăng nhập thất bại!', ToastAndroid.LONG);
+        setMessageLogin(user.data.message);
+      }
     }
   }, [user]);
 
@@ -194,7 +225,7 @@ export default Login = props => {
           justifyContent: 'center',
           paddingVertical: 20,
         }}>
-        <Image source={IMAGES.logo} style={{alignSelf: 'center'}} />
+        <Image source={IMAGES.logo} style={{ alignSelf: 'center' }} />
 
         <Text
           style={{
@@ -207,7 +238,7 @@ export default Login = props => {
           Chào mừng đến với Discover
         </Text>
 
-        <View style={{width: 300, alignSelf: 'center'}}>
+        <View style={{ width: 300, alignSelf: 'center' }}>
           <Text
             style={{
               textAlign: 'center',
@@ -300,7 +331,7 @@ export default Login = props => {
           </Text>
         </TouchableOpacity>
 
-        <View style={{marginTop: 30}}>
+        <View style={{ marginTop: 30 }}>
           <UIButtonPrimary
             text="Đăng Nhập"
             onPress={() => {
@@ -322,10 +353,10 @@ export default Login = props => {
         </Text>
 
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-          <View style={{flex: 1, height: 1, backgroundColor: COLOR.border}} />
-          <Text style={{paddingHorizontal: 10}}>Hoặc đăng nhập với</Text>
-          <View style={{flex: 1, height: 1, backgroundColor: COLOR.border}} />
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+          <View style={{ flex: 1, height: 1, backgroundColor: COLOR.border }} />
+          <Text style={{ paddingHorizontal: 10 }}>Hoặc đăng nhập với</Text>
+          <View style={{ flex: 1, height: 1, backgroundColor: COLOR.border }} />
         </View>
 
         <View
@@ -337,7 +368,7 @@ export default Login = props => {
           }}>
           <TouchableOpacity
             onPress={() => handleGoogleSignIn()}
-            style={{flex: 1, marginRight: 10}}>
+            style={{ flex: 1, marginRight: 10 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -362,9 +393,9 @@ export default Login = props => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-          onPress={() => onFacebookButtonPress()}
-          style={{flex: 1}}>
+          <TouchableOpacity
+            onPress={() => onFacebookButtonPress()}
+            style={{ flex: 1 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -391,7 +422,7 @@ export default Login = props => {
         </View>
 
         <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+          style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
           <Text>Bạn chưa có tài khoản?</Text>
 
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
