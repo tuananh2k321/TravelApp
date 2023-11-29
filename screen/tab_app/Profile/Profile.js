@@ -32,10 +32,9 @@ const Profile = props => {
   }, [user]);
 
   const logout = async () => {
-    //navigation.pop();
-    await disPath(resetUser())
+    //navigation.popToTop();
+    disPath(resetUser())
     navigation.navigate('Login');
-    
   }
 
   if (isLoading) {
