@@ -10,13 +10,15 @@ import {
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR, SIZES} from '../../../constant/Themes';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../Loading';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {resetUser} from '../../../redux/reducer/UserSlice'
 const Profile = props => {
   const {navigation} = props;
 
   const user = useSelector(state => state.user.user);
+  const disPath = useDispatch()
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,6 +30,13 @@ const Profile = props => {
       setIsLoading(true);
     }
   }, [user]);
+
+  const logout = async () => {
+    //navigation.pop();
+    await disPath(resetUser())
+    navigation.navigate('Login');
+    
+  }
 
   if (isLoading) {
     return (
@@ -53,161 +62,164 @@ const Profile = props => {
       </View>
     );
   }
-  return (
-    <ScrollView>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.infomation}>
-          <Image style={styles.image} source={{uri: user.avatar}}></Image>
-          <View style={styles.info}>
-            <Text style={styles.name}>{user.name}</Text>
-            <Text style={styles.address}>{user.address}</Text>
+  try {
+    return (
+      <ScrollView>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.infomation}>
+            <Image style={styles.image} source={{uri: user.avatar}}></Image>
+            <View style={styles.info}>
+              <Text style={styles.name}>{user.name}</Text>
+              <Text style={styles.address}>{user.address}</Text>
+            </View>
           </View>
-        </View>
-
-        <View
-          style={{
-            width: 380,
-            height: 0.5,
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            marginTop: 30,
-          }}></View>
-
-        <View style={styles.account_setting}>
-          {/* My booking */}
-          <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
-            <View style={styles.button_setting}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icons8-history-24.png')}></Image>
-                <Text style={styles.button_setting_text}>Lịch sử đặt tour</Text>
+  
+          <View
+            style={{
+              width: 380,
+              height: 0.5,
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              marginTop: 30,
+            }}></View>
+  
+          <View style={styles.account_setting}>
+            {/* My booking */}
+            <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icons8-history-24.png')}></Image>
+                  <Text style={styles.button_setting_text}>Lịch sử đặt tour</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
               </View>
-              <View>
-                <Image
-                  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+            </TouchableOpacity>
+            {/* edit profile */}
+            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icon-user-circle.png')}></Image>
+                  <Text style={styles.button_setting_text}>Chỉnh sửa hồ sơ</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-          {/* edit profile */}
-          <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-            <View style={styles.button_setting}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icon-user-circle.png')}></Image>
-                <Text style={styles.button_setting_text}>Chỉnh sửa hồ sơ</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('SelectOptions')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icons8-lock-24.png')}></Image>
+                  <Text style={styles.button_setting_text}>Đổi mật khẩu</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
               </View>
-              <View>
-                <Image
-                  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+            </TouchableOpacity>
+           
+            {/* <TouchableOpacity>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icon-translate.png')}></Image>
+                  <Text style={styles.button_setting_text}>
+                    Thay đổi ngôn ngữ
+                  </Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SelectOptions')}>
-            <View style={styles.button_setting}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icons8-lock-24.png')}></Image>
-                <Text style={styles.button_setting_text}>Đổi mật khẩu</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icon-moon.png')}></Image>
+                  <Text style={styles.button_setting_text}>Chế độ màu</Text>
+                </View>
+                <View>
+                  <Ionicons name="calendar-outline" size={24} color={'#111'} />
+                </View>
               </View>
-              <View>
-                <Image
-                  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
-              </View>
-            </View>
-          </TouchableOpacity>
-         
-          {/* <TouchableOpacity>
-            <View style={styles.button_setting}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icon-translate.png')}></Image>
-                <Text style={styles.button_setting_text}>
-                  Thay đổi ngôn ngữ
-                </Text>
-              </View>
-              <View>
-                <Image
-                  source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
-              </View>
-            </View>
-          </TouchableOpacity>
-          
-          <TouchableOpacity>
-            <View style={styles.button_setting}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icon-moon.png')}></Image>
-                <Text style={styles.button_setting_text}>Chế độ màu</Text>
-              </View>
-              <View>
-                <Ionicons name="calendar-outline" size={24} color={'#111'} />
-              </View>
-            </View>
-          </TouchableOpacity> */}
-        </View>
-
-        {/* Derleng Legal */}
-        <View
-          style={{
-            width: 380,
-            height: 0.5,
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            marginTop: 30,
-          }}></View>
-        <View style={styles.account_setting}>
-
-          {/* <TouchableOpacity>
-            <View style={styles.button_setting_2}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icon-reader-mode.png')}></Image>
-                <Text style={styles.button_setting_text}>
-                  Điều khoản và điều kiện
-                </Text>
-              </View>
-
-              <Image
-                style={{marginLeft: 10, marginTop: -10}}
-                source={require('../../../assets/icon/icon-link.png')}></Image>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.button_setting_2}>
-              <View style={styles.button_setting_left}>
-                <Image
-                  style={{tintColor: COLOR.primary}}
-                  source={require('../../../assets/icon/icon-shield.png')}></Image>
-                <Text style={styles.button_setting_text}>
-                  Chính sách bảo mật
-                </Text>
-              </View>
-              <Image
-                style={{marginLeft: 10, marginTop: -10}}
-                source={require('../../../assets/icon/icon-link.png')}></Image>
-            </View>
-          </TouchableOpacity> */}
-        </View>
-
-        <TouchableOpacity
-          onPress={() => {
-            //navigation.pop();
-            navigation.navigate('Login');
-          }}>
-          <View style={styles.button_logout}>
-            <Text style={styles.button_logout_text}>Đăng Xuất</Text>
+            </TouchableOpacity> */}
           </View>
-        </TouchableOpacity>
-        {/* <View>
-                <Text style={styles.version}>Verion 3.0.0</Text>
-            </View> */}
-      </SafeAreaView>
-    </ScrollView>
-  );
+  
+          {/* Derleng Legal */}
+          <View
+            style={{
+              width: 380,
+              height: 0.5,
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              marginTop: 30,
+            }}></View>
+          <View style={styles.account_setting}>
+  
+            {/* <TouchableOpacity>
+              <View style={styles.button_setting_2}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icon-reader-mode.png')}></Image>
+                  <Text style={styles.button_setting_text}>
+                    Điều khoản và điều kiện
+                  </Text>
+                </View>
+  
+                <Image
+                  style={{marginLeft: 10, marginTop: -10}}
+                  source={require('../../../assets/icon/icon-link.png')}></Image>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.button_setting_2}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{tintColor: COLOR.primary}}
+                    source={require('../../../assets/icon/icon-shield.png')}></Image>
+                  <Text style={styles.button_setting_text}>
+                    Chính sách bảo mật
+                  </Text>
+                </View>
+                <Image
+                  style={{marginLeft: 10, marginTop: -10}}
+                  source={require('../../../assets/icon/icon-link.png')}></Image>
+              </View>
+            </TouchableOpacity> */}
+          </View>
+  
+          <TouchableOpacity
+            onPress={() => {
+              logout()
+            }}>
+            <View style={styles.button_logout}>
+              <Text style={styles.button_logout_text}>Đăng Xuất</Text>
+            </View>
+          </TouchableOpacity>
+          {/* <View>
+                  <Text style={styles.version}>Verion 3.0.0</Text>
+              </View> */}
+        </SafeAreaView>
+      </ScrollView>
+    );
+  } catch (e) {
+  }
+  
 };
 
 export default Profile;

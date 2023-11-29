@@ -52,11 +52,14 @@ export const UserSlice = createSlice({
         },
         setToken: (state, action) => {
             state.token = action.payload
+        },
+        resetUser: (state, action) => {
+            state.user = null
         }
     }
 })
 
 export const {addUser, addData, addDataSendOTP, setToken, 
-    addDataRegister, addDataVerifyOTP, addDataChangePassword, addDataEditProfile} = UserSlice.actions
+    addDataRegister, addDataVerifyOTP, addDataChangePassword, addDataEditProfile, resetUser} = UserSlice.actions
 
 export default UserSlice.reducer

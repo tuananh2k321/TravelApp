@@ -147,7 +147,7 @@ const StackProfile = () => {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
       <Stack.Screen name="Reason" component={Reason} />
-
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )
 }
