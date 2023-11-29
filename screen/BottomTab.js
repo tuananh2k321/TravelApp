@@ -37,30 +37,6 @@ import Reason from './booking/Reason';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// animated
-const fadeIn = {
-  from: {
-    opacity: 0,
-  },
-  to: {
-    opacity: 1,
-  },
-};
-
-const zoomOut = {
-  0: {
-    opacity: 1,
-    scale: 1,
-  },
-  0.5: {
-    opacity: 1,
-    scale: 0.3,
-  },
-  1: {
-    opacity: 0,
-    scale: 0,
-  },
-};
 
 const StackHomes = () => {
   const header = (title) => (
@@ -147,7 +123,7 @@ const StackProfile = () => {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
       <Stack.Screen name="Reason" component={Reason} />
-
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )
 }

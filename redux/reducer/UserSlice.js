@@ -52,11 +52,21 @@ export const UserSlice = createSlice({
         },
         setToken: (state, action) => {
             state.token = action.payload
+        },
+        resetUser: (state, action) => {
+            state.data = {};
+            state.dataRegister = {};
+            state.dataSendOTP = {};
+            state.dataVerifyOTP = {};
+            state.dataChangePassword = {};
+            state.dataEditProfile = {};
+            state.user = null;
+            state.token = "";
         }
     }
 })
 
 export const {addUser, addData, addDataSendOTP, setToken, 
-    addDataRegister, addDataVerifyOTP, addDataChangePassword, addDataEditProfile} = UserSlice.actions
+    addDataRegister, addDataVerifyOTP, addDataChangePassword, addDataEditProfile, resetUser} = UserSlice.actions
 
 export default UserSlice.reducer
