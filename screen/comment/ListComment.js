@@ -24,7 +24,7 @@ const ListComment = ({ navigation, route }) => {
     const [comments, setComments] = useState([])
 
     const { id } = route.params
-    console.log('id', id)
+    console.log('id>>>>', id)
 
 
     const getComment = async () => {
@@ -139,23 +139,14 @@ const ListComment = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.pop()}>
-                    <Entypo name="chevron-small-left" size={30} color={COLOR.black} />
-                </TouchableOpacity>
 
-                <Text
-                    style={{
-                        fontSize: 20,
-                        fontWeight: '600',
-                        color: '#000000',
-                        position: 'absolute',
-                        left: '50%',
-                        transform: [{ translateX: -60 }],
-                        fontWeight: 'bold',
-                        textAlign: "center"
-                    }}>
-                    Danh sách phản hồi
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.pop()}>
+                        <Entypo name="chevron-small-left" size={30} color={COLOR.black} />
+                    </TouchableOpacity>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Danh sách phản hồi</Text>
+                    <View style={{ marginEnd: 20 }} />
+                </View>
             </View>
 
             <FlatList

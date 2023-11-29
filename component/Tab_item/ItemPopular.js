@@ -1,13 +1,40 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { AirbnbRating, Rating } from 'react-native-ratings';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import AxiosIntance from '../../constant/AxiosIntance';
 
 const ItemPopular = (props) => {
-  const { dulieu, navigation } = props;
+  const { dulieu, navigation,  } = props;
+  const [reviews, setReviews] = useState('');
+    const [rating, setrating] = useState(0);
+  //console.log(rating, reviews)
   const clickItem = () => {
     console.log("Click Item");
     navigation.navigate('TourDetail', { id: dulieu._id });
   }
+
+  useEffect(() => {
+    try {
+      const getAllReviews = async () => {
+        const response = await AxiosIntance().get(
+          `comment/api/listComment?tour_id=${dulieu._id}`,
+        );
+        if (response.result == true) {
+          setReviews(response.quantity);
+          //console.log(response.quantity)
+          setrating(response.averageRating)
+          //console.log(response.averageRating)
+        } else {
+          ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
+        }
+      };
+      getAllReviews()
+    } catch (e) {
+
+    }
+  })
 
 
   return (
@@ -21,11 +48,11 @@ const ItemPopular = (props) => {
           ratingCount={5}
           showReadOnlyText={false}
           fractions={1}
-          startingValue={dulieu.rating}
+          startingValue={rating}
           jumpValue={0.1}
           imageSize={12} />
         <View style={styles.review}>
-          <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 40 }}>100</Text>
+          <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 40 }}>{reviews}</Text>
           <Text numberOfLines={1} style={{ color: 'black', fontSize: 14 }}> review</Text>
         </View>
 

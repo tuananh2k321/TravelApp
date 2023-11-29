@@ -136,8 +136,8 @@ export default TourDetail = props => {
         // console.log('tour ', params.id);
         if (response.result == true) {
           settourName(response.tour.tourName);
-          setadultPrice(VND.format(response.tour.adultPrice));
-          setchildrenPrice(VND.format(response.tour.childrenPrice));
+          setadultPrice(response.tour.adultPrice);
+          setchildrenPrice(response.tour.childrenPrice);
           setadultAge(response.tour.adultAge);
           setchildrenAge(response.tour.childrenAge);
           setdepartmentPlace(response.tour.departmentPlace);
@@ -208,10 +208,7 @@ export default TourDetail = props => {
       console.log('errrrrrrror', error);
     }
   }, []);
-  let priceChildren = Number(childrenPrice);
-  priceChildren = priceChildren.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-  let priceAdult = Number(adultPrice);
-  priceAdult = priceAdult.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+
   return (
     <>
       {isLoading == true ? (
@@ -665,7 +662,7 @@ export default TourDetail = props => {
                       color: COLOR.primary,
                       fontWeight: '600',
                     }}>
-                    {priceChildren}/Trẻ em
+                    {VND.format(childrenPrice)}/Trẻ em
                   </Text>
                 </View>
                 <View
@@ -688,7 +685,7 @@ export default TourDetail = props => {
                       color: COLOR.primary,
                       fontWeight: '600',
                     }}>
-                    {priceAdult}/Người lớn
+                    {VND.format(adultPrice)}/Người lớn
                   </Text>
                 </View>
               </View>
