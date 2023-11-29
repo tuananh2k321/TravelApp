@@ -25,6 +25,7 @@ export default function Home() {
     const [TourTrung, setTourTrung] = useState([])
     const [TourNam, setTourNam] = useState([])
     const [loading, setLoading] = useState(false)
+    
     useEffect(() => {
         try {
             const getTour = async () => {
@@ -57,8 +58,8 @@ export default function Home() {
                     ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
                 }
             }
+            
             getTour();
-
             return () => { }
         } catch (error) {
             console.log('errrrrrrror', error)

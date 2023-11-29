@@ -8,9 +8,10 @@ import { useSelector } from 'react-redux';
 
 const Payment_Method = (props) => {
     const { navigation, route } = props;
-    const { id, childrenPrice, adultPrice, name, adult, children, image, tourName } = route.params;
+    const { id, childrenPrice, adultPrice, name, adult, children, image, tourName, guestInfo } = route.params;
     let price = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
     price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    console.log("AAAA", id, childrenPrice, adultPrice, name, adult, children, image, tourName, guestInfo);
     let amount = Number(adult) * Number(adultPrice) + Number(children) * Number(childrenPrice);
     let count = Number(adult) + Number(children);
     const [totalPrice, settotalPrice] = useState(amount);
@@ -49,7 +50,7 @@ const Payment_Method = (props) => {
         try {
             const response = await AxiosIntance()
                 .post("/booking/api/addBooking",
-                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id });
+                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id, guestInfo: guestInfo });
             console.log(response);
             if (response.result == true) {
                 navigation.push("Booking_Successfully");
@@ -101,7 +102,7 @@ const Payment_Method = (props) => {
 
     const onPaymentMethod = () => {
         if (selectedRadio == 1) {
-            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
+            navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice, guestInfo: guestInfo });
         }
         else {
             // navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });

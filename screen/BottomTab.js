@@ -28,7 +28,11 @@ import Register from './auth/Register';
 import EditProfile from './tab_app/Profile/EditProfile'
 import Deal from './tab_app/Deal/Deal';
 import AddComment from '../screen/comment/AddComment';
+import FormAll from './booking/FormAll1';
+import Abcd from './booking/AAbf';
 import ListComment from './comment/ListComment';
+import SeeMyBooking from './booking/SeeMyBooking';
+import Reason from './booking/Reason';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -81,10 +85,13 @@ const StackHomes = () => {
       <Stack.Screen name='SearchTourName' component={SearchTourName} />
       {/* stack booking */}
       <Stack.Screen name="Detail_Booking" component={Detail_Booking} options={header("Xác nhận đặt tour")} />
+      <Stack.Screen name="FormAll" component={FormAll} options={header("Thông tin khách")} />
+      <Stack.Screen name="Abcd" component={Abcd} options={header("Thông tin khách")} />
       <Stack.Screen name="Payment" component={Payment} options={header("Thanh Toán")} />
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
+
 
     </Stack.Navigator>
   )
@@ -138,6 +145,9 @@ const StackProfile = () => {
       <Stack.Screen name="ProfileMain" component={Profile} />
       <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
+      <Stack.Screen name="Reason" component={Reason} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )
 }
