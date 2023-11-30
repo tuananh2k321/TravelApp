@@ -8,6 +8,8 @@ import { COLOR, SIZES } from '../../../constant/Themes'
 import { useSelector } from 'react-redux'
 import AxiosIntance from '../../../constant/AxiosIntance';
 import Item_Booking from '../../../component/Tab_item/Item_Booking'
+import { useIsFocused } from '@react-navigation/core'
+
 import Loading from '../../Loading'
 
 const ConfirmedMyBooking = (props) => {
@@ -16,6 +18,8 @@ const ConfirmedMyBooking = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const user = useSelector((state) => state.user);
     const [refreshing, setRefreshing] = useState(false);
+
+    const isFocused = useIsFocused();
 
 
 
@@ -35,7 +39,7 @@ const ConfirmedMyBooking = (props) => {
 
         getNews();
 
-    }, []);
+    }, [isFocused]);
 
 
     const handleRefresh = () => {

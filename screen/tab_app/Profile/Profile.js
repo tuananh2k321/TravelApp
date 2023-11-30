@@ -97,7 +97,7 @@ const Profile = props => {
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
+            <TouchableOpacity onPress={() => navigation.navigate('HandleCancelBooking')}>
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
                   <Image
@@ -111,7 +111,7 @@ const Profile = props => {
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
                   <Image
@@ -124,7 +124,7 @@ const Profile = props => {
                     source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {/* edit profile */}
             <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
               <View style={styles.button_setting}>

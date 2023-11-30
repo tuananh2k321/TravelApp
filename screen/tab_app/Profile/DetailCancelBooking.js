@@ -12,16 +12,15 @@ import {
 } from 'react-native';
 import React from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { COLOR, SIZES } from '../../constant/Themes';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import AxiosIntance from '../../constant/AxiosIntance';
 import { AirbnbRating, Rating } from 'react-native-ratings';
 import { Button } from 'react-native-vector-icons/dist/FontAwesome';
 import { ScrollView } from 'react-native-virtualized-view';
-import { useIsFocused } from '@react-navigation/core'
-
-const SeeMyBooking = ({ navigation, route }) => {
+import AxiosIntance from '../../../constant/AxiosIntance';
+import { COLOR, SIZES } from '../../../constant/Themes';
+import Loading from '../../Loading';
+const DetailCancelBooking = ({ navigation, route }) => {
     console.log('route >>>>>', route)
     const { id } = route.params
     console.log('id', id)
@@ -30,23 +29,8 @@ const SeeMyBooking = ({ navigation, route }) => {
     const [guestInfo, setGuestInfo] = useState([])
     const [loading, setLoading] = useState(true)
     const [showAlert, setShowAlert] = useState(false);
-    const isFocused = useIsFocused();
 
 
-
-    const cancelRequiring = async () => {
-        try {
-            setLoading(true)
-            const response = await AxiosIntance().get(`booking/api/cancel-required?id=${id}`,)
-            console.log('response >>>>>>>>>>>', response)
-            if (response.result == true) {
-                setLoading(false)
-                navigation.pop()
-            }
-        } catch (error) {
-            console.log("error", error)
-        }
-    };
 
     useEffect(() => {
 
@@ -55,6 +39,7 @@ const SeeMyBooking = ({ navigation, route }) => {
                 const response = await AxiosIntance().get(`booking/api/getBookingById?id=${id}`,)
                 console.log('response >>>>>>>>>>>', response)
                 if (response.result == true) {
+                    setLoading(false)
                     setGetBookings(response.booking)
                     setGuestInfo(response.booking.guestInfo)
                     // console.log('>>>>>> booking', bookings)
@@ -65,7 +50,12 @@ const SeeMyBooking = ({ navigation, route }) => {
             }
         }
         getMyBooking()
-    }, [isFocused])
+    }, [])
+    if (loading) {
+        return (
+            <Loading />
+        )
+    }
     const renderItem = ({ item }) => {
         return (
             <View style={styles.container}>
@@ -93,7 +83,21 @@ const SeeMyBooking = ({ navigation, route }) => {
 
     const handlePress = () => {
         if (!bookings.confirm) {
+
             navigation.navigate('Reason', { id: bookings._id });
+        }
+    };
+
+    const cancelRequiring = async () => {
+        try {
+            setLoading(true)
+            const response = await AxiosIntance().get(`booking/api/cancel-required?id=${id}`,)
+            console.log('response >>>>>>>>>>>', response)
+            if (response.result == true) {
+                setLoading(false)
+            }
+        } catch (error) {
+            console.log("error", error)
         }
     };
 
@@ -174,71 +178,36 @@ const SeeMyBooking = ({ navigation, route }) => {
                     marginHorizontal: 15
 
                 }}>
-                {
-                    bookings.handleCancel ?
-                        <TouchableOpacity
-                            onPress={cancelRequiring}
-                            style={{ flex: 1, marginRight: 10 }}
-                            disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
+                <TouchableOpacity
+                    onPress={handlePress}
+                    style={{ flex: 1, marginRight: 10 }}
+                    disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            height: 40,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderColor: COLOR.border,
+                            backgroundColor: bookings.confirm ? 'grey' : 'red', // Change background color based on confirm status
+                            paddingHorizontal: 10,
+                            borderRadius: 10,
+                            opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                color: bookings.confirm ? 'black' : 'white', // Change text color based on confirm status
+                            }}
                         >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    height: 40,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderWidth: 1,
-                                    borderColor: COLOR.border,
-                                    backgroundColor: 'red', // Change background color based on confirm status
-                                    paddingHorizontal: 10,
-                                    borderRadius: 10,
-                                    opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        fontWeight: 'bold',
-                                        color: 'white', // Change text color based on confirm status
-                                    }}
-                                >
-                                    Hủy Yêu Cầu
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        :
-
-                        <TouchableOpacity
-                            onPress={handlePress}
-                            style={{ flex: 1, marginRight: 10 }}
-                            disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
-                        >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    height: 40,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderWidth: 1,
-                                    borderColor: COLOR.border,
-                                    backgroundColor: bookings.confirm ? 'grey' : 'red', // Change background color based on confirm status
-                                    paddingHorizontal: 10,
-                                    borderRadius: 10,
-                                    opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        fontWeight: 'bold',
-                                        color: bookings.confirm ? 'black' : 'white', // Change text color based on confirm status
-                                    }}
-                                >
-                                    {bookings.confirm ? 'Đã xác nhận' : 'Hủy'}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                }
+                            {bookings.confirm ? 'Đã xác nhận' : 'Hủy'}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
 
 
 
@@ -270,7 +239,7 @@ const SeeMyBooking = ({ navigation, route }) => {
     )
 }
 
-export default SeeMyBooking
+export default DetailCancelBooking
 
 const styles = StyleSheet.create({
     container: {

@@ -36,6 +36,8 @@ import Reason from './booking/Reason';
 import ConfirmedMyBooking from './tab_app/Profile/ConfirmedMyBooking';
 import Mybooking from './tab_app/Profile/MyBooking';
 import HandlingMyBooking from './tab_app/Profile/HandlingMyBooking';
+import HandleCancelBooking from './tab_app/Profile/HandleCancelBooking';
+import DetailCancelBooking from './tab_app/Profile/DetailCancelBooking';
 
 
 const Tab = createBottomTabNavigator();
@@ -129,6 +131,8 @@ const StackProfile = () => {
       <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
       <Stack.Screen name="Reason" component={Reason} />
       <Stack.Screen name="HandlingMyBooking" component={HandlingMyBooking} />
+      <Stack.Screen name="HandleCancelBooking" component={HandleCancelBooking} options={header("Tour đang chờ xác nhận hủy")} />
+      <Stack.Screen name="DetailCancelBooking" component={DetailCancelBooking} />
       <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )

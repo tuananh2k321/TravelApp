@@ -9,22 +9,19 @@ import { useSelector } from 'react-redux'
 import AxiosIntance from '../../../constant/AxiosIntance';
 import Item_Booking from '../../../component/Tab_item/Item_Booking'
 import Loading from '../../Loading'
-import { useIsFocused } from '@react-navigation/core'
 
-
-const HandlingMyBooking = (props) => {
+const HandleCancelBooking = (props) => {
     const { navigation, route } = props;
     const [dataMyBooking, setDataMyBooking] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const user = useSelector((state) => state.user);
     const [refreshing, setRefreshing] = useState(false);
-    const isFocused = useIsFocused();
 
 
 
     const getNews = async () => {
         try {
-            const response = await AxiosIntance().get("/booking/api/get-handle-booking-app?idUser=" + user.user._id);
+            const response = await AxiosIntance().get("/booking/api/get-handle-cancel-booking-app?idUser=" + user.user._id);
             console.log("CHeck response ", response)
             setDataMyBooking(response.newBookings);
             setIsLoading(false);
@@ -38,7 +35,7 @@ const HandlingMyBooking = (props) => {
 
         getNews();
 
-    }, [isFocused]);
+    }, []);
 
 
     const handleRefresh = () => {
@@ -121,7 +118,7 @@ const HandlingMyBooking = (props) => {
     )
 }
 
-export default HandlingMyBooking
+export default HandleCancelBooking
 
 const styles = StyleSheet.create({
     container: {
