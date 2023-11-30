@@ -62,7 +62,7 @@ export const validateDateOfBirth = (dateOfBirth) => {
   var year = parseInt(parts[2], 10);
   
   // Kiểm tra giá trị hợp lệ cho ngày, tháng, năm
-  if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1950 || year > 2005) {
+  if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1950 || year > 2023) {
     return false;
   }
   

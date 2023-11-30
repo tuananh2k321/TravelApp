@@ -98,8 +98,8 @@ const FormChildren = ({ index, onDataChange }) => {
         open={open}
         androidVariant="iosClone"
         mode="date"
-        minimumDate={new Date('1950-12-31')}
-        maximumDate={new Date('2005-12-31')}
+        minimumDate={new Date('2008-12-31')}
+        maximumDate={new Date('2016-12-31')}
         date={currentDate}
         onConfirm={date => {
             setOpen(false);

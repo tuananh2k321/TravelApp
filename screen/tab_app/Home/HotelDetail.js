@@ -13,6 +13,7 @@ import {COLOR, ICON, SIZES} from '../../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ImageSlideshow from '../../../component/Tab_item/ImageSlideshow';
+import { Rating } from 'react-native-ratings';
 
 const HotelDetail = (props) => {
   const {navigation,route} = props;
