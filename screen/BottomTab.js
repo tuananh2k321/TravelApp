@@ -34,11 +34,10 @@ import ListComment from './comment/ListComment';
 import SeeMyBooking from './booking/SeeMyBooking';
 import Reason from './booking/Reason';
 import ConfirmedMyBooking from './tab_app/Profile/ConfirmedMyBooking';
-import Mybooking from './tab_app/Profile/MyBooking';
 import HandlingMyBooking from './tab_app/Profile/HandlingMyBooking';
 import HandleCancelBooking from './tab_app/Profile/HandleCancelBooking';
 import DetailCancelBooking from './tab_app/Profile/DetailCancelBooking';
-
+import Mybooking from "./tab_app/Profile/Mybooking"
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
