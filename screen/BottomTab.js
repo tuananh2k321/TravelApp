@@ -21,7 +21,7 @@ import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
 import SearchTourName from './tab_app/Home/SearchTourName';
-import Mybooking from './tab_app/Profile/Mybooking';
+
 import Login from './auth/Login';
 import Register from './auth/Register';
 
@@ -33,6 +33,10 @@ import Abcd from './booking/AAbf';
 import ListComment from './comment/ListComment';
 import SeeMyBooking from './booking/SeeMyBooking';
 import Reason from './booking/Reason';
+import ConfirmedMyBooking from './tab_app/Profile/ConfirmedMyBooking';
+import Mybooking from './tab_app/Profile/MyBooking';
+import HandlingMyBooking from './tab_app/Profile/HandlingMyBooking';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -119,10 +123,12 @@ const StackProfile = () => {
   return (
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
-      <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
+      <Stack.Screen name="ConfirmedMyBooking" component={ConfirmedMyBooking} />
+      <Stack.Screen name="MyBooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
       <Stack.Screen name="Reason" component={Reason} />
+      <Stack.Screen name="HandlingMyBooking" component={HandlingMyBooking} />
       <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )

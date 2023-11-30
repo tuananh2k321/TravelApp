@@ -12,6 +12,10 @@ import { AirbnbRating, Rating } from 'react-native-ratings';
 import { openPicker } from '@baronha/react-native-multiple-image-picker'; import storage from '@react-native-firebase/storage';
 import AxiosIntance from '../../constant/AxiosIntance';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import Loading from '../Loading';
+import Item_Booking from '../../component/Tab_item/Item_Booking';
+import Item_wishlist from '../../component/Tab_item/Item_wishlist';
 
 const AddComment = (props) => {
     const { navigation, route } = props;
@@ -20,15 +24,38 @@ const AddComment = (props) => {
     const [content, setContent] = useState('');
     const [cameraPhoto, setCameraPhoto] = useState()
     // const [uriFirebase, setUriFirebase] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [rating, setRating] = useState(0)
     // const [imageCamera, setImageCamera] = useState([])
     const [selectedImage, setSelectedImage] = useState([])
+    const [dataTour, setDataTour] = useState()
 
     // const [user, setUser] = useState();
     // const [tourId, setTourId] = useState()
     const user = useSelector((state) => state.user);
     const { tourID } = route.params;
+
+    useEffect(() => {
+        const getTour = async () => {
+            const response = await AxiosIntance().get(
+                'tour/api/' + tourID + '/detail',
+            );
+            if (response.result) {
+                console.log(response.tour)
+                setDataTour(response.tour)
+                setLoading(false)
+            } else {
+                console.log('get tour failed')
+            }
+        }
+        getTour()
+    }, [])
+
+    if (loading) {
+        return (
+            <Loading />
+        )
+    }
 
     const options2 = {
         mediaType: 'photo', // Chỉ chọn ảnh, bạn có thể sử dụng 'video' để chọn video.
@@ -133,144 +160,146 @@ const AddComment = (props) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.pop()}>
-                        <Entypo name="chevron-small-left" size={30} color={COLOR.black} />
-                    </TouchableOpacity>
+        <>
+            <SafeAreaView style={styles.container}>
+                <ScrollView>
+                    <View style={styles.header}>
+                        <TouchableOpacity onPress={() => navigation.pop()}>
+                            <Entypo name="chevron-small-left" size={30} color={COLOR.black} />
+                        </TouchableOpacity>
 
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            fontWeight: '600',
-                            color: '#0FA3E2',
-                            position: 'absolute',
-                            left: '50%',
-                            transform: [{ translateX: -60 }],
-                            fontWeight: 'bold'
-                        }}>
-                        Phản Hồi
-                    </Text>
-                </View>
-
-                <View style={{ marginTop: 30 }}>
-                    <Rating
-                        ratingCount={5}
-                        showReadOnlyText={false}
-                        fractions={1}
-                        startingValue={0}
-                        jumpValue={0.1}
-                        imageSize={20}
-                        showRating={true}
-                        onFinishRating={rating => { setRating(rating) }}
-                    />
-                    <TextInput
-                        style={{
-                            borderColor: errorContent ? COLOR.border : "red",
-                            borderRadius: 10,
-                            marginTop: 10,
-                            paddingHorizontal: 15,
-                            borderWidth: 1,
-                            height: 100,
-                            textAlignVertical: "top"
-                        }}
-                        onChangeText={text => {
-                            setContent(text);
-                            setErrorContent(isValidEmpty(text));
-                            setIsvalid(true);
-                        }}
-                        // defaultValue={user.name}
-                        placeholder="Nội dung"
-                        multiline={true}
-                        // editable={false}
-                        autoFocus={true}
-                    />
-
-                    {!errorContent && (
                         <Text
                             style={{
-                                fontSize: 14,
-                                fontWeight: '400',
-                                color: 'red',
+                                fontSize: 20,
+                                fontWeight: '600',
+                                color: '#0FA3E2',
+                                position: 'absolute',
+                                left: '50%',
+                                transform: [{ translateX: -60 }],
+                                fontWeight: 'bold'
                             }}>
-                            Không được để trống !
+                            Phản Hồi
                         </Text>
-                    )}
-                </View>
+                    </View>
 
 
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                        alignItems: 'center',
-                        marginTop: 25,
-                    }}>
-                    <TouchableOpacity
-                        onPress={openCamera}
-                        style={{ flex: 1, marginRight: 10 }}>
-                        <View
+                    <View style={{ marginTop: 30 }}>
+                        <Rating
+                            ratingCount={5}
+                            showReadOnlyText={false}
+                            fractions={1}
+                            startingValue={5}
+                            jumpValue={0.1}
+                            imageSize={20}
+                            showRating={true}
+                            onFinishRating={rating => { setRating(rating) }}
+                        />
+                        <TextInput
                             style={{
-                                flexDirection: 'row',
-                                height: 40,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderWidth: 1,
-                                borderColor: COLOR.border,
-                                paddingHorizontal: 10,
+                                borderColor: errorContent ? COLOR.border : "red",
                                 borderRadius: 10,
-                            }}>
-                            <Image source={ICON.camera} />
-                        </View>
-                    </TouchableOpacity>
-
-
-
-                    <TouchableOpacity
-                        onPress={() => takeAPicture()}
-                        style={{ flex: 1 }}>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                height: 40,
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                marginTop: 10,
+                                paddingHorizontal: 15,
                                 borderWidth: 1,
-                                borderColor: COLOR.border,
-                                paddingHorizontal: 10,
-                                borderRadius: 10,
-                            }}>
-                            <Image source={ICON.camera_library} />
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                                height: 100,
+                                textAlignVertical: "top"
+                            }}
+                            onChangeText={text => {
+                                setContent(text);
+                                setErrorContent(isValidEmpty(text));
+                                setIsvalid(true);
+                            }}
+                            // defaultValue={user.name}
+                            placeholder="Nội dung"
+                            multiline={true}
+                            // editable={false}
+                            autoFocus={true}
+                        />
 
-                {/* <View style={{ marginTop: 20 }}>
+                        {!errorContent && (
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    fontWeight: '400',
+                                    color: 'red',
+                                }}>
+                                Không được để trống !
+                            </Text>
+                        )}
+                    </View>
+
+
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            alignItems: 'center',
+                            marginTop: 25,
+                        }}>
+                        <TouchableOpacity
+                            onPress={openCamera}
+                            style={{ flex: 1, marginRight: 10 }}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    height: 40,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderWidth: 1,
+                                    borderColor: COLOR.border,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                }}>
+                                <Image source={ICON.camera} />
+                            </View>
+                        </TouchableOpacity>
+
+
+
+                        <TouchableOpacity
+                            onPress={() => takeAPicture()}
+                            style={{ flex: 1 }}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    height: 40,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderWidth: 1,
+                                    borderColor: COLOR.border,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                }}>
+                                <Image source={ICON.camera_library} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* <View style={{ marginTop: 20 }}>
                     <Image style={{ width: 100, height: 100 }} source={{ uri: galleryPhoto }} />
                 </View> */}
-                <View style={styles.imageRow}>
-                    {selectedImage?.map(image => {
-                        return (
-                            <View style={styles.imageContent} key={image.fileName + image.uri}>
-                                <Image style={styles.image} source={{ uri: image.path }} />
-                                <Pressable hitSlop={20} onPress={() => onDeleteImage(image)} >
-                                    <Image style={styles.delete} source={ICON.close} />
-                                </Pressable>
-                            </View>
-                        );
-                    })}
-                    {loading ? (
-                        <ActivityIndicator />
-                    ) : null}
-                </View>
-                <View
-                    style={{
-                        alignItems: 'center',
-                        marginTop: 28,
-                        marginBottom: 20,
-                    }}>
-                    {/* <TouchableOpacity
+                    <View style={styles.imageRow}>
+                        {selectedImage?.map(image => {
+                            return (
+                                <View style={styles.imageContent} key={image.fileName + image.uri}>
+                                    <Image style={styles.image} source={{ uri: image.path }} />
+                                    <Pressable hitSlop={20} onPress={() => onDeleteImage(image)} >
+                                        <Image style={styles.delete} source={ICON.close} />
+                                    </Pressable>
+                                </View>
+                            );
+                        })}
+                        {loading ? (
+                            <ActivityIndicator />
+                        ) : null}
+                    </View>
+                    <View
+                        style={{
+                            alignItems: 'center',
+                            marginTop: 28,
+                            marginBottom: 20,
+                        }}>
+                        {/* <TouchableOpacity
                         onPress={() => uploadImages(selectedImage)}
                         style={{
                             width: "100%",
@@ -284,14 +313,17 @@ const AddComment = (props) => {
                             Gửi Phản Hồi
                         </Text>
                     </TouchableOpacity> */}
-                </View>
-            </ScrollView>
+                    </View>
+                    <Item_wishlist data={dataTour} navigation={navigation} />
+                </ScrollView>
+
+            </SafeAreaView>
             <View style={styles.groupButton}>
                 <TouchableOpacity style={styles.button} onPress={() => uploadImages(selectedImage)}>
                     <Text style={styles.textButton}>Gửi Phản Hồi</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+        </>
     )
 }
 
@@ -303,6 +335,8 @@ const styles = StyleSheet.create({
         padding: 15,
         width: SIZES.width,
         backgroundColor: COLOR.white,
+        height: SIZES.height,
+        marginBottom: 50
 
     },
     header: {
