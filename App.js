@@ -96,7 +96,7 @@ const App = () => {
       <StripeProvider publishableKey={STRIPE_KEY}>
         <NavigationContainer >
           <Stack.Navigator
-            initialRouteName={"BottomTab"}
+            initialRouteName={initialRoute}
             screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Register" component={Register} />

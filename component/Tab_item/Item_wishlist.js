@@ -2,10 +2,14 @@ import { COLOR, ICON } from '../../constant/Themes'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet, Text, View, Image, Animated, TouchableOpacity } from 'react-native'
-
-const Item_wishlist = ({ data, handleDelete }) => {
+import Ionicons from 'react-native-vector-icons/Ionicons'
+const Item_wishlist = ({ data, handleDelete, navigation }) => {
     // console.log('data>>>>>', data)
     // const [isSwiped, setIsSwiped] = useState(false);
+    // const clickItem = () => {
+    //     //console.log(data._id)
+    //     //navigation.navigate("TourDetail", { id: data._id })
+    // }
     const rightSwipe = () => {
         return (
             <TouchableOpacity onPress={handleDelete} style={{
@@ -13,14 +17,17 @@ const Item_wishlist = ({ data, handleDelete }) => {
                 alignItems: "center",
             }} >
                 <View style={styles.deleteBox}>
-                    <Animated.Text style={styles.textDelete}>Delete</Animated.Text>
+                    {/* <Animated.Text style={styles.textDelete}>Delete</Animated.Text> */}
+                    <Ionicons name='trash' size={30} color={"red"} />
                 </View>
             </TouchableOpacity>
         )
     }
     return (
-        <GestureHandlerRootView >
+        <TouchableOpacity >
+            <GestureHandlerRootView >
             <Swipeable renderRightActions={rightSwipe} >
+                
                 <View style={styles.item}>
                     <Image style={styles.item_left} source={{ uri: data.tourImage?.[0] }}></Image>
                     <View style={styles.item_right}>
@@ -63,6 +70,8 @@ const Item_wishlist = ({ data, handleDelete }) => {
 
             </Swipeable >
         </GestureHandlerRootView >
+        </TouchableOpacity>
+        
     )
 }
 

@@ -28,7 +28,7 @@ const AddComment = (props) => {
     // const [user, setUser] = useState();
     // const [tourId, setTourId] = useState()
     const user = useSelector((state) => state.user);
-    const {tourID} = route.params;
+    const { tourID } = route.params;
 
     const options2 = {
         mediaType: 'photo', // Chỉ chọn ảnh, bạn có thể sử dụng 'video' để chọn video.
@@ -133,8 +133,8 @@ const AddComment = (props) => {
     }
 
     return (
-        <ScrollView>
-            <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.pop()}>
                         <Entypo name="chevron-small-left" size={30} color={COLOR.black} />
@@ -270,7 +270,7 @@ const AddComment = (props) => {
                         marginTop: 28,
                         marginBottom: 20,
                     }}>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => uploadImages(selectedImage)}
                         style={{
                             width: "100%",
@@ -283,11 +283,15 @@ const AddComment = (props) => {
                         <Text style={{ fontWeight: '500', fontSize: 18, color: '#ffffff' }}>
                             Gửi Phản Hồi
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
-
-            </SafeAreaView>
-        </ScrollView>
+            </ScrollView>
+            <View style={styles.groupButton}>
+                <TouchableOpacity style={styles.button} onPress={() => uploadImages(selectedImage)}>
+                    <Text style={styles.textButton}>Gửi Phản Hồi</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -329,5 +333,39 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexWrap: 'wrap',
         paddingTop: 20
+    },
+    groupButton: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        paddingHorizontal: 24,
+        paddingVertical: 11,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+        elevation: 24,
+    },
+    button: {
+        width: '100%',
+        height: 52,
+        borderRadius: 15,
+        backgroundColor: '#0FA3E2'
+    },
+    textButton: {
+        fontSize: 14,
+        fontWeight: '500',
+        lineHeight: 52,
+        letterSpacing: -0.17,
+        color: '#FFFFFF',
+        textAlign: 'center'
     },
 })

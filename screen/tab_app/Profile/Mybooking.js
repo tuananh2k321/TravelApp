@@ -81,7 +81,7 @@ const Mybooking = (props) => {
 
                         <View>
                             <View style={styles.wishlist_list}>
-                                <SwipeListView style={{ bottom: 20 }}
+                                <SwipeListView style={{ }}
                                     showsVerticalScrollIndicator={false}
                                     data={dataMyBooking}
                                     onRefresh={handleRefresh}
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
         padding: 15,
         width: SIZES.width,
         backgroundColor: COLOR.white,
-        paddingBottom: 50
     },
     wishlist: {
         fontStyle: 'normal',
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
         color: '#000000'
     },
     wishlist_list: {
-        marginTop: 33,
         display: 'flex',
         flexDirection: 'column',
     },

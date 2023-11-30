@@ -24,26 +24,27 @@ const Notification = (props) => {
   const [isLogin, setIsLogin] = useState(false);
   const user = useSelector((state) => state.user);
   const isFocused = useIsFocused();
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const getNotifi = async () => {
-      try {
-        const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + user.user._id);
-        console.log(response);
-        if (response.result == true) {
-          setDataNotification(response.notify);
-          setIsLoading(false);
-          setIsLogin(true);
-        } else {
-          setIsLogin(false);
-        }
-      } catch (error) {
-        console.log("Error: " + error);
+  const getNotifi = async () => {
+    try {
+      const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + user.user._id);
+      console.log(response);
+      if (response.result == true) {
+        setDataNotification(response.notify);
+        setIsLoading(false);
+        setIsLogin(true);
+      } else {
+        setIsLogin(false);
       }
+    } catch (error) {
+      console.log("Error: " + error);
     }
+  }
+  useEffect(() => {
     const addTokenNotifi = async () => {
       try {
-        const response = await AxiosIntance().get("/tokenNotification/api/addToken?token="+getToken()+"&&userId="+user.user._id);
+        const response = await AxiosIntance().get("/tokenNotification/api/addToken?token=" + getToken() + "&&userId=" + user.user._id);
         console.log(response);
         if (response.result == true) {
           // setDataNotification(response.notify);
@@ -63,6 +64,40 @@ const Notification = (props) => {
 
     }
   }, [isFocused]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+
+    // Thực hiện các công việc làm mới dữ liệu ở đây, sau đó cập nhật state data
+
+    // Ví dụ: Sau 2 giây, dừng làm mới và cập nhật dữ liệu
+
+    getNotifi()
+    setRefreshing(false);
+
+  };
+  const onDeleteNotification = (id) => {
+    return Alert.alert(
+      "Xóa thông báo này?",
+      "Bạn có chắc chắn muốn xóa thông báo này không?",
+      [
+        // The "Yes" button
+        {
+          text: "Có",
+          onPress: async () => {
+            const response = await AxiosIntance().get("/notification/api/deleteNotifi?id=" + id);
+            navigation.push("NotificationMain",);
+          }
+
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "Không",
+        },
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -93,12 +128,25 @@ const Notification = (props) => {
                             </View>
                           ) :
                           (
-                            <FlatList
-                              style={{ zIndex: 1 }}
+                            <SwipeListView
+                              // style={{ zIndex: 1 }}
                               data={dataNotification}
                               renderItem={({ item }) => <Item_notification dulieu={item} navigation={navigation} />}
                               keyExtractor={item => item._id}
                               showsVerticalScrollIndicator={false}
+                              onRefresh={handleRefresh}
+                              refreshing={refreshing}
+                              renderHiddenItem={({ item }) => (
+                                <View style={styles.itemDelete}>
+                                  <TouchableOpacity style={styles.buttonDelete}
+                                    onPress={() => {
+                                      onDeleteNotification(item._id)
+                                    }}>
+                                    <Ionicons name="trash" size={25} color="#ffffff" style={{ flexDirection: 'row', justifyContent: 'flex-end' }} />
+                                  </TouchableOpacity>
+                                </View>
+                              )}
+                              rightOpenValue={-75}
                             />
                           )
                       }
@@ -144,7 +192,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 75,
     height: 62,
-    backgroundColor: '#39C4FF',
+    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center'
   },
