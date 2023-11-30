@@ -47,7 +47,7 @@ const Profile = props => {
           backgroundColor: 'white',
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Login', {onChange: false})}
+          onPress={() => navigation.navigate('Login')}
           style={{
             backgroundColor: '#39C4FF',
             borderRadius: 5,
