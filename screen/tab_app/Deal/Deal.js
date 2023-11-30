@@ -7,7 +7,9 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemDeals from '../../../component/Tab_item/ItemDeals'
 import React from 'react'
 import Loading from '../../Loading';
+import { useNavigation } from '@react-navigation/native';
 const Deal = (props) => {
+  const navigation = useNavigation();
   const [TourDeal, setTourDeal] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +55,7 @@ const Deal = (props) => {
       </View>
       <FlatList
         data={TourDeal}
-        renderItem={({ item }) => <ItemDeals dulieu={item} />}
+        renderItem={({ item }) => <ItemDeals dulieu={item} navigation={navigation}/>}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
       />

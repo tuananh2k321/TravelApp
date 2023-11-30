@@ -7,7 +7,7 @@ import { validateDateOfBirth } from '../../constant/Validation';
 import DatePicker from 'react-native-date-picker';
 import { useEffect } from 'react';
 
-const FormChildren = ({ index, onDataChange }) => {
+const FormChildren = ({ index, onDataChange, props }) => {
 
   const [name, setName] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -19,6 +19,8 @@ const FormChildren = ({ index, onDataChange }) => {
   const [errorBirthday, setErrorBirthday] = useState(true);
   const [isValid, setIsvalid] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  // const [isCompleted, setIsCompleted] = useState(false);
 
   const handleInputChange = () => {
     const formData = { name, birthDate, gender, type };
@@ -89,7 +91,7 @@ const FormChildren = ({ index, onDataChange }) => {
           <Picker.Item label="Chọn giới tính" value="" />
           <Picker.Item label="Nam" value="Nam" />
           <Picker.Item label="Nữ" value="Nữ" />
-          <Picker.Item label="Khác" value="Khác" />
+          {/* <Picker.Item label="Khác" value="Khác" /> */}
         </Picker>
       </View>
 
@@ -98,7 +100,7 @@ const FormChildren = ({ index, onDataChange }) => {
         open={open}
         androidVariant="iosClone"
         mode="date"
-        minimumDate={new Date('2008-12-31')}
+        minimumDate={new Date('2009-12-31')}
         maximumDate={new Date('2016-12-31')}
         date={currentDate}
         onConfirm={date => {

@@ -17,7 +17,7 @@ const FormAll1 = (props) => {
     children: []
   });
 
-  
+
 
   const handleDataChangeAdult = (index, data) => {
     const newData = { ...formData };
@@ -32,18 +32,19 @@ const FormAll1 = (props) => {
   };
 
   const handleNext = () => {
-    // Lấy danh sách người lớn và trẻ em
-    const adults = formData.adults || [];
-    const children = formData.children || [];
-
-    // Gộp thành một mảng
-    const mergedArray = adults.concat(children);
-    console.log('mergedArray:', mergedArray)
-    navigation.navigate('Payment_Method', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: adult1, children: children1, image: image, tourName: tourName, guestInfo: mergedArray });
+      // Lấy danh sách người lớn và trẻ em
+      const adults = formData.adults || [];
+      const children = formData.children || [];
+      // Gộp thành một mảng
+      const mergedArray = adults.concat(children);
+      console.log('mergedArray:', mergedArray)
+      navigation.navigate('Payment_Method', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: adult1, children: children1, image: image, tourName: tourName, guestInfo: mergedArray });
   };
 
+  const isValidOK = () => formData.adults.length === adult1 && formData.children.length === children1;
+  
   return (
-    <View style ={{flex: 1, backgroundColor: "#ffffff"}}>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <ScrollView >
         <View style={{ paddingBottom: 50, }}>
           {[...Array(adult1)].map((_, index) => (
@@ -55,13 +56,17 @@ const FormAll1 = (props) => {
           ))}
         </View>
       </ScrollView>
-      <View style={styles.groupButton}>
-        <TouchableOpacity style={[styles.button,
-        ]}
-          onPress={handleNext}>
-          <Text style={styles.textButton}>Tiếp theo</Text>
-        </TouchableOpacity>
-      </View>
+      {( // Conditionally render TouchableOpacity based on form data
+        <View style={styles.groupButton}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
+            onPress={handleNext}
+            disabled={isValidOK()==false} // Disable button if there's no form data
+          >
+            <Text style={styles.textButton}>Tiếp theo</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   )
 }
