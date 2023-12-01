@@ -12,6 +12,10 @@ const Item_notification = props => {
         }
         else if( dulieu.type == 'new-tour') {
             navigation.navigate('TourDetail', { id: dulieu.tour_id })
+        } else if (dulieu.type == 'confirm') {
+            navigation.navigate('NotifiSuccess', { id: dulieu.tour_id })
+        } else if (dulieu.type == 'delete' ) {
+            navigation.navigate('NotifiCancel', { id: dulieu.tour_id })
         }
     }
   return (

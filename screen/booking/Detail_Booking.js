@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   money: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#0A7BAB",
     lineHeight: 18

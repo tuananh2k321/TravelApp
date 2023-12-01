@@ -29,7 +29,7 @@ const Notification = (props) => {
   const getNotifi = async () => {
     try {
       const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + user.user._id);
-      console.log(response);
+      //console.log(response);
       if (response.result == true) {
         setDataNotification(response.notify);
         setIsLoading(false);

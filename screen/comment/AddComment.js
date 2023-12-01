@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import Loading from '../Loading';
 import Item_Booking from '../../component/Tab_item/Item_Booking';
 import Item_wishlist from '../../component/Tab_item/Item_wishlist';
+import ItemComment from '../../component/Tab_item/ItemComment'
 
 const AddComment = (props) => {
     const { navigation, route } = props;
@@ -314,7 +315,7 @@ const AddComment = (props) => {
                         </Text>
                     </TouchableOpacity> */}
                     </View>
-                    <Item_wishlist data={dataTour} navigation={navigation} />
+                    <ItemComment data={dataTour} navigation={navigation} />
                 </ScrollView>
 
             </SafeAreaView>
