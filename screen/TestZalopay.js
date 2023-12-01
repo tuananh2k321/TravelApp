@@ -85,6 +85,7 @@ export default function TestZalopay() {
   function payOrder() {
     var payZP = NativeModules.PayZaloBridge;
     payZP.payOrder(token);
+    console.log(payZP)
   }
 
   return (
