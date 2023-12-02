@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLOR, SIZES} from '../../../constant/Themes';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLOR, SIZES } from '../../../constant/Themes';
+import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../Loading';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {resetUser} from '../../../redux/reducer/UserSlice'
+import { resetUser } from '../../../redux/reducer/UserSlice'
 const Profile = props => {
-  const {navigation} = props;
+  const { navigation } = props;
 
   const user = useSelector(state => state.user.user);
   const disPath = useDispatch()
@@ -54,7 +54,7 @@ const Profile = props => {
             paddingHorizontal: 20,
             paddingVertical: 10,
           }}>
-          <Text style={{fontSize: 16, fontWeight: '700', color: 'white'}}>
+          <Text style={{ fontSize: 16, fontWeight: '700', color: 'white' }}>
             Đăng nhập trước khi xem
           </Text>
         </TouchableOpacity>
@@ -66,13 +66,13 @@ const Profile = props => {
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.infomation}>
-            <Image style={styles.image} source={{uri: user.avatar}}></Image>
+            <Image style={styles.image} source={{ uri: user.avatar }}></Image>
             <View style={styles.info}>
               <Text style={styles.name}>{user.name}</Text>
               <Text style={styles.address}>{user.address}</Text>
             </View>
           </View>
-  
+
           <View
             style={{
               width: 380,
@@ -80,14 +80,14 @@ const Profile = props => {
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
               marginTop: 30,
             }}></View>
-  
+
           <View style={styles.account_setting}>
             {/* My booking */}
-            <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
+            <TouchableOpacity onPress={() => navigation.navigate('MyBooking')}>
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
                   <Image
-                    style={{tintColor: COLOR.primary}}
+                    style={{ tintColor: COLOR.primary }}
                     source={require('../../../assets/icon/icons8-history-24.png')}></Image>
                   <Text style={styles.button_setting_text}>Lịch sử đặt tour</Text>
                 </View>
@@ -97,12 +97,40 @@ const Profile = props => {
                 </View>
               </View>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('HandleCancelBooking')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{ tintColor: COLOR.primary }}
+                    source={require('../../../assets/icon/icons8-history-24.png')}></Image>
+                  <Text style={styles.button_setting_text}>Tour đang chờ xác nhận hủy</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
+              </View>
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{ tintColor: COLOR.primary }}
+                    source={require('../../../assets/icon/icons8-history-24.png')}></Image>
+                  <Text style={styles.button_setting_text}>Tour đã đi xong</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
+              </View>
+            </TouchableOpacity> */}
             {/* edit profile */}
             <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
                   <Image
-                    style={{tintColor: COLOR.primary}}
+                    style={{ tintColor: COLOR.primary }}
                     source={require('../../../assets/icon/icon-user-circle.png')}></Image>
                   <Text style={styles.button_setting_text}>Chỉnh sửa hồ sơ</Text>
                 </View>
@@ -116,7 +144,7 @@ const Profile = props => {
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
                   <Image
-                    style={{tintColor: COLOR.primary}}
+                    style={{ tintColor: COLOR.primary }}
                     source={require('../../../assets/icon/icons8-lock-24.png')}></Image>
                   <Text style={styles.button_setting_text}>Đổi mật khẩu</Text>
                 </View>
@@ -126,7 +154,7 @@ const Profile = props => {
                 </View>
               </View>
             </TouchableOpacity>
-           
+
             {/* <TouchableOpacity>
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
@@ -158,7 +186,7 @@ const Profile = props => {
               </View>
             </TouchableOpacity> */}
           </View>
-  
+
           {/* Derleng Legal */}
           <View
             style={{
@@ -168,7 +196,7 @@ const Profile = props => {
               marginTop: 30,
             }}></View>
           <View style={styles.account_setting}>
-  
+
             {/* <TouchableOpacity>
               <View style={styles.button_setting_2}>
                 <View style={styles.button_setting_left}>
@@ -201,7 +229,7 @@ const Profile = props => {
               </View>
             </TouchableOpacity> */}
           </View>
-  
+
           <TouchableOpacity
             onPress={() => {
               logout()
@@ -218,7 +246,7 @@ const Profile = props => {
     );
   } catch (e) {
   }
-  
+
 };
 
 export default Profile;

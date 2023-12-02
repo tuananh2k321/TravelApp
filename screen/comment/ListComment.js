@@ -53,8 +53,8 @@ const ListComment = ({ navigation, route }) => {
                     borderWidth: 1,
                     borderColor: COLOR.lightBlack2,
                     padding: 15,
-                    marginBottom: 20,
                     backgroundColor: 'white',
+                    marginBottom: 20
                 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Image
@@ -125,8 +125,9 @@ const ListComment = ({ navigation, route }) => {
                             Đã đăng
                         </Text>
                         <Text style={{ color: COLOR.detail, fontSize: 14, fontWeight: '400', marginLeft: 10 }}>
-                            10/10/2023
+                            {item.timeStamp}
                         </Text>
+
                     </View>
 
                 </View>
@@ -137,7 +138,7 @@ const ListComment = ({ navigation, route }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.header}>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10 }}>
@@ -154,15 +155,15 @@ const ListComment = ({ navigation, route }) => {
                 keyExtractor={item => item._id}
                 renderItem={renderItem}
             />
-
-
-
-
-        </SafeAreaView>
+        </View>
 
     )
 }
 
 export default ListComment
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        marginBottom: 50
+    }
+})

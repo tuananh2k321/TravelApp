@@ -3,28 +3,22 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet, Text, View, Image, Animated, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Rating } from 'react-native-ratings';
-const Item_wishlist = ({ data, handleDelete, navigation }) => {
+import { AirbnbRating, Rating } from 'react-native-ratings';
+import { useState } from 'react';
+
+
+const ItemComment = ({ data, navigation }) => {
     const VND = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
       });
-    const rightSwipe = () => {
-        return (
-            <TouchableOpacity onPress={handleDelete} style={{
-                justifyContent: "center",
-                alignItems: "center",
-            }} >
-                <View style={styles.deleteBox}>
-                    {/* <Animated.Text style={styles.textDelete}>Delete</Animated.Text> */}
-                    <Ionicons name='trash' size={30} color={"red"} />
-                </View>
-            </TouchableOpacity>
-        )
+    const startTourDetail = () => {
+        console.log("Click Item");
+    navigation.navigate('TourDetail', { id: data._id });
     }
     return (
-            <GestureHandlerRootView >
-            <Swipeable renderRightActions={rightSwipe} >
+        <TouchableOpacity onPress={startTourDetail}>
+
                 
                 <View style={styles.item}>
                     <Image style={styles.item_left} source={{ uri: data.tourImage?.[0] }}></Image>
@@ -55,19 +49,19 @@ const Item_wishlist = ({ data, handleDelete, navigation }) => {
                     </View>
                 </View>
 
-            </Swipeable >
-        </GestureHandlerRootView >
+ 
+        </TouchableOpacity>
+        
     )
 }
 
 
-export default Item_wishlist
+export default ItemComment
 
 const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 0.2,
         height: 158,
     },
     item_left: {

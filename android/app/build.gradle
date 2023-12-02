@@ -257,7 +257,7 @@ android {
 }
 
 dependencies {
-    
+    implementation project(':zpdk-release-28052021')
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
