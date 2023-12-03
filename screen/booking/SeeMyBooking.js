@@ -131,6 +131,16 @@ const SeeMyBooking = ({ navigation, route }) => {
                             <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.totalPrice}</Text>
                         </View>
 
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={{ color: COLOR.black, fontSize: 16, fontWeight: '400' }}>Ngày đi:   </Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.departmentHour} - {bookings.departmentDate}  </Text>
+                        </View>
+
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={{ color: COLOR.black, fontSize: 16, fontWeight: '400' }}>Ngày về:   </Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.expectedDate}</Text>
+                        </View>
+
                         {bookings.confirm ? (
                             <Text style={{ color: "red" }}>
                                 Đã xác nhận

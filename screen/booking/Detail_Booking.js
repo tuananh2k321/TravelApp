@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Dimensions, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Dimensions, ScrollView, KeyboardAvoidingView } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -10,13 +10,15 @@ import {
   isValidQuantity,
   isLimitPerson
 } from '../../constant/Validation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SIZES } from '../../constant/Themes';
 
 const windowWidth = Dimensions.get('window').width - 90;
 
 
 const Detail_Booking = (props) => {
   const { navigation, route } = props;
-  const { id, childrenPrice, adultPrice, image, tourName, limitedPerson, adultAge, childrenAge } = route.params;
+  const { id, childrenPrice, adultPrice, image, tourName, limitedPerson, adultAge, childrenAge, availablePerson } = route.params;
   //State for validating
   const [errorName, setErrorName] = useState('');
   const [errorQuantity, setErrorQuantity] = useState('');
@@ -39,13 +41,14 @@ const Detail_Booking = (props) => {
   let priceAdult = Number(adultPrice);
   priceAdult = priceAdult.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   const isValidOK = () => name.length > 0 && quantityAdult.length > 0
-    && isValidName(name) == true && isValidQuantity(quantityAdult) == true && isLimitPerson(quantity, limitedPerson) == true
+    && isValidName(name) == true && isValidQuantity(quantityAdult) == true && isLimitPerson(quantity, availablePerson) == true
   if (isLimitPerson(quantity, limitedPerson) == false) {
     Alert.alert("Số lượng cho phép là " + limitedPerson + " người");
   }
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView>
+      <View style={styles.container}>
+       
         <View style={styles.groupName}>
           <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
           <View style={{ marginStart: 10 }}>
@@ -78,7 +81,18 @@ const Detail_Booking = (props) => {
               <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{priceChildren}</Text>
             </View>
           </View>
+
+          <View style={styles.groupTotalPrice}>
+            <View style={styles.groupPrice}>
+              <Text style={styles.totalPrice}>Số lượt còn trống :</Text>
+            </View>
+            <View style={styles.groupPrice}>
+              <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{availablePerson}</Text>
+            </View>
+          </View>
         </View>
+
+        
 
         <View style={styles.groupForm}>
           <Text style={styles.lable}>Tên khách hàng</Text>
@@ -117,9 +131,8 @@ const Detail_Booking = (props) => {
               value={quantityChildren} />
           </View>
         </View>
-        <View style={{height: 50}}></View>
-      </ScrollView>
-      <View style={styles.groupButton}>
+
+        <View style={styles.groupButton}>
         <View style={styles.groupPrice}>
           <Text style={styles.money}>{price}/</Text>
           <Text style={[styles.money, { fontWeight: '400', fontSize: 14 }]}>{quantity}Người</Text>
@@ -132,6 +145,11 @@ const Detail_Booking = (props) => {
         </TouchableOpacity>
       </View>
     </View >
+    
+    
+    
+      </KeyboardAwareScrollView>
+
   )
 }
 
@@ -142,6 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     padding: 15,
+    height: SIZES.height - 145
   },
   title: {
     fontSize: 18,

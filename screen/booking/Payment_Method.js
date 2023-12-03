@@ -55,7 +55,7 @@ const Payment_Method = (props) => {
         try {
             const response = await AxiosIntance()
                 .post("/booking/api/addBooking",
-                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id, guestInfo: guestInfo });
+                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id, guestInfo: guestInfo, quantity: adult+children});
             console.log(response);
             if (response.result == true) {
                 navigation.push("Booking_Successfully");

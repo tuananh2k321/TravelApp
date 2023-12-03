@@ -40,6 +40,7 @@ export default TourDetail = props => {
   const [limitedDay, setlimitedDay] = useState('');
   const [operatingDay, setoperatingDay] = useState('');
   const [limitedPerson, setlimitedPerson] = useState('');
+  const [availablePerson, setAvailablePerson] = useState('');
   const [offer, setoffer] = useState('');
   const [vehicle, setvehicle] = useState('');
   const [rating, setrating] = useState(0);
@@ -80,7 +81,8 @@ export default TourDetail = props => {
         tourName: tourName,
         limitedPerson: limitedPerson,
         adultAge: adultAge,
-        childrenAge: childrenAge
+        childrenAge: childrenAge,
+        availablePerson: availablePerson
       });
     }
   };
@@ -145,6 +147,7 @@ export default TourDetail = props => {
           setlimitedDay(response.tour.limitedDay);
           setoperatingDay(response.tour.operatingDay);
           setlimitedPerson(response.tour.limitedPerson);
+          setAvailablePerson(response.tour.availablePerson);
           setoffer(response.tour.offer);
           setvehicle(response.tour.vehicle);
           setisdomain(response.tour.isdomain);

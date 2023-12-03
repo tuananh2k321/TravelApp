@@ -167,7 +167,7 @@ const BottomTab = () => {
               borderLeftColor: 'white',
               borderTopColor: 'white',
               borderWidth: focused ? 4 : 0,
-              backgroundColor: 'white'
+              backgroundColor: 'white',
               // position: 'absolute',
               // bottom: 0
             }}>
