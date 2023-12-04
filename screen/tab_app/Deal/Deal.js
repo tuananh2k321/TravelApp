@@ -12,7 +12,7 @@ const Deal = (props) => {
   const navigation = useNavigation();
   const [TourDeal, setTourDeal] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const {navigation} = useNavigation()
   useEffect(() => {
     try {
       const getTourDeal = async () => {

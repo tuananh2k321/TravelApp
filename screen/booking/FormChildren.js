@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import UITextInput from '../../component/UITextInput';
 import { COLOR, ICON } from '../../constant/Themes';
-import { validateDateOfBirth } from '../../constant/Validation';
+import { isValidEmpty, validateDateOfBirth, validateDateOfBirthChildren } from '../../constant/Validation';
 import DatePicker from 'react-native-date-picker';
 import { useEffect } from 'react';
 
@@ -17,14 +17,22 @@ const FormChildren = ({ index, onDataChange, props }) => {
   const [date, setDate] = useState('');
   const [open, setOpen] = useState(false);
   const [errorBirthday, setErrorBirthday] = useState(true);
+  const [errorName, setErrorName] = useState(true);
+  const [errorGender, setErrorGender] = useState(true);
   const [isValid, setIsvalid] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   // const [isCompleted, setIsCompleted] = useState(false);
 
   const handleInputChange = () => {
+    if(name && birthDate && gender !=""){
     const formData = { name, birthDate, gender, type };
     onDataChange(index, formData);
+    return formData
+    }else{
+      console.log("loiox chuldere")
+    }
+    
   };
 
   const checkForm = (
@@ -44,12 +52,32 @@ const FormChildren = ({ index, onDataChange, props }) => {
             }}>Thông tin cơ bản (Bắt buộc) Trẻ nhỏ</Text>
       <Text>Tên:</Text>
       <TextInput
-        style={styles.input}
-        onChangeText={(text) => setName(text)}
+        style={{
+          borderWidth: 1,
+          borderColor: errorName ?  COLOR.border : 'red' ,
+          borderRadius: 10,
+          marginTop: 10,
+          paddingHorizontal: 15,
+        }}
+        onChangeText={(text) =>{
+          setName(text);
+          setErrorName(isValidEmpty(text));
+          setIsvalid(true);
+        }}
         value={name}
         onBlur={handleInputChange}
         placeholder="Nhập tên"
       />
+      {!errorName && (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: 'red',
+            }}>
+            Không được để trống !
+          </Text>
+        )}
       <Text style={{
             fontSize: 16,
             fontWeight: '400',
@@ -111,7 +139,7 @@ const FormChildren = ({ index, onDataChange, props }) => {
             setDate(day + '/' + month + '/' + year);
             setBirthDate(day + '/' + month + '/' + year);
             setErrorBirthday(
-              validateDateOfBirth(day + '/' + month + '/' + year),
+              validateDateOfBirthChildren(day + '/' + month + '/' + year),
             );
             // console.log(day + '/' + month + '/' + year);
           }}

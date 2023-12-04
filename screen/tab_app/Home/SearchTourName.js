@@ -11,8 +11,8 @@ import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import Loading from '../../Loading';
 import { useNavigation } from '@react-navigation/native';
 const SearchTourName = (props) => {
-  const navigation = useNavigation();
-  const { route } = props;
+  const {  route } = props;
+  const navigation = useNavigation()
   const { nameDomain } = route.params;
   const [loading, setLoading] = useState(false)
   const namee = nameDomain;
