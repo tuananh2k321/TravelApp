@@ -54,7 +54,14 @@ export const UserSlice = createSlice({
             state.token = action.payload
         },
         resetUser: (state, action) => {
-            state.user = null
+            state.data = {};
+            state.dataRegister = {};
+            state.dataSendOTP = {};
+            state.dataVerifyOTP = {};
+            state.dataChangePassword = {};
+            state.dataEditProfile = {};
+            state.user = null;
+            state.token = "";
         }
     }
 })

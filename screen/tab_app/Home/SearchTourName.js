@@ -9,8 +9,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import Loading from '../../Loading';
+import { useNavigation } from '@react-navigation/native';
 const SearchTourName = (props) => {
-  const { navigation, route } = props;
+  const {  route } = props;
+  const navigation = useNavigation()
   const { nameDomain } = route.params;
   const [loading, setLoading] = useState(false)
   const namee = nameDomain;
@@ -55,7 +57,7 @@ const SearchTourName = (props) => {
       </View>
       <FlatList
         data={SearchNameTour}
-        renderItem={({ item }) => <ItemActive dulieu={item} />}
+        renderItem={({ item }) => <ItemActive dulieu={item} navigation={navigation}/>}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
       />

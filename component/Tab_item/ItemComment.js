@@ -3,68 +3,38 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet, Text, View, Image, Animated, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Rating } from 'react-native-ratings';
-import AxiosIntance from '../../constant/AxiosIntance';
-import { useEffect } from 'react';
+import { AirbnbRating, Rating } from 'react-native-ratings';
 import { useState } from 'react';
-const Item_wishlist = ({ data, handleDelete, navigation }) => {
-    const [rating, setrating] = useState(0);
+
+
+const ItemComment = ({ data, navigation }) => {
     const VND = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
       });
-    const rightSwipe = () => {
-        return (
-            <TouchableOpacity onPress={handleDelete} style={{
-                justifyContent: "center",
-                alignItems: "center",
-            }} >
-                <View style={styles.deleteBox}>
-                    {/* <Animated.Text style={styles.textDelete}>Delete</Animated.Text> */}
-                    <Ionicons name='trash' size={30} color={"red"} />
-                </View>
-            </TouchableOpacity>
-        )
+    const startTourDetail = () => {
+        console.log("Click Item");
+    navigation.navigate('TourDetail', { id: data._id });
     }
-    useEffect(() => {
-        try {
-          const getAllReviews = async () => {
-            const response = await AxiosIntance().get(
-              `comment/api/listComment?tour_id=${data._id}`,
-            );
-            if (response.result == true) {
-              //setReviews(response.quantity);
-              //console.log(response.quantity)
-              setrating(response.averageRating)
-              //console.log(response.averageRating)
-            } else {
-              ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
-            }
-          };
-          getAllReviews()
-        } catch (e) {
-    
-        }
-      })
     return (
-            <GestureHandlerRootView >
-            <Swipeable renderRightActions={rightSwipe} >
+        <TouchableOpacity onPress={startTourDetail}>
+
                 
                 <View style={styles.item}>
                     <Image style={styles.item_left} source={{ uri: data.tourImage?.[0] }}></Image>
                     <View style={styles.item_right}>
                         <Text numberOfLines={2} style={styles.item_title}>{data.tourName}</Text>
                         <View style={styles.item_start_view}>
-                        {/* <Rating
+                        <Rating
           readonly
           ratingCount={5}
           showReadOnlyText={false}
           fractions={1}
-          startingValue={rating}
+          startingValue={data.rating}
           jumpValue={0.1}
           imageSize={12} />
                             <Text style={styles.item_start}>{data.start}</Text>
-                            <Text style={styles.item_view}>{data.view}{data.rating} review</Text> */}
+                            <Text style={styles.item_view}>{data.view}{data.rating} review</Text>
                         </View>
                         <Text style={styles.item_address}>{data.address}</Text>
                         <View style={{ flexDirection: 'column' }}>
@@ -79,19 +49,19 @@ const Item_wishlist = ({ data, handleDelete, navigation }) => {
                     </View>
                 </View>
 
-            </Swipeable >
-        </GestureHandlerRootView >
+ 
+        </TouchableOpacity>
+        
     )
 }
 
 
-export default Item_wishlist
+export default ItemComment
 
 const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 0.2,
         height: 158,
     },
     item_left: {

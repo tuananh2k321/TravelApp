@@ -21,7 +21,7 @@ import AddCard from './booking/AddCard';
 import Available_Date from './booking/Available_Date';
 import Booking_Successfully from './booking/Booking_Successfully';
 import SearchTourName from './tab_app/Home/SearchTourName';
-import Mybooking from './tab_app/Profile/Mybooking';
+
 import Login from './auth/Login';
 import Register from './auth/Register';
 
@@ -33,34 +33,17 @@ import Abcd from './booking/AAbf';
 import ListComment from './comment/ListComment';
 import SeeMyBooking from './booking/SeeMyBooking';
 import Reason from './booking/Reason';
-
+import ConfirmedMyBooking from './tab_app/Profile/ConfirmedMyBooking';
+import HandlingMyBooking from './tab_app/Profile/HandlingMyBooking';
+import HandleCancelBooking from './tab_app/Profile/HandleCancelBooking';
+import DetailCancelBooking from './tab_app/Profile/DetailCancelBooking';
+import Mybooking from "./tab_app/Profile/Mybooking"
+import NotifiSuccess from './tab_app/Notification/NotifiSuccess';
+import NotifiCancel from './tab_app/Notification/NotifiCancel';
+import TestZalopay from '../screen/booking/TestZalopay'
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// animated
-const fadeIn = {
-  from: {
-    opacity: 0,
-  },
-  to: {
-    opacity: 1,
-  },
-};
-
-const zoomOut = {
-  0: {
-    opacity: 1,
-    scale: 1,
-  },
-  0.5: {
-    opacity: 1,
-    scale: 0.3,
-  },
-  1: {
-    opacity: 0,
-    scale: 0,
-  },
-};
 
 const StackHomes = () => {
   const header = (title) => (
@@ -91,30 +74,18 @@ const StackHomes = () => {
       <Stack.Screen name="Payment_Method" component={Payment_Method} options={header("Xác nhận và thanh toán")} />
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
-
+      <Stack.Screen name="TestZalopay" component={TestZalopay} />
 
     </Stack.Navigator>
   )
 }
 
-const StackBooking = () => {
-  return (
-    <Stack.Navigator initialRouteName="Detail_Booking" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Detail_Booking" component={Detail_Booking} />
-      <Stack.Screen name="Payment" component={Payment} />
-      <Stack.Screen name="Payment_Method" component={Payment_Method} />
-      <Stack.Screen name="AddCard" component={AddCard} />
-      <Stack.Screen name="Available_Date" component={Available_Date} />
-      <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
-      <Stack.Screen name="SearchTourName" component={SearchTourName} />
-    </Stack.Navigator>
-  )
-}
 
 const StackFavorites = () => {
   return (
     <Stack.Navigator initialRouteName="FavoriteMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="FavoriteMain" component={Favorite} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
     </Stack.Navigator>
   )
 }
@@ -125,6 +96,9 @@ const StackNotification = () => {
     <Stack.Navigator initialRouteName="NotificationMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="NotificationMain" component={Notification} />
       <Stack.Screen name="AddComment" component={AddComment} />
+      <Stack.Screen name="NotifiSuccess" component={NotifiSuccess} />
+      <Stack.Screen name="NotifiCancel" component={NotifiCancel} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
     </Stack.Navigator>
   )
 }
@@ -143,10 +117,15 @@ const StackProfile = () => {
   return (
     <Stack.Navigator initialRouteName="ProfileMain" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={Profile} />
-      <Stack.Screen name="Mybooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
+      <Stack.Screen name="ConfirmedMyBooking" component={ConfirmedMyBooking} />
+      <Stack.Screen name="MyBooking" component={Mybooking} options={header("Lịch sử đặt tour")} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SeeMyBooking" component={SeeMyBooking} />
       <Stack.Screen name="Reason" component={Reason} />
+      <Stack.Screen name="HandlingMyBooking" component={HandlingMyBooking} />
+      <Stack.Screen name="HandleCancelBooking" component={HandleCancelBooking} options={header("Tour đang chờ xác nhận hủy")} />
+      <Stack.Screen name="DetailCancelBooking" component={DetailCancelBooking} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
       <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )
@@ -188,7 +167,7 @@ const BottomTab = () => {
               borderLeftColor: 'white',
               borderTopColor: 'white',
               borderWidth: focused ? 4 : 0,
-              backgroundColor: 'white'
+              backgroundColor: 'white',
               // position: 'absolute',
               // bottom: 0
             }}>

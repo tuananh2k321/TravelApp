@@ -1,8 +1,9 @@
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormAdult from './FormAdult1';
 import { Button } from 'react-native-paper';
 import FormChildren from './FormChildren';
+import { useIsFocused } from '@react-navigation/native';
 
 const FormAll1 = (props) => {
   const { navigation, route } = props;
@@ -11,11 +12,16 @@ const FormAll1 = (props) => {
   console.log('children', children)
   let adult1 = Number(adult);
   let children1 = Number(children);
-
+  let sum = adult1 + children1
+  const isFocused = useIsFocused();
   const [formData, setFormData] = useState({
     adults: [],
     children: []
   });
+
+  // useEffect(() => {
+  //   setFormData({})
+  // }, [isFocused])
 
   
 
@@ -31,19 +37,49 @@ const FormAll1 = (props) => {
     setFormData(newData);
   };
 
+  function checkProperties(data) {
+    for (const item of data) {
+        if (Object.values(item).some(value => value === "")) {
+            return false;
+        }
+    }
+    return true;
+}
+
   const handleNext = () => {
     // Lấy danh sách người lớn và trẻ em
     const adults = formData.adults || [];
     const children = formData.children || [];
-
+    
+    console.log(adults)
     // Gộp thành một mảng
+    
     const mergedArray = adults.concat(children);
-    console.log('mergedArray:', mergedArray)
-    navigation.navigate('Payment_Method', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: adult1, children: children1, image: image, tourName: tourName, guestInfo: mergedArray });
+    if (checkProperties(adults) && checkProperties(children)) {
+      if (sum === adults.length + children.length) {
+      console.log('==========================')
+      console.log('sum: ' + sum)
+      console.log('adults: ' + adults.length)
+      console.log('children: ' + children.length)
+      console.log('mergedArray:', mergedArray)
+      navigation.navigate('Payment_Method', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: adult1, children: children1, image: image, tourName: tourName, guestInfo: mergedArray });
+    } else {
+      console.log('sum: ' + sum)
+      console.log('adults: ' + adults.length)
+      console.log('children: ' + children.length)
+    }
+    } else {
+      console.log("co thuoc tinh rong")
+    }
+    
+    
+    // console.log('mergedArray:', mergedArray)
+    // navigation.navigate('Payment_Method', { id: id, childrenPrice: childrenPrice, adultPrice: adultPrice, name: name, adult: adult1, children: children1, image: image, tourName: tourName, guestInfo: mergedArray });
+    
   };
-
+  const isValidOK = () => formData.adults.length === adult1 && formData.children.length === children1;
   return (
-    <View style ={{flex: 1}}>
+    <View style ={{flex: 1, backgroundColor: "#ffffff"}}>
       <ScrollView >
         <View style={{ paddingBottom: 50, }}>
           {[...Array(adult1)].map((_, index) => (
@@ -56,12 +92,14 @@ const FormAll1 = (props) => {
         </View>
       </ScrollView>
       <View style={styles.groupButton}>
-        <TouchableOpacity style={[styles.button,
-        ]}
-          onPress={handleNext}>
-          <Text style={styles.textButton}>Tiếp theo</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: isValidOK() == true ? '#0FA3E2' : 'gray' }]}
+            onPress={handleNext}
+            //disabled={isValidOK()==false} // Disable button if there's no form data
+          >
+            <Text style={styles.textButton}>Tiếp theo</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   )
 }

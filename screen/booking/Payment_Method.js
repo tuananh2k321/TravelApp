@@ -28,6 +28,11 @@ const Payment_Method = (props) => {
             name: 'Thẻ ATM quốc tế',
             image: 'https://firebasestorage.googleapis.com/v0/b/android-networking-2a786.appspot.com/o/card_2.png?alt=media&token=dacde835-d4e0-4bb2-a0b6-9fe2c74bef5a'
         },
+        {
+            id: 3,
+            name: 'Zalo pay',
+            image: 'https://firebasestorage.googleapis.com/v0/b/travelapp-3e538.appspot.com/o/images%2Fzalopay.png?alt=media&token=166633e3-6515-47e8-84e0-cecfa74237cd'
+        },
     ]
     const [selectedRadio, setSelectedRadio] = useState(1);
 
@@ -50,7 +55,7 @@ const Payment_Method = (props) => {
         try {
             const response = await AxiosIntance()
                 .post("/booking/api/addBooking",
-                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id, guestInfo: guestInfo });
+                    { name: name, children: children, adult: adult, totalPrice: totalPrice, user_id: user.user._id, tour_id: id, guestInfo: guestInfo, quantity: adult+children});
             console.log(response);
             if (response.result == true) {
                 navigation.push("Booking_Successfully");
@@ -104,9 +109,11 @@ const Payment_Method = (props) => {
         if (selectedRadio == 1) {
             navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice, guestInfo: guestInfo });
         }
-        else {
+        else if(selectedRadio == 2) {
             // navigation.navigate('Payment', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice });
             onCheckout();
+        } else if (selectedRadio == 3) {
+            navigation.navigate('TestZalopay', { id: id, name: name, adult: adult, children: children, totalPrice: totalPrice, guestInfo: guestInfo });
         }
     }
     return (

@@ -2,11 +2,16 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { ICON } from '../../constant/Themes';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { Rating } from 'react-native-ratings';
+import AxiosIntance from '../../constant/AxiosIntance';
 
 const Item_Booking = (props) => {
     const { item, navigation, route } = props;
     const { params } = route;
     const dateReplace = (item.bookingDate);
+    const [rating, setrating] = useState(0);
     let price = item.totalPrice;
     price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
     let dateSlice = "";
@@ -30,6 +35,27 @@ const Item_Booking = (props) => {
 
     console.log('first>>>>>', item)
     getTotalDate(arr)
+
+    useEffect(() => {
+        try {
+          const getAllReviews = async () => {
+            const response = await AxiosIntance().get(
+              `comment/api/listComment?tour_id=${item.tour_id._id}`,
+            );
+            if (response.result == true) {
+              //setReviews(response.quantity);
+              //console.log(response.quantity)
+              setrating(response.averageRating)
+              //console.log(response.averageRating)
+            } else {
+              ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
+            }
+          };
+          getAllReviews()
+        } catch (e) {
+    
+        }
+      })
     return (
         <>
             <TouchableOpacity onPress={() => navigation.navigate("SeeMyBooking", { id: item._id })}>
@@ -37,37 +63,23 @@ const Item_Booking = (props) => {
                     <Image style={styles.item_left} source={{ uri: item.tour_id.tourImage[0] }}></Image>
                     <View style={styles.item_right}>
                         <Text numberOfLines={2} style={styles.item_title}>{item.tour_id.tourName}</Text>
-                        <View style={styles.item_start_view}>
-                            {Array.from({ length: 5 }).map((_, index) => {
-                                if (index < 4) {
-                                    return (
-                                        <Image
-                                            key={`star-${index}`}
-                                            source={ICON.star_yellow}
-                                            style={{ width: 13, height: 13 }}
-                                        />
-                                    );
-                                } else {
-                                    return (
-                                        <Image
-                                            key={`star-${index}`}
-                                            source={ICON.star} style={{ width: 13, height: 13 }} />
-                                    );
-                                }
-                            })}
-                        </View>
+                        <Rating
+          readonly
+          ratingCount={5}
+          showReadOnlyText={false}
+          fractions={1}
+          startingValue={rating}
+          jumpValue={0.1}
+          imageSize={12} />
                         <Text style={styles.item_address}>{item.tour_id.isdomain}</Text>
                         <Text style={styles.item_address}>
-                            {
-                                // date.length > 10 ? date.slice(0, 10) : date
-                                getTotalDate(arr).length > 10 ? getTotalDate(arr).slice(0, 10) : getTotalDate(arr)
-                            }
+                            {item.bookingDate}
                         </Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.item_price}>{price}</Text>
                         </View>
                         <View style={styles.item_days}>
-                            <Text style={styles.item_days_text}>{item.tour_id.limitedDay} ngày {Number(item.tour_id.limitedDay) - 1} đêm</Text>
+                            <Text style={styles.item_days_text}>{item.tour_id.limitedDay}</Text>
                         </View>
                     </View>
                 </View>

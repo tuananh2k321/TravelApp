@@ -62,7 +62,47 @@ export const validateDateOfBirth = (dateOfBirth) => {
   var year = parseInt(parts[2], 10);
   
   // Kiểm tra giá trị hợp lệ cho ngày, tháng, năm
-  if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1950 || year > 2005) {
+  if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1963 || year > 2005) {
+    return false;
+  }
+  
+  return true;
+}
+// adult
+export const validateDateOfBirthAdult = (dateOfBirth) => {
+  var pattern = /^\d{2}\/\d{2}\/\d{4}$/; // Biểu thức chính quy kiểm tra định dạng dd/mm/yyyy
+  
+  if (!pattern.test(dateOfBirth)) {
+    return false;
+  }
+  
+  var parts = dateOfBirth.split('/');
+  var day = parseInt(parts[0], 10);
+  var month = parseInt(parts[1], 10);
+  var year = parseInt(parts[2], 10);
+  
+  // Kiểm tra giá trị hợp lệ cho ngày, tháng, năm
+  if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1963 || year > 2008) {
+    return false;
+  }
+  
+  return true;
+}
+// adult
+export const validateDateOfBirthChildren = (dateOfBirth) => {
+  var pattern = /^\d{2}\/\d{2}\/\d{4}$/; // Biểu thức chính quy kiểm tra định dạng dd/mm/yyyy
+  
+  if (!pattern.test(dateOfBirth)) {
+    return false;
+  }
+  
+  var parts = dateOfBirth.split('/');
+  var day = parseInt(parts[0], 10);
+  var month = parseInt(parts[1], 10);
+  var year = parseInt(parts[2], 10);
+  
+  // Kiểm tra giá trị hợp lệ cho ngày, tháng, năm
+  if (day < 1 || day > 31 || month < 1 || month > 12 || year < 2009 || year > 2016) {
     return false;
   }
   

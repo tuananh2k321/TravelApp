@@ -10,6 +10,7 @@ import AxiosIntance from '../../../constant/AxiosIntance'
 import { log } from 'console'
 import Loading from '../../Loading'
 import { useSelector } from 'react-redux'
+import { useIsFocused } from '@react-navigation/core'
 
 handleDelete = (itemId) => {
   // Xử lý xóa item với id được truyền vào
@@ -23,7 +24,7 @@ const Favorite = (props) => {
   const [idUser, setIdUser] = useState()
 
   const [refreshing, setRefreshing] = useState(false);
-
+  const isFocused = useIsFocused();
   useEffect(() =>{
     if (user) {
       console.log('Profile user: ' + JSON.stringify(user));
@@ -34,7 +35,7 @@ const Favorite = (props) => {
     } else {
       setLoading (true)
     }
-  },[])
+  },[isFocused])
 
   
 
@@ -54,12 +55,15 @@ const Favorite = (props) => {
     try {
       const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user="+user._id );
       setLoading(true)
-      console.log('favorite', response)
-      
-        console.log(response.favorite)
+      console.log('favorite', response.result)
+      if (response.result == true) {
+        //console.log(response.favorite)
+        setLoading(false)
         const listData = await response.favorite
-        console.log('listData', listData)
+        //console.log('listData', listData)
         setData(listData)
+      }
+        
       
     } catch (error) {
       console.log('error>>>', error)
@@ -109,17 +113,17 @@ const Favorite = (props) => {
     );
   };
 
-  // if (isLoading) {
-  //   return (
-  //     // <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
-  //     //   <TouchableOpacity
-  //     //     onPress={() => navigation.navigate("Login")}
-  //     //     style={{ backgroundColor: "#39C4FF", borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10 }}>
-  //     //     <Text style={{ fontSize: 16, fontWeight: '700', color: "white" }}>Đăng nhập trước khi xem</Text>
-  //     //   </TouchableOpacity>
-  //     // </View>
-  //   )
-  // }
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white' }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={{ backgroundColor: "#39C4FF", borderRadius: 5, paddingHorizontal: 20, paddingVertical: 10 }}>
+          <Text style={{ fontSize: 16, fontWeight: '700', color: "white" }}>Đăng nhập trước khi xem</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
 
   return (

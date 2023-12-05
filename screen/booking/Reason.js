@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import React from 'react'
 import Entypo from 'react-native-vector-icons/Entypo';
-import { COLOR } from '../../constant/Themes';
+import { COLOR, SIZES } from '../../constant/Themes';
 import { useState } from 'react';
 import AxiosIntance from '../../constant/AxiosIntance';
 import { useEffect } from 'react';
@@ -39,7 +39,7 @@ const Reason = ({ navigation, route }) => {
 
     return (
         <ScrollView>
-            <SafeAreaView>
+            <SafeAreaView style={{ backgroundColor: COLOR.white, padding: 15, flex: 1, height: SIZES.height, }}>
                 <View style={styles.header}>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10 }}>
