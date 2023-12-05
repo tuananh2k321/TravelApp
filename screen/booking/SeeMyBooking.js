@@ -33,7 +33,6 @@ const SeeMyBooking = ({ navigation, route }) => {
     const isFocused = useIsFocused();
 
 
-
     const cancelRequiring = async () => {
         try {
             setLoading(true)
@@ -89,7 +88,10 @@ const SeeMyBooking = ({ navigation, route }) => {
             </View>
         );
     };
-
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      });
 
     const handlePress = () => {
         if (!bookings.confirm) {
@@ -128,7 +130,7 @@ const SeeMyBooking = ({ navigation, route }) => {
 
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ color: COLOR.black, fontSize: 16, fontWeight: '400' }}>Tổng tiền:   </Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.totalPrice}</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{VND.format(bookings.totalPrice)}</Text>
                         </View>
 
                         <View style={{ flexDirection: "row" }}>
@@ -253,7 +255,7 @@ const SeeMyBooking = ({ navigation, route }) => {
 
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("TourDetail", { id: bookings.tour_id })}
+                    onPress={() => navigation.navigate("TourDetail", { id: bookings.tour_id._id })}
                     style={{ flex: 1 }}>
                     <View
                         style={{

@@ -13,6 +13,7 @@ import {COLOR, ICON, SIZES} from '../../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ImageSlideshow from '../../../component/Tab_item/ImageSlideshow';
+import { AirbnbRating, Rating } from 'react-native-ratings';
 
 const HotelDetail = (props) => {
   const {navigation,route} = props;
@@ -31,9 +32,9 @@ const HotelDetail = (props) => {
   
   console.log(">>>>>>>>>>>>",params)
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView showsVerticalScrollIndicator={false} style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
       <SafeAreaView
-        style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
+        >
         <ImageSlideshow images={params.dulieu.listImage} interval={3000} />
         <View
           style={{

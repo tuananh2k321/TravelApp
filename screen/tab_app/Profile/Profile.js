@@ -66,7 +66,7 @@ const Profile = props => {
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.infomation}>
-            <Image style={styles.image} source={{ uri: user.avatar }}></Image>
+            <Image style={styles.image} source={{ uri: user.avatar }} resizeMode='contain'></Image>
             <View style={styles.info}>
               <Text style={styles.name}>{user.name}</Text>
               <Text style={styles.address}>{user.address}</Text>

@@ -30,9 +30,9 @@ import {
       'https://www.lifegate.com/app/uploads/mare-fa-bene-2.jpg',
     ];
     return (
-      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
         <SafeAreaView
-          style={{flex: 1, backgroundColor: COLOR.white, width: SIZES.width}}>
+          >
           <ImageSlideshow images={params.dulieu.avatar} interval={3000} />
           <View
             style={{

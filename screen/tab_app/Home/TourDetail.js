@@ -112,7 +112,7 @@ export default TourDetail = props => {
       if (response.result === true) {
         // API đã thêm yêu thích thành công
         setIsLiked(true);
-        handleReloadPage();
+        // handleReloadPage();
       } else {
         // Xử lý lỗi hoặc thông báo cho người dùng
         console.log('Thêm thất bại');
@@ -223,6 +223,7 @@ export default TourDetail = props => {
               style={{
                 width: SIZES.width,
                 backgroundColor: COLOR.white,
+                paddingBottom: 10
               }}>
               <ImageBackground
                 source={{ uri: tourImage[0] !== '' ? tourImage[0] : undefined }}

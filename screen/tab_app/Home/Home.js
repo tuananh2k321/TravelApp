@@ -1,7 +1,7 @@
 import { FlatList, ImageBackground, ScrollView, TouchableOpacity, ToastAndroid} from "react-native"
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, Image, StyleSheet, TextInput } from "react-native"
-import { SIZES } from "../../../constant/Themes";
+import { COLOR, SIZES } from "../../../constant/Themes";
 
 import ItemPopular from "../../../component/Tab_item/ItemPopular";
 
@@ -85,7 +85,7 @@ export default function Home() {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <SafeAreaView style={{ flex: 1,  }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: COLOR.white, paddingBottom: 10  }}>
                 <View>
                     <Image style={styles.image_logo} source={require('../../../assets/images/imgstart.jpg')} />
                     <Text style={styles.txt1}>Khám phá thế giới {"\n"}hôm nay</Text>
