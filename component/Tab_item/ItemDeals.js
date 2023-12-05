@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { Rating } from 'react-native-ratings'
+import { useNavigation } from '@react-navigation/native';
 
 const ItemActive = (props) => {
-  const { dulieu, navigation } = props;
+  const { dulieu } = props;
+  const navigation = useNavigation()
 
   const clickItem = () => {
     console.log("Click Item");
@@ -30,12 +32,12 @@ const ItemActive = (props) => {
       </View>
       <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 350, marginStart: 5 }}>{dulieu.description}</Text>
       <View style={styles.review}>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20,}}>Giá người lớn: <Text style={{ textDecorationLine:'line-through', color: '#FF0000'}}>{dulieu.adultPrice} Đ</Text></Text>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold'}}>{dulieu.adultPrice - dulieu.adultPrice*dulieu.offer/100} Đ</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20, }}>Giá người lớn: <Text style={{ textDecorationLine: 'line-through', color: '#FF0000' }}>{dulieu.adultPrice} Đ</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold' }}>{dulieu.adultPrice - dulieu.adultPrice * dulieu.offer / 100} Đ</Text></Text>
       </View>
       <View style={styles.review}>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20 }}>Giá trẻ nhỏ: <Text style={{ textDecorationLine:'line-through', color: '#FF0000'}}>{dulieu.childrenPrice} Đ</Text></Text>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold'}}>{dulieu.childrenPrice - dulieu.childrenPrice*dulieu.offer/100} Đ</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20 }}>Giá trẻ nhỏ: <Text style={{ textDecorationLine: 'line-through', color: '#FF0000' }}>{dulieu.childrenPrice} Đ</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold' }}>{dulieu.childrenPrice - dulieu.childrenPrice * dulieu.offer / 100} Đ</Text></Text>
       </View>
 
     </TouchableOpacity>
