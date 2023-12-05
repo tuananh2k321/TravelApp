@@ -1,15 +1,14 @@
 import {
   FlatList,
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  ScrollView
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Searchbar} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AxiosIntance from '../../../constant/AxiosIntance';
@@ -18,11 +17,10 @@ import ItemSearch from '../../../component/Tab_item/ItemSearch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from 'react-native-modal';
 import Loading from '../../Loading';
-import { ScrollView } from 'react-native-virtualized-view'
 
 const SearchScreen = props => {
   const {navigation, route} = props;
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(true);
   const [searchHistory, setSearchHistory] = useState([]);
   const [TourRating, setTourRating] = useState([]);
@@ -67,18 +65,34 @@ const SearchScreen = props => {
   }, []);
   // Hàm này sẽ được gọi khi nội dung của Searchbar thay đổi
   const handleSearch = text => {
-    setSearchQuery(text);
+    if(text == undefined || text == null){
+      text = '';
+    }else{
+      setSearchQuery(text);
+    }
+    
     // Thực hiện tìm kiếm dựa trên nội dung `text` và cập nhật `searchResults`
     // Ví dụ: bạn có thể gọi một API hoặc tìm kiếm trong dữ liệu của mình ở đây
     // Sau đó, cập nhật `searchResults` với kết quả tìm kiếm
   };
 
   // Hàm này sẽ được gọi khi người dùng nhấn Enter hoặc nút tìm kiếm
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = async () => {
     // Lưu nội dung tìm kiếm vào lịch sử
-    setSearchHistory([searchQuery, ...searchHistory]);
-    setIsSearching(false);
-    performSearch(searchQuery);
+    
+    
+      if (!searchHistory.includes(searchQuery)) {
+        setSearchHistory([searchQuery, ...searchHistory]);
+        setIsSearching(false);
+        performSearch(searchQuery);
+    }else if(searchHistory.includes(searchQuery)){
+      setIsSearching(false);
+        performSearch(searchQuery);
+    }else if(searchQuery = ''){
+      setIsSearching(false);
+        performSearch(searchQuery);
+        console("searchQuery",searchQuery)
+    }
 
     // Thực hiện tìm kiếm và cập nhật kết quả tìm kiếm ở đây
   };
@@ -96,6 +110,7 @@ const SearchScreen = props => {
     //   ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
     // }
     fetchData(query, selectedRegion, selectedDomain);
+    
   };
   const handleHistoryItemPress = item => {
     // Gọi hàm tìm kiếm lại với nội dung của mục đã chọn
@@ -191,7 +206,9 @@ const SearchScreen = props => {
     toggleModal();
     fetchData(searchQuery, region, selectedDomain);
     // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
-     const  sortedProducts = [...TourNam].filter(item => item.limitedDay.includes(region));
+    const sortedProducts = [...TourNam].filter(item =>
+      item.limitedDay.includes(region),
+    );
 
     // setTourTime(sortedProducts);
   };
@@ -213,24 +230,24 @@ const SearchScreen = props => {
   );
 
   // lọc theo khu vực
- 
+
   const toggleModalDomain = () => {
     setIsModalDomain(!isModalDomain);
-    
   };
-  
 
   const onRegionSelectDomain = region => {
     setSelectedDomain(region);
     toggleModalDomain();
     // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
-    const sortedProducts = [...TourNam].filter(item => item.isdomain.includes(region));
+    const sortedProducts = [...TourNam].filter(item =>
+      item.isdomain.includes(region),
+    );
     // console.log("sortedProducts",sortedProducts)
 
     // setTourTime(sortedProducts);
     fetchData(searchQuery, selectedRegion, region);
   };
-
+  // item lọc theo ku vực
   const renderItemDomain = ({item}) => (
     <TouchableOpacity onPress={() => onRegionSelectDomain(item)}>
       <Text
@@ -238,8 +255,8 @@ const SearchScreen = props => {
           fontSize: 18,
           fontWeight: '400',
           color: '#000000',
-          backgroundColor: '#CACACA',  
-           padding: 5,
+          backgroundColor: '#CACACA',
+          padding: 5,
           margin: 5,
         }}>
         {item}
@@ -248,16 +265,16 @@ const SearchScreen = props => {
   );
   // xóa thiết lập
   const clearRegionSelection = () => {
-    setSelectedRegion(null);
-    setSelectedDomain(null);
-
+    setSelectedRegion('');
+    setSelectedDomain('');
+    fetchData(searchQuery,'','')
   };
   useEffect(() => {
     // Fetch initial data when the component mounts
     fetchData(searchQuery, selectedRegion, selectedDomain);
   }, []);
   return (
- <SafeAreaView
+    <SafeAreaView
       style={{
         backgroundColor: 'white',
         paddingHorizontal: 16,
@@ -266,7 +283,6 @@ const SearchScreen = props => {
         paddingBottom: 10,
         flexDirection: 'column',
       }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             flexDirection: 'row',
@@ -282,7 +298,7 @@ const SearchScreen = props => {
                       /> */}
           <Searchbar
             placeholder="Tìm kiếm..."
-            value={searchQuery}
+            value={searchQuery == undefined || null ? "" : searchQuery}
             onChangeText={handleSearch}
             elevation={4}
             onIconPress={handleSearchSubmit}
@@ -311,7 +327,8 @@ const SearchScreen = props => {
               Tìm kiếm gần đây
             </Text>
             {searchHistory?.map((item, index) => (
-              <View key={index}
+              <View
+                key={index}
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -407,11 +424,14 @@ const SearchScreen = props => {
                 <Loading />
               ) : (
                 <FlatList
-                  
                   horizontal
                   data={TourRating}
-                  renderItem={({item,key}) => (
-                    <ItemPopular dulieu={item} navigation={navigation} key={key}/>
+                  renderItem={({item, key}) => (
+                    <ItemPopular
+                      dulieu={item}
+                      navigation={navigation}
+                      key={key}
+                    />
                   )}
                   keyExtractor={item => item._id}
                   showsHorizontalScrollIndicator={false}
@@ -425,13 +445,15 @@ const SearchScreen = props => {
               <Loading />
             ) : (
               <View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                   <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'flex-end',
                       alignItems: 'center',
-                      marginTop: 20,
+                      marginTop: 10,
+                      width:'auto',
+                      height:70
                     }}>
                     <TouchableOpacity
                       style={{borderWidth: 0.3, padding: 5}}
@@ -440,40 +462,58 @@ const SearchScreen = props => {
                         Xóa thiết lập
                       </Text>
                     </TouchableOpacity>
-                    <View style={{marginHorizontal: 10,borderWidth:0.3, padding: 5}}>
-                    <TouchableOpacity
-                          onPress={toggleModal}
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}>
-                          <Text style={{fontSize: 20, fontWeight: '400'}}>
-                            {selectedRegion || 'Chọn thời gian'}
-                          </Text>
-                          <View style={{flexDirection:'column'}}>
-                          <AntDesign name="up" size={18} color="grey" style={{marginVertical:-5}} />
-                            <AntDesign name="down" size={18} color="grey" style={{marginVertical:-5}}/>
-                          </View>
-                        </TouchableOpacity>
+                    <View
+                      style={{
+                        marginHorizontal: 10,
+                        borderWidth: 0.3,
+                        padding: 5,
+                      }}>
+                      <TouchableOpacity
+                        onPress={toggleModal}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text style={{fontSize: 20, fontWeight: '400'}}>
+                          {selectedRegion || 'Chọn thời gian'}
+                        </Text>
+                        <View style={{flexDirection: 'column'}}>
+                          <AntDesign
+                            name="up"
+                            size={18}
+                            color="grey"
+                            style={{marginVertical: -5}}
+                          />
+                          <AntDesign
+                            name="down"
+                            size={18}
+                            color="grey"
+                            style={{marginVertical: -5}}
+                          />
+                        </View>
+                      </TouchableOpacity>
                       <Modal
                         style={{
                           justifyContent: 'center',
                           alignItems: 'center',
-                          
                         }}
                         visible={isModalVisible}
                         animationType="slide"
+                        backdropColor='gray'
+                        backdropOpacity={0.3}
                         onRequestClose={toggleModal}>
-                         <View
+                        <View
                           style={[
-                            {backgroundColor: 'white',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: 'auto',
-                            height: '50%',
-                            backgroundColor: '#ffffff',
-                            borderRadius:5,}
+                            {
+                              backgroundColor: 'white',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              width: 'auto',
+                              height: '50%',
+                              backgroundColor: '#ffffff',
+                              borderRadius: 5,
+                            },
                           ]}>
                           <Text
                             style={{
@@ -493,7 +533,7 @@ const SearchScreen = props => {
                         </View>
                       </Modal>
                     </View>
-                    <View style={{borderWidth:0.3,}}>
+                    <View style={{borderWidth: 0.3}}>
                       <TouchableOpacity
                         onPress={toggleModalDomain}
                         style={{
@@ -506,15 +546,27 @@ const SearchScreen = props => {
                         <Text style={{fontSize: 20, fontWeight: '400'}}>
                           {selectedDomain || 'Chọn khu vực'}
                         </Text>
-                        <View style={{flexDirection:'column'}}>
-                          <AntDesign name="up" size={18} color="grey" style={{marginVertical:-5}} />
-                            <AntDesign name="down" size={18} color="grey" style={{marginVertical:-5}}/>
-                          </View>
+                        <View style={{flexDirection: 'column'}}>
+                          <AntDesign
+                            name="up"
+                            size={18}
+                            color="grey"
+                            style={{marginVertical: -5}}
+                          />
+                          <AntDesign
+                            name="down"
+                            size={18}
+                            color="grey"
+                            style={{marginVertical: -5}}
+                          />
+                        </View>
                       </TouchableOpacity>
-                    
+
                       <Modal
                         animationType="slide"
                         visible={isModalDomain}
+                        backdropColor='gray'
+                        backdropOpacity={0.3}
                         onRequestClose={toggleModalDomain}
                         style={{
                           justifyContent: 'center',
@@ -522,13 +574,15 @@ const SearchScreen = props => {
                         }}>
                         <View
                           style={[
-                            {backgroundColor: 'white',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: 'auto',
-                            height: '50%',
-                            backgroundColor: '#ffffff',
-                            borderRadius:5,}
+                            {
+                              backgroundColor: 'white',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              width: 'auto',
+                              height: '50%',
+                              backgroundColor: '#ffffff',
+                              borderRadius: 5,
+                            },
                           ]}>
                           <Text
                             style={{
@@ -551,11 +605,11 @@ const SearchScreen = props => {
                     <TouchableOpacity
                       style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
-                        marginVertical: 10,
-                        borderWidth: 0.3,
-                        padding: 5,
-                        marginHorizontal: 10,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderWidth: 0.3,
+                          padding: 5,
+                          marginHorizontal:5
                       }}
                       onPress={toggleSortOrder}>
                       <Text style={{fontSize: 20, fontWeight: '400'}}>
@@ -583,22 +637,24 @@ const SearchScreen = props => {
                   <ItemSearch dulieu={item} navigation={navigation} />
                 ))} */}
                 <FlatList
-                  style={{marginTop: 10, flex: 1}}
-                  scrollEnabled={false}
+                  style={{marginTop: 10}}
                   data={TourNam}
-                  renderItem={({item,index}) => (
-                    <ItemSearch dulieu={item} navigation={navigation} key={index}/>
+                  
+                  renderItem={({item, index}) => (
+                    <ItemSearch
+                      dulieu={item}
+                      navigation={navigation}
+                      key={index}
+                    />
                   )}
                   keyExtractor={item => item._id}
-                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
                 />
               </View>
             )}
           </>
         )}
-      </ScrollView>
     </SafeAreaView>
-   
   );
 };
 
@@ -662,5 +718,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-  }
+  },
 });
