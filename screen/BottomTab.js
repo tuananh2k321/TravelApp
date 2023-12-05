@@ -41,6 +41,7 @@ import Mybooking from "./tab_app/Profile/Mybooking"
 import NotifiSuccess from './tab_app/Notification/NotifiSuccess';
 import NotifiCancel from './tab_app/Notification/NotifiCancel';
 import TestZalopay from '../screen/booking/TestZalopay'
+import CancelMyBooking from './tab_app/Profile/CancelMyBooking';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -124,6 +125,7 @@ const StackProfile = () => {
       <Stack.Screen name="Reason" component={Reason} />
       <Stack.Screen name="HandlingMyBooking" component={HandlingMyBooking} />
       <Stack.Screen name="HandleCancelBooking" component={HandleCancelBooking} options={header("Tour đang chờ xác nhận hủy")} />
+      <Stack.Screen name="CancelMyBooking" component={CancelMyBooking} options={header("Tour đã hủy")} />
       <Stack.Screen name="DetailCancelBooking" component={DetailCancelBooking} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
       <Stack.Screen name="Login" component={Login} />

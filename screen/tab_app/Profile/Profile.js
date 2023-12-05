@@ -111,6 +111,21 @@ const Profile = props => {
                 </View>
               </View>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('CancelMyBooking')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{ tintColor: COLOR.primary }}
+                    source={require('../../../assets/icon/icons8-history-24.png')}></Image>
+                  <Text style={styles.button_setting_text}>Tour đã hủy</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
+              </View>
+            </TouchableOpacity>
             {/* <TouchableOpacity onPress={() => navigation.navigate('Mybooking')}>
               <View style={styles.button_setting}>
                 <View style={styles.button_setting_left}>
