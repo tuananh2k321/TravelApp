@@ -1,24 +1,24 @@
 import {
   FlatList,
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Searchbar} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemPopular from '../../../component/Tab_item/ItemPopular';
 import ItemSearch from '../../../component/Tab_item/ItemSearch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ModalDropdown from 'react-native-modal-dropdown';
 import Modal from 'react-native-modal';
 import Loading from '../../Loading';
-import { COLOR } from '../../../constant/Themes';
+import { ScrollView } from 'react-native-virtualized-view'
 
 const SearchScreen = props => {
   const {navigation, route} = props;
@@ -95,7 +95,7 @@ const SearchScreen = props => {
     // } else {
     //   ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
     // }
-    fetchData(query, '', '');
+    fetchData(query, selectedRegion, selectedDomain);
   };
   const handleHistoryItemPress = item => {
     // Gọi hàm tìm kiếm lại với nội dung của mục đã chọn
@@ -191,7 +191,7 @@ const SearchScreen = props => {
     toggleModal();
     fetchData(searchQuery, region, selectedDomain);
     // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
-    // const  sortedProducts = [...TourNam].filter(item => item.limitedDay.includes(region));
+     const  sortedProducts = [...TourNam].filter(item => item.limitedDay.includes(region));
 
     // setTourTime(sortedProducts);
   };
@@ -202,7 +202,7 @@ const SearchScreen = props => {
         style={{
           fontSize: 18,
           fontWeight: '400',
-          color: COLOR.primary,
+          color: '#000000',
           backgroundColor: '#CACACA',
           padding: 5,
           margin: 5,
@@ -224,9 +224,7 @@ const SearchScreen = props => {
     setSelectedDomain(region);
     toggleModalDomain();
     // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
-    const sortedProducts = [...TourNam].filter(item =>
-      item.isdomain.includes(region),
-    );
+    const sortedProducts = [...TourNam].filter(item => item.isdomain.includes(region));
     // console.log("sortedProducts",sortedProducts)
 
     // setTourTime(sortedProducts);
@@ -252,13 +250,14 @@ const SearchScreen = props => {
   const clearRegionSelection = () => {
     setSelectedRegion(null);
     setSelectedDomain(null);
+
   };
   useEffect(() => {
     // Fetch initial data when the component mounts
     fetchData(searchQuery, selectedRegion, selectedDomain);
   }, []);
   return (
-    <SafeAreaView
+ <SafeAreaView
       style={{
         backgroundColor: 'white',
         paddingHorizontal: 16,
@@ -266,7 +265,6 @@ const SearchScreen = props => {
         flex: 1,
         paddingBottom: 10,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
@@ -313,7 +311,7 @@ const SearchScreen = props => {
               Tìm kiếm gần đây
             </Text>
             {searchHistory?.map((item, index) => (
-              <View
+              <View key={index}
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -409,11 +407,11 @@ const SearchScreen = props => {
                 <Loading />
               ) : (
                 <FlatList
-                  style={{marginTop: 10, flex: 1}}
+                  
                   horizontal
                   data={TourRating}
-                  renderItem={({item}) => (
-                    <ItemPopular dulieu={item} navigation={navigation} />
+                  renderItem={({item,key}) => (
+                    <ItemPopular dulieu={item} navigation={navigation} key={key}/>
                   )}
                   keyExtractor={item => item._id}
                   showsHorizontalScrollIndicator={false}
@@ -442,7 +440,7 @@ const SearchScreen = props => {
                         Xóa thiết lập
                       </Text>
                     </TouchableOpacity>
-                    <View style={{marginHorizontal: 10,borderWidth:0.3}}>
+                    <View style={{marginHorizontal: 10,borderWidth:0.3, padding: 5}}>
                     <TouchableOpacity
                           onPress={toggleModal}
                           style={{
@@ -453,7 +451,10 @@ const SearchScreen = props => {
                           <Text style={{fontSize: 20, fontWeight: '400'}}>
                             {selectedRegion || 'Chọn thời gian'}
                           </Text>
-                          <AntDesign name="down" size={18} color="grey" />
+                          <View style={{flexDirection:'column'}}>
+                          <AntDesign name="up" size={18} color="grey" style={{marginVertical:-5}} />
+                            <AntDesign name="down" size={18} color="grey" style={{marginVertical:-5}}/>
+                          </View>
                         </TouchableOpacity>
                       <Modal
                         style={{
@@ -462,8 +463,6 @@ const SearchScreen = props => {
                           
                         }}
                         visible={isModalVisible}
-                        backdropColor="gray"
-                        backdropOpacity={0.5} 
                         animationType="slide"
                         onRequestClose={toggleModal}>
                          <View
@@ -507,14 +506,15 @@ const SearchScreen = props => {
                         <Text style={{fontSize: 20, fontWeight: '400'}}>
                           {selectedDomain || 'Chọn khu vực'}
                         </Text>
-                        <AntDesign name="down" size={18} color="grey" />
+                        <View style={{flexDirection:'column'}}>
+                          <AntDesign name="up" size={18} color="grey" style={{marginVertical:-5}} />
+                            <AntDesign name="down" size={18} color="grey" style={{marginVertical:-5}}/>
+                          </View>
                       </TouchableOpacity>
                     
                       <Modal
                         animationType="slide"
                         visible={isModalDomain}
-                        backdropColor="gray" 
-                        backdropOpacity={0.5} 
                         onRequestClose={toggleModalDomain}
                         style={{
                           justifyContent: 'center',
@@ -586,8 +586,8 @@ const SearchScreen = props => {
                   style={{marginTop: 10, flex: 1}}
                   scrollEnabled={false}
                   data={TourNam}
-                  renderItem={({item}) => (
-                    <ItemSearch dulieu={item} navigation={navigation} />
+                  renderItem={({item,index}) => (
+                    <ItemSearch dulieu={item} navigation={navigation} key={index}/>
                   )}
                   keyExtractor={item => item._id}
                   showsHorizontalScrollIndicator={false}
@@ -598,6 +598,7 @@ const SearchScreen = props => {
         )}
       </ScrollView>
     </SafeAreaView>
+   
   );
 };
 
