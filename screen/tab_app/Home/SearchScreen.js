@@ -2,11 +2,9 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
-  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Searchbar} from 'react-native-paper';
@@ -18,7 +16,9 @@ import ItemPopular from '../../../component/Tab_item/ItemPopular';
 import ItemSearch from '../../../component/Tab_item/ItemSearch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalDropdown from 'react-native-modal-dropdown';
+import Modal from 'react-native-modal';
 import Loading from '../../Loading';
+import { COLOR } from '../../../constant/Themes';
 
 const SearchScreen = props => {
   const {navigation, route} = props;
@@ -43,11 +43,7 @@ const SearchScreen = props => {
 
   // lọc theo khu vực
   const [selectedDomain, setSelectedDomain] = useState('');
-  const [domain, setDomain] = useState([
-    'Mien Nam',
-    'Mien Bac',
-    'Mien Trung'
-  ]); // Thay đổi các khu vực theo nhu cầu của bạn
+  const [domain, setDomain] = useState(['Mien Nam', 'Mien Bac', 'Mien Trung']); // Thay đổi các khu vực theo nhu cầu của bạn
   const [isModalDomain, setIsModalDomain] = useState(false);
   // api danh sách theo rating
   useEffect(() => {
@@ -99,7 +95,7 @@ const SearchScreen = props => {
     // } else {
     //   ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
     // }
-    fetchData(query,"","")
+    fetchData(query, '', '');
   };
   const handleHistoryItemPress = item => {
     // Gọi hàm tìm kiếm lại với nội dung của mục đã chọn
@@ -149,10 +145,15 @@ const SearchScreen = props => {
       // Xử lý lỗi khi ghi vào AsyncStorage
     }
   };
-  const fetchData = async (query,byDate,byDomain) => {
+  const fetchData = async (query, byDate, byDomain) => {
     try {
       const response = await AxiosIntance().get(
-        'tour/api/list/search?q=' + query + '&byDate=' + byDate + '&byDomain=' + byDomain,
+        'tour/api/list/search?q=' +
+          query +
+          '&byDate=' +
+          byDate +
+          '&byDomain=' +
+          byDomain,
       );
       if (response.result) {
         setTourNam(response.sortedtTours);
@@ -185,52 +186,77 @@ const SearchScreen = props => {
     setIsModalVisible(!isModalVisible);
   };
 
-  const onRegionSelect =async (region) => {
+  const onRegionSelect = async region => {
     setSelectedRegion(region);
     toggleModal();
-   fetchData(searchQuery,region,selectedDomain)
+    fetchData(searchQuery, region, selectedDomain);
     // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
     // const  sortedProducts = [...TourNam].filter(item => item.limitedDay.includes(region));
-    
+
     // setTourTime(sortedProducts);
   };
-  
+
   const renderItemTime = ({item}) => (
     <TouchableOpacity onPress={() => onRegionSelect(item)}>
-      <Text style={{fontSize:18,fontWeight:'400',color:'#000000',backgroundColor:'#CACACA',padding:5,margin:5}}>{item}</Text>
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: '400',
+          color: COLOR.primary,
+          backgroundColor: '#CACACA',
+          padding: 5,
+          margin: 5,
+        }}>
+        {item}
+      </Text>
     </TouchableOpacity>
   );
 
   // lọc theo khu vực
+ 
   const toggleModalDomain = () => {
     setIsModalDomain(!isModalDomain);
+    
   };
+  
 
-  const onRegionSelectDomain = (region) => {
+  const onRegionSelectDomain = region => {
     setSelectedDomain(region);
     toggleModalDomain();
     // Thêm logic xử lý khi chọn thời gian, ví dụ: cập nhật danh sách sản phẩm theo thời gian
-    const sortedProducts = [...TourNam].filter(item => item.isdomain.includes(region));
+    const sortedProducts = [...TourNam].filter(item =>
+      item.isdomain.includes(region),
+    );
     // console.log("sortedProducts",sortedProducts)
-    
+
     // setTourTime(sortedProducts);
-    fetchData(searchQuery,selectedRegion,region)
+    fetchData(searchQuery, selectedRegion, region);
   };
-  
+
   const renderItemDomain = ({item}) => (
     <TouchableOpacity onPress={() => onRegionSelectDomain(item)}>
-      <Text style={{fontSize:18,fontWeight:'400',color:'#000000',backgroundColor:'#CACACA',padding:5,margin:5}}>{item}</Text>
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: '400',
+          color: '#000000',
+          backgroundColor: '#CACACA',  
+           padding: 5,
+          margin: 5,
+        }}>
+        {item}
+      </Text>
     </TouchableOpacity>
   );
-    // xóa thiết lập
+  // xóa thiết lập
   const clearRegionSelection = () => {
     setSelectedRegion(null);
     setSelectedDomain(null);
   };
   useEffect(() => {
     // Fetch initial data when the component mounts
-    fetchData(searchQuery,selectedRegion,selectedDomain);
-  },[]);
+    fetchData(searchQuery, selectedRegion, selectedDomain);
+  }, []);
   return (
     <SafeAreaView
       style={{
@@ -402,99 +428,146 @@ const SearchScreen = props => {
             ) : (
               <View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    marginTop: 20,
-                  }}>
-                  <TouchableOpacity style={{borderWidth: 0.3, padding: 5}} onPress={clearRegionSelection}>
-                    <Text style={{fontSize: 20, fontWeight: '400'}}>Xóa thiết lập</Text>
-                  </TouchableOpacity>
-                  <View style={{marginHorizontal:10}}>
-                    <ModalDropdown
-                      options={regions}
-                      onSelect={(index, value) => onRegionSelect(value)}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                      marginTop: 20,
+                    }}>
+                    <TouchableOpacity
                       style={{borderWidth: 0.3, padding: 5}}
-                      textStyle={styles.filterButtonText}>
-                      <TouchableOpacity
-                        onPress={toggleModal}
+                      onPress={clearRegionSelection}>
+                      <Text style={{fontSize: 20, fontWeight: '400'}}>
+                        Xóa thiết lập
+                      </Text>
+                    </TouchableOpacity>
+                    <View style={{marginHorizontal: 10,borderWidth:0.3}}>
+                    <TouchableOpacity
+                          onPress={toggleModal}
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <Text style={{fontSize: 20, fontWeight: '400'}}>
+                            {selectedRegion || 'Chọn thời gian'}
+                          </Text>
+                          <AntDesign name="down" size={18} color="grey" />
+                        </TouchableOpacity>
+                      <Modal
                         style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
                           justifyContent: 'center',
-                        }}>
-                        <Text style={{fontSize: 20, fontWeight: '400'}}>
-                          {selectedRegion || 'Chọn thời gian'}
-                        </Text>
-                        <AntDesign name="down" size={18} color="grey" />
-                      </TouchableOpacity>
-                    </ModalDropdown>
-                    <Modal
-                      visible={isModalVisible}
-                      onRequestClose={toggleModal}>
-                      <View style={styles.modalContent}>
-                        <FlatList
-                        numColumns={2}
-                          data={regions}
-                          renderItem={renderItemTime}
-                          keyExtractor={item => item}
-                        />
-                      </View>
-                    </Modal>
-                  </View>
-                  <View >
-                    <ModalDropdown
-                      options={domain}
-                      onSelect={(index, value) => onRegionSelectDomain(value)}
-                      style={{borderWidth: 0.3, padding: 5}}
-                      textStyle={styles.filterButtonText}>
+                          alignItems: 'center',
+                          
+                        }}
+                        visible={isModalVisible}
+                        backdropColor="gray"
+                        backdropOpacity={0.5} 
+                        animationType="slide"
+                        onRequestClose={toggleModal}>
+                         <View
+                          style={[
+                            {backgroundColor: 'white',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: 'auto',
+                            height: '50%',
+                            backgroundColor: '#ffffff',
+                            borderRadius:5,}
+                          ]}>
+                          <Text
+                            style={{
+                              padding: 20,
+                              color: '#000000',
+                              fontSize: 20,
+                              fontWeight: '600',
+                            }}>
+                            Danh sách thời gian
+                          </Text>
+                          <FlatList
+                            numColumns={2}
+                            data={regions}
+                            renderItem={renderItemTime}
+                            keyExtractor={item => item}
+                          />
+                        </View>
+                      </Modal>
+                    </View>
+                    <View style={{borderWidth:0.3,}}>
                       <TouchableOpacity
                         onPress={toggleModalDomain}
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
                           justifyContent: 'center',
+                          borderWidth: 0.3,
+                          padding: 5,
                         }}>
                         <Text style={{fontSize: 20, fontWeight: '400'}}>
                           {selectedDomain || 'Chọn khu vực'}
                         </Text>
                         <AntDesign name="down" size={18} color="grey" />
                       </TouchableOpacity>
-                    </ModalDropdown>
-                    <Modal
-                      visible={isModalDomain}
-                      onRequestClose={toggleModalDomain}>
-                      <View style={styles.modalContent}>
-                        <FlatList
-                        numColumns={2}
-                          data={domain}
-                          renderItem={renderItemDomain}
-                          keyExtractor={item => item}
-                        />
-                      </View>
-                    </Modal>
+                    
+                      <Modal
+                        animationType="slide"
+                        visible={isModalDomain}
+                        backdropColor="gray" 
+                        backdropOpacity={0.5} 
+                        onRequestClose={toggleModalDomain}
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <View
+                          style={[
+                            {backgroundColor: 'white',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: 'auto',
+                            height: '50%',
+                            backgroundColor: '#ffffff',
+                            borderRadius:5,}
+                          ]}>
+                          <Text
+                            style={{
+                              padding: 20,
+                              color: '#000000',
+                              fontSize: 20,
+                              fontWeight: '600',
+                            }}>
+                            Danh sách những khu vực
+                          </Text>
+                          <FlatList
+                            numColumns={2}
+                            data={domain}
+                            renderItem={renderItemDomain}
+                            keyExtractor={item => item}
+                          />
+                        </View>
+                      </Modal>
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginVertical: 10,
+                        borderWidth: 0.3,
+                        padding: 5,
+                        marginHorizontal: 10,
+                      }}
+                      onPress={toggleSortOrder}>
+                      <Text style={{fontSize: 20, fontWeight: '400'}}>
+                        Giá{' '}
+                      </Text>
+                      {sortOrder === 'asc' ? (
+                        <AntDesign name="arrowup" size={20} color="grey" />
+                      ) : (
+                        <AntDesign name="arrowdown" size={20} color="grey" />
+                      )}
+                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginVertical: 10,
-                      borderWidth: 0.3,
-                      padding: 5,
-                      marginHorizontal:10
-                    }}
-                    onPress={toggleSortOrder}>
-                    <Text style={{fontSize: 20, fontWeight: '400'}}>Giá </Text>
-                    {sortOrder === 'asc' ? (
-                      <AntDesign name="arrowup" size={20} color="grey" />
-                    ) : (
-                      <AntDesign name="arrowdown" size={20} color="grey" />
-                    )}
-                  </TouchableOpacity>
-                  
-                </View>
                 </ScrollView>
                 <Text
                   style={{
@@ -575,8 +648,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   modalContent: {
-    backgroundColor: 'white',
-    padding: 22,
+    backgroundColor: 'red',
+    margin: 22,
+    width: '50%',
+    height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
@@ -586,5 +661,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-  },
+  }
 });
