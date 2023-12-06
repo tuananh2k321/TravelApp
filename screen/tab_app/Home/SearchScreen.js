@@ -65,11 +65,7 @@ const SearchScreen = props => {
   }, []);
   // Hàm này sẽ được gọi khi nội dung của Searchbar thay đổi
   const handleSearch = text => {
-    if(text == undefined || text == null){
-      text = '';
-    }else{
-      setSearchQuery(text);
-    }
+    setSearchQuery(text);
     
     // Thực hiện tìm kiếm dựa trên nội dung `text` và cập nhật `searchResults`
     // Ví dụ: bạn có thể gọi một API hoặc tìm kiếm trong dữ liệu của mình ở đây
@@ -88,10 +84,6 @@ const SearchScreen = props => {
     }else if(searchHistory.includes(searchQuery)){
       setIsSearching(false);
         performSearch(searchQuery);
-    }else if(searchQuery = ''){
-      setIsSearching(false);
-        performSearch(searchQuery);
-        console("searchQuery",searchQuery)
     }
 
     // Thực hiện tìm kiếm và cập nhật kết quả tìm kiếm ở đây
@@ -99,16 +91,7 @@ const SearchScreen = props => {
   const performSearch = async query => {
     // Thực hiện tìm kiếm dựa trên nội dung `query` và cập nhật `searchResults`
     // Ví dụ: bạn có thể gọi một API hoặc tìm kiếm trong dữ liệu của mình ở đây
-    // const response = await AxiosIntance().get(
-    //   'tour/api/search/name?q=' + query
-    // );
-    // if (response.result) {
-    //   setTourNam(response.tours);
-    //   setTourTime(TourNam);
-    //   setIsLoading(false);
-    // } else {
-    //   ToastAndroid.show('Lấy dữ liệu thấy bại', ToastAndroid.SHORT);
-    // }
+   
     fetchData(query, selectedRegion, selectedDomain);
     
   };
@@ -214,13 +197,12 @@ const SearchScreen = props => {
   };
 
   const renderItemTime = ({item}) => (
-    <TouchableOpacity onPress={() => onRegionSelect(item)}>
+    <TouchableOpacity style={{ backgroundColor: '#CACACA',margin:5,width:'45%',alignItems:'center'}} onPress={() => onRegionSelect(item)}>
       <Text
         style={{
           fontSize: 18,
           fontWeight: '400',
           color: '#000000',
-          backgroundColor: '#CACACA',
           padding: 5,
           margin: 5,
         }}>
@@ -249,15 +231,13 @@ const SearchScreen = props => {
   };
   // item lọc theo ku vực
   const renderItemDomain = ({item}) => (
-    <TouchableOpacity onPress={() => onRegionSelectDomain(item)}>
+    <TouchableOpacity style={{ backgroundColor: '#CACACA',margin:5,width:'45%',alignItems:'center'}} onPress={() => onRegionSelectDomain(item)}>
       <Text
         style={{
           fontSize: 18,
           fontWeight: '400',
           color: '#000000',
-          backgroundColor: '#CACACA',
-          padding: 5,
-          margin: 5,
+          padding: 10,
         }}>
         {item}
       </Text>
@@ -272,7 +252,8 @@ const SearchScreen = props => {
   useEffect(() => {
     // Fetch initial data when the component mounts
     fetchData(searchQuery, selectedRegion, selectedDomain);
-  }, []);
+  }, [searchQuery]);
+  
   return (
     <SafeAreaView
       style={{
@@ -298,7 +279,7 @@ const SearchScreen = props => {
                       /> */}
           <Searchbar
             placeholder="Tìm kiếm..."
-            value={searchQuery == undefined || null ? "" : searchQuery}
+            value={searchQuery}
             onChangeText={handleSearch}
             elevation={4}
             onIconPress={handleSearchSubmit}
@@ -498,26 +479,25 @@ const SearchScreen = props => {
                           justifyContent: 'center',
                           alignItems: 'center',
                         }}
-                        visible={isModalVisible}
+                        isVisible={isModalVisible}
                         animationType="slide"
-                        backdropColor='gray'
-                        backdropOpacity={0.3}
+                        backdropColor="rgba(0,0,0,0.5)"
+                        backdropOpacity={0.7}
                         onRequestClose={toggleModal}>
                         <View
                           style={[
                             {
-                              backgroundColor: 'white',
-                              justifyContent: 'center',
                               alignItems: 'center',
-                              width: 'auto',
-                              height: '50%',
-                              backgroundColor: '#ffffff',
+                              width: '100%',
+                              height: 'auto',
                               borderRadius: 5,
+                              backgroundColor:'#ffffff',
+                              padding: 20,
                             },
                           ]}>
                           <Text
                             style={{
-                              padding: 20,
+                              
                               color: '#000000',
                               fontSize: 20,
                               fontWeight: '600',
@@ -527,9 +507,24 @@ const SearchScreen = props => {
                           <FlatList
                             numColumns={2}
                             data={regions}
+                            scrollEnabled={false}
                             renderItem={renderItemTime}
                             keyExtractor={item => item}
                           />
+                          {/* Cancel Button */}
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: '#ff0000', // Replace with your preferred color
+                              padding: 10,
+                              borderRadius: 5,
+                              marginTop:5
+                            }}
+                            onPress={toggleModal}
+                          >
+                            <Text style={{ color: '#ffffff', fontSize: 16, fontWeight: 'bold' }}>
+                              Hủy
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </Modal>
                     </View>
@@ -564,9 +559,9 @@ const SearchScreen = props => {
 
                       <Modal
                         animationType="slide"
-                        visible={isModalDomain}
-                        backdropColor='gray'
-                        backdropOpacity={0.3}
+                        isVisible={isModalDomain}
+                        backdropColor="rgba(0,0,0,0.5)"
+                        backdropOpacity={0.7}
                         onRequestClose={toggleModalDomain}
                         style={{
                           justifyContent: 'center',
@@ -575,18 +570,16 @@ const SearchScreen = props => {
                         <View
                           style={[
                             {
-                              backgroundColor: 'white',
-                              justifyContent: 'center',
                               alignItems: 'center',
-                              width: 'auto',
-                              height: '50%',
-                              backgroundColor: '#ffffff',
+                              width: '100%',
+                              height: 'auto',
                               borderRadius: 5,
+                              backgroundColor:'#ffffff',
+                              padding: 20,
                             },
                           ]}>
                           <Text
                             style={{
-                              padding: 20,
                               color: '#000000',
                               fontSize: 20,
                               fontWeight: '600',
@@ -596,9 +589,24 @@ const SearchScreen = props => {
                           <FlatList
                             numColumns={2}
                             data={domain}
+                            scrollEnabled={false}
                             renderItem={renderItemDomain}
                             keyExtractor={item => item}
                           />
+                           {/* Cancel Button */}
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: '#ff0000', // Replace with your preferred color
+                              padding: 10,
+                              borderRadius: 5,
+                              marginTop:5
+                            }}
+                            onPress={toggleModalDomain}
+                          >
+                            <Text style={{ color: '#ffffff', fontSize: 16, fontWeight: 'bold' }}>
+                              Hủy
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </Modal>
                     </View>
