@@ -48,6 +48,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.7.1",
     "react-native-material-datetime-picker": "^0.2.1",
+    "react-native-modal": "^13.0.1",
     "react-native-modal-dropdown": "^1.0.2",
     "react-native-network-info": "^5.2.1",
     "react-native-pager-view": "^6.2.3",
