@@ -91,6 +91,15 @@ const StackFavorites = () => {
   )
 }
 
+const StackDeal = () => {
+  return (
+    <Stack.Navigator initialRouteName="DealMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="DealMain" component={Deal} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
+    </Stack.Navigator>
+  )
+}
+
 
 const StackNotification = () => {
   return (
@@ -227,7 +236,7 @@ const BottomTab = () => {
         })}
     >
       <Tab.Screen name="Home" component={StackHomes} />
-      <Tab.Screen name='Deal' component={Deal} />
+      <Tab.Screen name='Deal' component={StackDeal} />
       <Tab.Screen name="Favorite" component={StackFavorites} />
       <Tab.Screen name="Notification" component={StackNotification} />
       <Tab.Screen name="Profile" component={StackProfile} />
