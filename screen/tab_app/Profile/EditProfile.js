@@ -58,7 +58,7 @@ const EditProfile = (props) => {
 
   const userId = useSelector(state => state.user.user._id);
   const [isLoading, setIsLoading] = useState(true)
-
+  console.log("Ngày sinh: ", dob);
   const btnEditProfile = async (url) => {
     console.log('btnEditProfile');
     console.log(errorPhone);
@@ -70,29 +70,29 @@ const EditProfile = (props) => {
           type: 'EDIT-PROFILE',
           payload: [email, url, name, lastName, phoneNumber, dob],
         });
-
+        handleReloadPage();
       }
     } catch (error) {
       console.log('AxiosIntance', error);
     }
   };
 
-  useEffect(() => {
-    try {
-      console.log('edit user: ' + JSON.stringify(updateUser));
-      if (updateUser.result) {
-        //console.log('email: '+user.dataEditProfile.user.name)
-        handleReloadPage()
-      } else {
-        setMessageRegister(user.dataEditProfile.message);
-        console.log(messageRegister);
-        //ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.LONG);
-      }
-    } catch (error) {
+  // useEffect(() => {
+  //   try {
+  //     console.log('edit user: ' + JSON.stringify(updateUser));
+  //     if (updateUser.result) {
+  //       //console.log('email: '+user.dataEditProfile.user.name)
+  //       handleReloadPage()
+  //     } else {
+  //       setMessageRegister(user.dataEditProfile.message);
+  //       console.log(messageRegister);
+  //       //ToastAndroid.show('Đăng ký thất bại!', ToastAndroid.LONG);
+  //     }
+  //   } catch (error) {
 
-    }
+  //   }
 
-  }, [updateUser]);
+  // }, [updateUser]);
 
   const handleReloadPage = () => {
     navigation.popToTop();
@@ -198,11 +198,12 @@ const EditProfile = (props) => {
 
 
   useEffect(() => {
-    try {
-      if (user) {
+
+    const getUser = () => {
+        if (user) {
         console.log('Edit Profile user: ' + JSON.stringify(user));
         setIsLoading(false)
-        console.log(user.dob)
+        console.log("user. dob",user.dob)
         setEmail(user.email)
         setName(user.name)
         setLastName(user.lastName)
@@ -211,11 +212,27 @@ const EditProfile = (props) => {
       } else {
         setIsLoading(true)
       }
-    } catch (error) {
-      console.log("error: " + error);
     }
 
-  }, [user]);
+    getUser();
+    // try {
+    //   if (user) {
+    //     console.log('Edit Profile user: ' + JSON.stringify(user));
+    //     setIsLoading(false)
+    //     console.log("user. dob",user.dob)
+    //     setEmail(user.email)
+    //     setName(user.name)
+    //     setLastName(user.lastName)
+    //     setPhoneNumber(user.phoneNumber)
+    //     setDob(user.dob)
+    //   } else {
+    //     setIsLoading(true)
+    //   }
+    // } catch (error) {
+    //   console.log("error: " + error);
+    // }
+
+  },[]);
 
   if (isLoading) {
     return <Loading></Loading>;
@@ -382,11 +399,12 @@ const EditProfile = (props) => {
             hintText="01/05/2003"
             isIconRight={true}
             icon={ICON.calendar}
-            defaultValue={user.dob}
+            defaultValue={dob.toString()}
+            // defaultValue={user.dob}
             onPress={() => setOpen(true)}
             borderError={errorBirthday}
             onChangeText={text => {
-              console.log(text);
+              console.log("Input",text);
               setDob(text);
               setErrorBirthday(validateDateOfBirth(text));
               setIsvalid(true);
