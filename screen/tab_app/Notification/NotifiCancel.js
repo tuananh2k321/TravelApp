@@ -9,9 +9,9 @@ import AxiosIntance from '../../../constant/AxiosIntance';
 import { COLOR } from '../../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 const NotifiCancel = (props) => {
-    const {navigation, route} = props;
+    const { navigation, route } = props;
     const { params } = route;
-    console.log("notifi-cancel: ",params.id)
+    console.log("notifi-cancel: ", params.id)
     const [dataTour, setDataTour] = useState()
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -36,26 +36,26 @@ const NotifiCancel = (props) => {
     }
     return (
         <View style={styles.container}>
-                 <TouchableOpacity
-                    onPress={() => navigation.pop()}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 50,
-                      backgroundColor: COLOR.white,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
-                  </TouchableOpacity>
-                <View style={styles.group_Content}>
-                    <Image style={styles.image} source={require('../../../assets/logo/logo.png')} />
-                    <Text style={styles.title}>Đặt Tour</Text>
-                    <Text style={[styles.title, { fontSize: 37 }]}>Thành Công</Text>
-                    <Text style={styles.content}>Chuẩn bị sẵn sàng mọi thứ trước ngày đi của bạn</Text>
-                </View>
-                <ItemComment data={dataTour} navigation={navigation} />
-        
+            <TouchableOpacity
+                onPress={() => navigation.pop()}
+                style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 50,
+                    backgroundColor: COLOR.white,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
+            </TouchableOpacity>
+            <View style={styles.group_Content}>
+                <Image style={styles.image} source={require('../../../assets/logo/logo.png')} />
+                <Text style={styles.title}>Hủy Tour</Text>
+                <Text style={[styles.title, { fontSize: 37 }]}> Thành Công</Text>
+                <Text style={styles.content}>Bạn sớm đặt lại tour nhé !</Text>
+            </View>
+            <ItemComment data={dataTour} navigation={navigation} />
+
         </View>
     )
 }
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
 
-       
-        
+
+
         padding: 15
     },
     title: {

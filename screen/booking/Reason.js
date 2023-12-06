@@ -27,7 +27,7 @@ const Reason = ({ navigation, route }) => {
             console.log("Check response", response)
             if (response.result) {
                 console.log(response.result)
-                navigation.pop()
+                navigation.navigate("MyBooking")
             }
 
         } catch (error) {

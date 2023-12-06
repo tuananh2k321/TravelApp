@@ -23,14 +23,14 @@ const FormChildren = ({ index, onDataChange }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const handleInputChange = () => {
-    if(name && birthDate && gender !=""){
-    const formData = { name, birthDate, gender, type };
-    onDataChange(index, formData);
-    return formData
-    }else{
+    if (name && birthDate && gender != "") {
+      const formData = { name, birthDate, gender, type };
+      onDataChange(index, formData);
+      return formData
+    } else {
       console.log("loiox chuldere")
     }
-    
+
   };
 
   const checkForm = (
@@ -45,19 +45,19 @@ const FormChildren = ({ index, onDataChange }) => {
 
   return (
     <View style={styles.container}>
-        <Text style={{
-                fontSize: 16, fontWeight: 'bold'
-            }}>Thông tin cơ bản (Bắt buộc) Trẻ nhỏ</Text>
+      <Text style={{
+        fontSize: 16, fontWeight: 'bold'
+      }}>Thông tin cơ bản (Bắt buộc) Trẻ nhỏ</Text>
       <Text>Tên:</Text>
       <TextInput
         style={{
           borderWidth: 1,
-          borderColor: errorName ?  COLOR.border : 'red' ,
+          borderColor: errorName ? COLOR.border : 'red',
           borderRadius: 10,
           marginTop: 10,
           paddingHorizontal: 15,
         }}
-        onChangeText={(text) =>{
+        onChangeText={(text) => {
           setName(text);
           setErrorName(isValidEmpty(text));
           setIsvalid(true);
@@ -67,47 +67,47 @@ const FormChildren = ({ index, onDataChange }) => {
         placeholder="Nhập tên"
       />
       {!errorName && (
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: '400',
-              color: 'red',
-            }}>
-            Không được để trống !
-          </Text>
-        )}
-      <Text style={{
-            fontSize: 16,
+        <Text
+          style={{
+            fontSize: 14,
             fontWeight: '400',
-            color: COLOR.detail,
-          }}>Ngày - tháng - năm sinh:</Text>
+            color: 'red',
+          }}>
+          Không được để trống !
+        </Text>
+      )}
+      <Text style={{
+        fontSize: 16,
+        fontWeight: '400',
+        color: COLOR.detail,
+      }}>Ngày - tháng - năm sinh:</Text>
       <UITextInput
-      hintText="01/05/2003"
-      isIconRight={true}
-      icon={ICON.calendar}
-      defaultValue={date.toString()}
-      onPress={() => setOpen(true)}
-      borderError={errorBirthday}
-      onChangeText={text => {
-        console.log(text);
-        setBirthDate(text);
-        setErrorBirthday(validateDateOfBirth(text));
-        setIsvalid(true);
-      }}
-      onBlur={handleInputChange}/>
+        hintText="01/05/2003"
+        isIconRight={true}
+        icon={ICON.calendar}
+        defaultValue={date.toString()}
+        onPress={() => setOpen(true)}
+        borderError={errorBirthday}
+        onChangeText={text => {
+          console.log(text);
+          setBirthDate(text);
+          setErrorBirthday(validateDateOfBirth(text));
+          setIsvalid(true);
+        }}
+        onBlur={handleInputChange} />
       {!errorBirthday && (
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: '400',
-              color: 'red',
-            }}>
-            Ngày sinh không hợp lệ !
-          </Text>
-        )}
-      
-        <Text style={{marginTop: 10}}>Giới tính:</Text>
-        <View style={styles.pickerContainer}>
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: '400',
+            color: 'red',
+          }}>
+          Ngày sinh không hợp lệ !
+        </Text>
+      )}
+
+      <Text style={{ marginTop: 10 }}>Giới tính:</Text>
+      <View style={styles.pickerContainer}>
         <Picker
           style={styles.picker}
           selectedValue={gender}
@@ -129,20 +129,20 @@ const FormChildren = ({ index, onDataChange }) => {
         maximumDate={new Date('2016-12-31')}
         date={currentDate}
         onConfirm={date => {
-            setOpen(false);
-            var day = date.getDate().toString().padStart(2, '0');
-            var month = (date.getMonth() + 1).toString().padStart(2, '0');
-            var year = date.getFullYear();
-            setDate(day + '/' + month + '/' + year);
-            setBirthDate(day + '/' + month + '/' + year);
-            setErrorBirthday(
-              validateDateOfBirthChildren(day + '/' + month + '/' + year),
-            );
-            // console.log(day + '/' + month + '/' + year);
-          }}
-          onCancel={()=>{
-            setOpen(false)
-          }}/>
+          setOpen(false);
+          var day = date.getDate().toString().padStart(2, '0');
+          var month = (date.getMonth() + 1).toString().padStart(2, '0');
+          var year = date.getFullYear();
+          setDate(day + '/' + month + '/' + year);
+          setBirthDate(day + '/' + month + '/' + year);
+          setErrorBirthday(
+            validateDateOfBirthChildren(day + '/' + month + '/' + year),
+          );
+          // console.log(day + '/' + month + '/' + year);
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }} />
     </View>
   );
 };
