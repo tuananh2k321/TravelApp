@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { Rating } from 'react-native-ratings'
+import { useNavigation } from '@react-navigation/native';
 
 const ItemActive = (props) => {
-  const { dulieu, navigation } = props;
+  const { dulieu } = props;
+  const navigation = useNavigation()
 
   const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
