@@ -36,12 +36,12 @@ const ItemDeals = (props) => {
       </View>
       <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 350, marginStart: 5 }}>{dulieu.description}</Text>
       <View style={styles.review}>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20,}}>Giá người lớn: <Text style={{ textDecorationLine:'line-through', color: '#FF0000'}}>{VND.format(dulieu.adultPrice)}</Text></Text>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold'}}>{VND.format(dulieu.adultPrice - dulieu.adultPrice*dulieu.offer/100)}</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20, }}>Giá người lớn: <Text style={{ textDecorationLine: 'line-through', color: '#FF0000' }}>{VND.format(dulieu.adultPrice)}</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold' }}>{VND.format(dulieu.adultPrice - dulieu.adultPrice * dulieu.offer / 100)}</Text></Text>
       </View>
       <View style={styles.review}>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20 }}>Giá trẻ nhỏ: <Text style={{ textDecorationLine:'line-through', color: '#FF0000'}}>{VND.format(dulieu.childrenPrice)}</Text></Text>
-        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold'}}>{VND.format(dulieu.childrenPrice - dulieu.childrenPrice*dulieu.offer/100)}</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6, marginRight: 20 }}>Giá trẻ nhỏ: <Text style={{ textDecorationLine: 'line-through', color: '#FF0000' }}>{VND.format(dulieu.childrenPrice)}</Text></Text>
+        <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginStart: 5, marginTop: 6 }}>Giá mới: <Text style={{ color: '#0FA3E2', fontWeight: 'bold' }}>{VND.format(dulieu.childrenPrice - dulieu.childrenPrice * dulieu.offer / 100)}</Text></Text>
       </View>
 
     </TouchableOpacity>
@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.19,
     borderRadius: 6,
     borderColor: 'gray',
-    marginTop: 10
+    marginTop: 10,
+    backgroundColor: "white"
   },
   image: {
     width: 370,

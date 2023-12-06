@@ -22,14 +22,12 @@ const Favorite = (props) => {
   const [isLoading, setLoading] = useState(true)
   const user = useSelector(state => state.user.user)
   const [idUser, setIdUser] = useState()
-
+  const [favorite, setFavorite] = useState()
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   useEffect(() => {
     if (user) {
       console.log('Profile user: ' + JSON.stringify(user));
-      setLoading(false)
-      console.log()
       setIdUser(user._id)
       getApi()
     } else {
@@ -39,34 +37,27 @@ const Favorite = (props) => {
 
 
 
-  const handleRefresh = () => {
-    setRefreshing(true);
 
-    // Thực hiện các công việc làm mới dữ liệu ở đây, sau đó cập nhật state data
-
-    // Ví dụ: Sau 2 giây, dừng làm mới và cập nhật dữ liệu
-
-    getApi()
-    setRefreshing(false);
-
-  };
 
   const getApi = async () => {
     try {
       const response = await AxiosIntance().get("/favorite/api/getFavorite2?id_user=" + user._id);
-      setLoading(true)
-      console.log('favorite', response.result)
+      // setLoading(true)
+      // console.log('favorite', response.result)
       if (response.result == true) {
         //console.log(response.favorite)
         setLoading(false)
-        let favoriteList = []
-        // console.log('favorite', response.favorite)
-        for (item in response.favorite) {
-          //console.log(response.favorite[item].tour_id)
-          favoriteList.push(response.favorite[item].tour_id)
-        }
-        const listData = favoriteList
-        console.log('favorite', favoriteList)
+        // let favoriteList = []
+        // // console.log('favorite', response.favorite)
+        // for (item in response.favorite) {
+        //   //console.log(response.favorite[item].tour_id)
+        //   favoriteList.push(response.favorite[item].tour_id)
+
+        // }
+        setFavorite(response.favorite)
+        console.log('favorite check>>>>>>>>>>', favorite)
+        const listData = favorite
+        // console.log('favorite', favoriteList)
         //console.log('listData', listData)
         setData(listData)
       }
@@ -76,7 +67,21 @@ const Favorite = (props) => {
       console.log('error>>>', error)
     }
   }
+  const handleRefresh = () => {
+    setRefreshing(true);
 
+
+    getApi()
+
+    setRefreshing(false);
+
+
+    // Thực hiện các công việc làm mới dữ liệu ở đây, sau đó cập nhật state data
+
+    // Ví dụ: Sau 2 giây, dừng làm mới và cập nhật dữ liệu
+
+
+  };
   // console.log("data", data)
   const deleteHandle = async (id) => {
     console.log("deleteHandle", id)
@@ -93,15 +98,17 @@ const Favorite = (props) => {
           text: "Xóa",
           onPress: async () => {
             // Gọi API để xóa tour du lịch khỏi danh sách yêu thích
+
             try {
               const response = await AxiosIntance().delete(`/favorite/api/${id}/deleteFavorite`);
               console.log("check response", response);
               if (response.result === true) {
                 // Render lại dữ liệu
-                getApi();
 
                 // Thông báo cho người dùng rằng tour du lịch đã được xóa khỏi danh sách yêu thích
                 Alert.alert("Xóa yêu thích thành công");
+                getApi();
+
               } else {
                 // Xử lý lỗi
 
@@ -143,7 +150,7 @@ const Favorite = (props) => {
           renderItem={({ item }) => <Item_wishlist data={item} navigation={navigation} handleDelete={() => deleteHandle(item._id)} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
-          removeClippedSubviews={true}
+          // removeClippedSubviews={true}
           onRefresh={handleRefresh}
           refreshing={refreshing}
         >

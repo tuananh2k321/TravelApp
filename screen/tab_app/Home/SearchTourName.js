@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useSelector } from 'react-redux';
 import ItemActive from '../../../component/Tab_item/ItemActive';
@@ -6,12 +6,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLOR } from '../../../constant/Themes';
+import { COLOR, IMAGES } from '../../../constant/Themes';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import Loading from '../../Loading';
 import { useNavigation } from '@react-navigation/native';
 const SearchTourName = (props) => {
-  const {  route } = props;
+  const { route } = props;
   const navigation = useNavigation()
   const { nameDomain } = route.params;
   const [loading, setLoading] = useState(false)
@@ -41,27 +41,39 @@ const SearchTourName = (props) => {
   }, []);
 
   if (loading) {
-    return(
-    <Loading></Loading>
+    return (
+      <Loading></Loading>
     )
   }
 
   return (
-    <SafeAreaView style={{flex: 1, marginBottom: 10}}>
-      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
-        <TouchableOpacity style={{marginStart: 20}} onPress={() => navigation.goBack(null)}>
+
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10 }}>
+        <TouchableOpacity style={{ marginStart: 20 }} onPress={() => navigation.goBack(null)}>
           <FontAwesome5 name={"arrow-left"} size={16} color="#000000" />
         </TouchableOpacity>
-        <Text style={{fontSize: 20, fontWeight: 'bold', color: 'black', }}>{namee}</Text>
-        <View  style={{marginEnd: 20}}/>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black', }}>{namee}</Text>
+        <View style={{ marginEnd: 20 }} />
       </View>
-      <FlatList
-        data={SearchNameTour}
-        renderItem={({ item }) => <ItemActive dulieu={item} navigation={navigation}/>}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}
-      />
+
+      {SearchNameTour.length === 0 ? (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Image source={IMAGES.logo} style={{ alignSelf: 'center' }} />
+          <Text style={{ textAlign: "center", fontSize: 15, color: "black", fontWeight: "bold" }}>Tour du lịch đang phát triển</Text>
+
+        </View>
+      ) : (
+        <FlatList
+          data={SearchNameTour}
+          renderItem={({ item }) => <ItemActive dulieu={item} navigation={navigation} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+
+        />
+      )}
     </SafeAreaView>
+
 
   )
 }
