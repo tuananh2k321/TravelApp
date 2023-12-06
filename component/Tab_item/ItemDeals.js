@@ -3,9 +3,8 @@ import React from 'react'
 import { Rating } from 'react-native-ratings'
 import { useNavigation } from '@react-navigation/native';
 
-const ItemActive = (props) => {
-  const { dulieu } = props;
-  const navigation = useNavigation()
+const ItemDeals = (props) => {
+  const { dulieu, navigation } = props;
 
   const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
@@ -49,7 +48,7 @@ const ItemActive = (props) => {
   )
 }
 
-export default ItemActive
+export default ItemDeals
 
 const styles = StyleSheet.create({
   container: {

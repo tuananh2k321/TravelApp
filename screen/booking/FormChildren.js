@@ -117,7 +117,6 @@ const FormChildren = ({ index, onDataChange }) => {
           <Picker.Item label="Chọn giới tính" value="" />
           <Picker.Item label="Nam" value="Nam" />
           <Picker.Item label="Nữ" value="Nữ" />
-          <Picker.Item label="Khác" value="Khác" />
         </Picker>
       </View>
 
