@@ -42,97 +42,103 @@ const Detail_Booking = (props) => {
   priceAdult = priceAdult.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   const isValidOK = () => name.length > 0 && quantityAdult.length > 0
     && isValidName(name) == true && isValidQuantity(quantityAdult) == true && isLimitPerson(quantity, availablePerson) == true
-  if (isLimitPerson(quantity, limitedPerson) == false) {
-    Alert.alert("Số lượng cho phép là " + limitedPerson + " người");
+  if (isLimitPerson(quantity, availablePerson) == false) {
+    Alert.alert("Số lượng cho phép là " + availablePerson + " người");
   }
   return (
-    <KeyboardAwareScrollView>
-      <View style={styles.container}>
-       
-        <View style={styles.groupName}>
-          <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
-          <View style={{ marginStart: 10 }}>
-            <Text style={styles.name}>
-              {
-                tourName.length > 40 ? tourName.slice(0, 90) + "..." : tourName
-              }
-            </Text>
-            <Text style={styles.order}>Order number #{id}</Text>
-          </View>
-        </View>
+    <View style={styles.container}>
 
-        <View style={{borderBottomColor: "gray", borderBottomWidth: 1, paddingBottom: 10}}>
-          <View style={styles.groupTotalPrice}>
-            <View style={styles.groupPrice}>
-              <Text style={styles.totalPrice}>Giá người lớn </Text>
-              <Text style={[styles.totalPrice, { fontSize: 14 }]}>({adultAge} tuổi):</Text>
-            </View>
-            <View style={styles.groupPrice}>
-              <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{priceAdult}</Text>
+      <View >
+        <KeyboardAwareScrollView>
+
+          <View style={styles.groupName}>
+            <Image style={styles.image} source={{ uri: image }} resizeMode='stretch' />
+            <View style={{ marginStart: 10 }}>
+              <Text style={styles.name}>
+                {
+                  tourName.length > 40 ? tourName.slice(0, 90) + "..." : tourName
+                }
+              </Text>
+              <Text style={styles.order}>Order number #{id}</Text>
             </View>
           </View>
 
-          <View style={styles.groupTotalPrice}>
-            <View style={styles.groupPrice}>
-              <Text style={styles.totalPrice}>Giá trẻ em </Text>
-              <Text style={[styles.totalPrice, { fontSize: 14 }]}>({childrenAge} tuổi):</Text>
+          <View style={{ borderBottomColor: "gray", borderBottomWidth: 1, paddingBottom: 10 }}>
+            <View style={styles.groupTotalPrice}>
+              <View style={styles.groupPrice}>
+                <Text style={styles.totalPrice}>Giá người lớn </Text>
+                <Text style={[styles.totalPrice, { fontSize: 14 }]}>({adultAge} tuổi):</Text>
+              </View>
+              <View style={styles.groupPrice}>
+                <Text style={{ fontSize: 14, fontWeight: '600', color: 'black' }}>{priceAdult}</Text>
+              </View>
             </View>
-            <View style={styles.groupPrice}>
-              <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{priceChildren}</Text>
+
+            <View style={styles.groupTotalPrice}>
+              <View style={styles.groupPrice}>
+                <Text style={styles.totalPrice}>Giá trẻ em </Text>
+                <Text style={[styles.totalPrice, { fontSize: 14 }]}>({childrenAge} tuổi):</Text>
+              </View>
+              <View style={styles.groupPrice}>
+                <Text style={{ fontSize: 14, fontWeight: '600', color: 'black' }}>{priceChildren}</Text>
+              </View>
+            </View>
+
+            <View style={styles.groupTotalPrice}>
+              <View style={styles.groupPrice}>
+                <Text style={styles.totalPrice}>Số lượt còn trống :</Text>
+              </View>
+              <View style={styles.groupPrice}>
+                <Text style={{ fontSize: 14, fontWeight: '600', color: 'black' }}>{availablePerson}</Text>
+              </View>
             </View>
           </View>
 
-          <View style={styles.groupTotalPrice}>
-            <View style={styles.groupPrice}>
-              <Text style={styles.totalPrice}>Số lượt còn trống :</Text>
-            </View>
-            <View style={styles.groupPrice}>
-              <Text style={{fontSize: 14, fontWeight: '600', color: 'black'}}>{availablePerson}</Text>
-            </View>
-          </View>
-        </View>
 
-        
 
-        <View style={styles.groupForm}>
-          <Text style={styles.lable}>Tên khách hàng</Text>
+          <View style={styles.groupForm}>
+            <Text style={styles.lable}>Tên khách hàng</Text>
 
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => {
-              setErrorName(isValidName(text) == true ?
-                `` : 'Tên khách hàng không được trống');
-              setName(text)
-            }} />
-          <Text style={styles.error}>{errorName}</Text>
-        </View>
-        <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between", }]}>
-          <View style={{ width: '48%' }}>
-            <Text style={styles.lable}>Số lượng người lớn</Text>
             <TextInput
               style={styles.input}
-              keyboardType="numeric"
               onChangeText={(text) => {
-                setErrorQuantity(isValidQuantity(text) == true ?
-                  `` : 'Số khách hàng không được trống');
-                setQuantityAdult(text)
-              }}
-              value={quantityAdult} />
-            <Text style={styles.error}>{errorQuantity}</Text>
+                setErrorName(isValidName(text) == true ?
+                  `` : 'Tên khách hàng không được trống');
+                setName(text)
+              }} />
+            <Text style={styles.error}>{errorName}</Text>
           </View>
-          <View style={{ width: '48%' }}>
-            <Text style={styles.lable}>Số lượng trẻ em</Text>
-            <TextInput
-              style={styles.input}
-              keyboardType="numeric"
-              onChangeText={(text) => {
-                setQuantityChildren(text)
-              }}
-              value={quantityChildren} />
+          <View style={[styles.groupForm, { flexDirection: 'row', justifyContent: "space-between", }]}>
+            <View style={{ width: '48%' }}>
+              <Text style={styles.lable}>Số lượng người lớn</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  setErrorQuantity(isValidQuantity(text) == true ?
+                    `` : 'Số khách hàng không được trống');
+                  setQuantityAdult(text)
+                }}
+                value={quantityAdult} />
+              <Text style={styles.error}>{errorQuantity}</Text>
+            </View>
+            <View style={{ width: '48%' }}>
+              <Text style={styles.lable}>Số lượng trẻ em</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  setQuantityChildren(text)
+                }}
+                value={quantityChildren} />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.groupButton}>
+
+        </KeyboardAwareScrollView>
+      </View >
+
+      <View style={styles.groupButton}>
         <View style={styles.groupPrice}>
           <Text style={styles.money}>{price}/</Text>
           <Text style={[styles.money, { fontWeight: '400', fontSize: 14 }]}>{quantity}Người</Text>
@@ -144,11 +150,7 @@ const Detail_Booking = (props) => {
           <Text style={styles.textButton}>Tiếp theo</Text>
         </TouchableOpacity>
       </View>
-    </View >
-    
-    
-    
-      </KeyboardAwareScrollView>
+    </View>
 
   )
 }
@@ -160,7 +162,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     padding: 15,
-    height: SIZES.height - 145
   },
   title: {
     fontSize: 18,

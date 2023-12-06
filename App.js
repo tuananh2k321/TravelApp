@@ -40,7 +40,7 @@ const App = () => {
   useEffect(() => {
     requestUserPermission()
     notificationListeners()
-    getToken()
+    ///getToken()
   }, []);
 
   useEffect(() => {
@@ -95,18 +95,18 @@ const App = () => {
           <Stack.Navigator
             initialRouteName={initialRoute}
             screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Register" component={Register} />
-              <Stack.Screen name="GoToLogin" component={GoToLogin} />
-              <Stack.Screen name="SelectOptions" component={SelectOptions} />
-              <Stack.Screen name="PasswordByEmail" component={PasswordByEmail} />
-              <Stack.Screen name="PasswordByPhoneNumber" component={PasswordByPhoneNumber} />
-              <Stack.Screen name="VerifyCode" component={VerifyCode} />
-              <Stack.Screen name="NewPassword" component={NewPassword} />
-              <Stack.Screen name="VerifyCode2" component={Verifycode2} />
-              <Stack.Screen name="Successfully" component={Successfully} />
-              <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
-              <Stack.Screen name="BottomTab" component={BottomTab} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="GoToLogin" component={GoToLogin} />
+            <Stack.Screen name="SelectOptions" component={SelectOptions} />
+            <Stack.Screen name="PasswordByEmail" component={PasswordByEmail} />
+            <Stack.Screen name="PasswordByPhoneNumber" component={PasswordByPhoneNumber} />
+            <Stack.Screen name="VerifyCode" component={VerifyCode} />
+            <Stack.Screen name="NewPassword" component={NewPassword} />
+            <Stack.Screen name="VerifyCode2" component={Verifycode2} />
+            <Stack.Screen name="Successfully" component={Successfully} />
+            <Stack.Screen name="Booking_Successfully" component={Booking_Successfully} />
+            <Stack.Screen name="BottomTab" component={BottomTab} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

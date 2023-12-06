@@ -41,6 +41,7 @@ import Mybooking from "./tab_app/Profile/Mybooking"
 import NotifiSuccess from './tab_app/Notification/NotifiSuccess';
 import NotifiCancel from './tab_app/Notification/NotifiCancel';
 import TestZalopay from '../screen/booking/TestZalopay'
+import CancelMyBooking from './tab_app/Profile/CancelMyBooking';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -90,6 +91,15 @@ const StackFavorites = () => {
   )
 }
 
+const StackDeal = () => {
+  return (
+    <Stack.Navigator initialRouteName="DealMain" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="DealMain" component={Deal} />
+      <Stack.Screen name="TourDetail" component={TourDetail} />
+    </Stack.Navigator>
+  )
+}
+
 
 const StackNotification = () => {
   return (
@@ -124,6 +134,7 @@ const StackProfile = () => {
       <Stack.Screen name="Reason" component={Reason} />
       <Stack.Screen name="HandlingMyBooking" component={HandlingMyBooking} />
       <Stack.Screen name="HandleCancelBooking" component={HandleCancelBooking} options={header("Tour đang chờ xác nhận hủy")} />
+      <Stack.Screen name="CancelMyBooking" component={CancelMyBooking} options={header("Tour đã hủy")} />
       <Stack.Screen name="DetailCancelBooking" component={DetailCancelBooking} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
       <Stack.Screen name="Login" component={Login} />
@@ -225,7 +236,7 @@ const BottomTab = () => {
         })}
     >
       <Tab.Screen name="Home" component={StackHomes} />
-      <Tab.Screen name='Deal' component={Deal} />
+      <Tab.Screen name='Deal' component={StackDeal} />
       <Tab.Screen name="Favorite" component={StackFavorites} />
       <Tab.Screen name="Notification" component={StackNotification} />
       <Tab.Screen name="Profile" component={StackProfile} />

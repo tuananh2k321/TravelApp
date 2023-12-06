@@ -25,19 +25,19 @@ const Favorite = (props) => {
 
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
-  useEffect(() =>{
+  useEffect(() => {
     if (user) {
       console.log('Profile user: ' + JSON.stringify(user));
-        setLoading(false)
-        console.log()
-        setIdUser(user._id)
-        getApi()
+      setLoading(false)
+      console.log()
+      setIdUser(user._id)
+      getApi()
     } else {
-      setLoading (true)
+      setLoading(true)
     }
-  },[isFocused])
+  }, [isFocused])
 
-  
+
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -53,25 +53,31 @@ const Favorite = (props) => {
 
   const getApi = async () => {
     try {
-      const response = await AxiosIntance().get("/favorite/api/getFavorite?id_user="+user._id );
+      const response = await AxiosIntance().get("/favorite/api/getFavorite2?id_user=" + user._id);
       setLoading(true)
       console.log('favorite', response.result)
       if (response.result == true) {
         //console.log(response.favorite)
         setLoading(false)
-        const listData = await response.favorite
+        let favoriteList = []
+        // console.log('favorite', response.favorite)
+        for (item in response.favorite) {
+          //console.log(response.favorite[item].tour_id)
+          favoriteList.push(response.favorite[item].tour_id)
+        }
+        const listData = favoriteList
+        console.log('favorite', favoriteList)
         //console.log('listData', listData)
         setData(listData)
       }
-        
-      
+
+
     } catch (error) {
       console.log('error>>>', error)
-    } 
+    }
   }
 
   // console.log("data", data)
-
   const deleteHandle = async (id) => {
     console.log("deleteHandle", id)
     // Hiện lên alert hỏi người dùng có chắc chắn muốn xóa không
@@ -93,7 +99,7 @@ const Favorite = (props) => {
               if (response.result === true) {
                 // Render lại dữ liệu
                 getApi();
-                
+
                 // Thông báo cho người dùng rằng tour du lịch đã được xóa khỏi danh sách yêu thích
                 Alert.alert("Xóa yêu thích thành công");
               } else {

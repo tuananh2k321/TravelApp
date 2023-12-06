@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 const Deal = (props) => {
   const [TourDeal, setTourDeal] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {navigation} = useNavigation()
+  const {navigation} = props;
   useEffect(() => {
     try {
       const getTourDeal = async () => {

@@ -12,6 +12,8 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import Loading from '../../Loading'
 import { addNotificationAction } from '../../../redux/action/NotificationAction'
 import { getToken } from '../../../constant/Util'
+import messaging from '@react-native-firebase/messaging';
+
 
 handleDelete = (itemId) => {
   // Xử lý xóa item với id được truyền vào
@@ -25,10 +27,12 @@ const Notification = (props) => {
   const user = useSelector((state) => state.user);
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
+  const [token, setToken] = useState()
 
   const getNotifi = async () => {
     try {
       const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + user.user._id);
+      console.log("Check userId: >" + user.user_id)
       //console.log(response);
       if (response.result == true) {
         setDataNotification(response.notify);
@@ -41,28 +45,39 @@ const Notification = (props) => {
       console.log("Error: " + error);
     }
   }
-  useEffect(() => {
-    const addTokenNotifi = async () => {
-      try {
-        const response = await AxiosIntance().get("/tokenNotification/api/addToken?token=" + getToken() + "&&userId=" + user.user._id);
-        console.log(response);
-        if (response.result == true) {
-          // setDataNotification(response.notify);
-          // setIsLoading(false);
-          // setIsLogin(true);
-          console.log("add token success")
-        } else {
-          //setIsLogin(false);
-        }
-      } catch (error) {
-        console.log("Error: " + error);
+  const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    // save the token to the db
+    console.log("token of device: " + token);
+    setToken(token)
+  };
+
+
+  const addTokenNotifi = async () => {
+    try {
+      getToken()
+      console.log("Check tokendevide >>>>>>>", token);
+      const response = await AxiosIntance().get("/tokenNotification/api/addToken?token=" + token + "&&userId=" + user.user_id);
+      console.log("Check userId: >>>>>>>>>>>" + user.user_id)
+      console.log(response);
+      if (response.result == true) {
+        // setDataNotification(response.notify);
+        // setIsLoading(false);
+        // setIsLogin(true);
+        console.log("add token success")
+      } else {
+        //setIsLogin(false);
       }
+    } catch (error) {
+      console.log("Error: " + error);
     }
+  }
+  useEffect(() => {
+
     getNotifi();
     addTokenNotifi()
-    return () => {
 
-    }
   }, [isFocused]);
 
   const handleRefresh = () => {

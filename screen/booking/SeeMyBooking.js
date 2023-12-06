@@ -33,7 +33,6 @@ const SeeMyBooking = ({ navigation, route }) => {
     const isFocused = useIsFocused();
 
 
-
     const cancelRequiring = async () => {
         try {
             setLoading(true)
@@ -89,7 +88,10 @@ const SeeMyBooking = ({ navigation, route }) => {
             </View>
         );
     };
-
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
 
     const handlePress = () => {
         if (!bookings.confirm) {
@@ -128,7 +130,7 @@ const SeeMyBooking = ({ navigation, route }) => {
 
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ color: COLOR.black, fontSize: 16, fontWeight: '400' }}>Tổng tiền:   </Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{bookings.totalPrice}</Text>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>{VND.format(bookings.totalPrice)}</Text>
                         </View>
 
                         <View style={{ flexDirection: "row" }}>
@@ -172,110 +174,113 @@ const SeeMyBooking = ({ navigation, route }) => {
                 </SafeAreaView>
 
             </ScrollView>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    marginTop: 25,
-                    position: "absolute",
-                    bottom: 10,
-                    right: 0,
-                    marginHorizontal: 15
+            {bookings.isCancel ?
+                <View></View>
+                :
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+                        marginTop: 25,
+                        position: "absolute",
+                        bottom: 10,
+                        right: 0,
+                        marginHorizontal: 15
 
-                }}>
-                {
-                    bookings.handleCancel ?
-                        <TouchableOpacity
-                            onPress={cancelRequiring}
-                            style={{ flex: 1, marginRight: 10 }}
-                            disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
-                        >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    height: 40,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderWidth: 1,
-                                    borderColor: COLOR.border,
-                                    backgroundColor: 'red', // Change background color based on confirm status
-                                    paddingHorizontal: 10,
-                                    borderRadius: 10,
-                                    opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
-                                }}
+                    }}>
+                    {
+                        bookings.handleCancel ?
+                            <TouchableOpacity
+                                onPress={cancelRequiring}
+                                style={{ flex: 1, marginRight: 10 }}
+                                disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
                             >
-                                <Text
+                                <View
                                     style={{
-                                        fontSize: 18,
-                                        fontWeight: 'bold',
-                                        color: 'white', // Change text color based on confirm status
+                                        flexDirection: 'row',
+                                        height: 40,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderWidth: 1,
+                                        borderColor: COLOR.border,
+                                        backgroundColor: 'red', // Change background color based on confirm status
+                                        paddingHorizontal: 10,
+                                        borderRadius: 10,
+                                        opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
                                     }}
                                 >
-                                    Hủy Yêu Cầu
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        :
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            fontWeight: 'bold',
+                                            color: 'white', // Change text color based on confirm status
+                                        }}
+                                    >
+                                        Hủy Yêu Cầu
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            :
 
-                        <TouchableOpacity
-                            onPress={handlePress}
-                            style={{ flex: 1, marginRight: 10 }}
-                            disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
-                        >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    height: 40,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderWidth: 1,
-                                    borderColor: COLOR.border,
-                                    backgroundColor: bookings.confirm ? 'grey' : 'red', // Change background color based on confirm status
-                                    paddingHorizontal: 10,
-                                    borderRadius: 10,
-                                    opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
-                                }}
+                            <TouchableOpacity
+                                onPress={handlePress}
+                                style={{ flex: 1, marginRight: 10 }}
+                                disabled={bookings.confirm} // Disable the TouchableOpacity if confirmed
                             >
-                                <Text
+                                <View
                                     style={{
-                                        fontSize: 18,
-                                        fontWeight: 'bold',
-                                        color: bookings.confirm ? 'black' : 'white', // Change text color based on confirm status
+                                        flexDirection: 'row',
+                                        height: 40,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderWidth: 1,
+                                        borderColor: COLOR.border,
+                                        backgroundColor: bookings.confirm ? 'grey' : 'red', // Change background color based on confirm status
+                                        paddingHorizontal: 10,
+                                        borderRadius: 10,
+                                        opacity: bookings.confirm ? 0.5 : 1, // Change opacity if confirmed
                                     }}
                                 >
-                                    {bookings.confirm ? 'Đã xác nhận' : 'Hủy'}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                }
+                                    <Text
+                                        style={{
+                                            fontSize: 18,
+                                            fontWeight: 'bold',
+                                            color: bookings.confirm ? 'black' : 'white', // Change text color based on confirm status
+                                        }}
+                                    >
+                                        {bookings.confirm ? 'Đã xác nhận' : 'Hủy'}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                    }
 
 
 
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("TourDetail", { id: bookings.tour_id })}
-                    style={{ flex: 1 }}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            height: 40,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderWidth: 1,
-                            borderColor: COLOR.border,
-                            paddingHorizontal: 10,
-                            borderRadius: 10,
-                            backgroundColor: COLOR.primary,
-                        }}>
-                        <Text style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
-                            color: 'white',
-                        }}>Chi Tiết Tour</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("TourDetail", { id: bookings.tour_id._id })}
+                        style={{ flex: 1 }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                height: 40,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderWidth: 1,
+                                borderColor: COLOR.border,
+                                paddingHorizontal: 10,
+                                borderRadius: 10,
+                                backgroundColor: COLOR.primary,
+                            }}>
+                            <Text style={{
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                color: 'white',
+                            }}>Chi Tiết Tour</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            }
         </>
     )
 }

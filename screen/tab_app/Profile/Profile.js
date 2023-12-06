@@ -66,7 +66,7 @@ const Profile = props => {
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <View style={styles.infomation}>
-            <Image style={styles.image} source={{ uri: user.avatar }}></Image>
+            <Image style={styles.image} source={{ uri: user.avatar }} resizeMode='contain'></Image>
             <View style={styles.info}>
               <Text style={styles.name}>{user.name}</Text>
               <Text style={styles.address}>{user.address}</Text>
@@ -104,6 +104,21 @@ const Profile = props => {
                     style={{ tintColor: COLOR.primary }}
                     source={require('../../../assets/icon/icons8-history-24.png')}></Image>
                   <Text style={styles.button_setting_text}>Tour đang chờ xác nhận hủy</Text>
+                </View>
+                <View>
+                  <Image
+                    source={require('../../../assets/icon/icon-arrow-right.png')}></Image>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('CancelMyBooking')}>
+              <View style={styles.button_setting}>
+                <View style={styles.button_setting_left}>
+                  <Image
+                    style={{ tintColor: COLOR.primary }}
+                    source={require('../../../assets/icon/icons8-history-24.png')}></Image>
+                  <Text style={styles.button_setting_text}>Tour đã hủy</Text>
                 </View>
                 <View>
                   <Image

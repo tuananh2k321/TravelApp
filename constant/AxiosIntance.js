@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const AxiosIntance = (contentType = 'application/json') => {
     const axiosInstance = axios.create({
-        baseURL: 'http://192.168.1.2:3000/'
+        baseURL: 'https://discover-be-bookingtours.onrender.com/'
     });
     axiosInstance.interceptors.request.use(
         async config => {
