@@ -26,7 +26,7 @@ const AddComment = (props) => {
     const [cameraPhoto, setCameraPhoto] = useState()
     // const [uriFirebase, setUriFirebase] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(5)
     // const [imageCamera, setImageCamera] = useState([])
     const [selectedImage, setSelectedImage] = useState([])
     const [dataTour, setDataTour] = useState()

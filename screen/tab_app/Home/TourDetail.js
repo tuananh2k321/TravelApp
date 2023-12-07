@@ -575,6 +575,22 @@ export default TourDetail = props => {
 
                   </Text>
 
+                  <View style={{ flexDirection: "row" }}>
+                    {listComment[0].image.map((imageUri, index) => (
+                      <Image
+                        key={index}
+                        source={{ uri: imageUri }}
+                        style={{
+                          width: 70,
+                          height: 70,
+                          marginRight: 20,
+                        }}
+                      />
+                    ))}
+                  </View>
+
+
+
                   <View style={{ flexDirection: 'row', marginTop: 20 }}>
                     <View
                       style={{
@@ -600,7 +616,8 @@ export default TourDetail = props => {
                       </Text>
                     </View>
                   </View>
-                </View>}
+                </View>
+                }
 
                 <TouchableOpacity
                   onPress={() => navigation.navigate("ListComment", { id: params.id })}

@@ -102,9 +102,6 @@ const ListComment = ({ navigation, route }) => {
                     {item.content}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
-
-
-
                     {images.map((imageUri, index) => (
                         <Image
                             key={index}
