@@ -48,7 +48,7 @@ const ItemPopular = (props) => {
           ratingCount={5}
           showReadOnlyText={false}
           fractions={1}
-          startingValue={rating}
+          startingValue={dulieu.rating}
           jumpValue={0.1}
           imageSize={12} />
         <View style={styles.review}>
