@@ -69,6 +69,8 @@ export default TourDetail = props => {
   const user2 = useSelector(state => state.user.user);
   const [idUser, setIdUser] = useState();
 
+
+
   const onBooking = () => {
     if (user.user == null) {
       navigation.navigate('Login');
@@ -576,7 +578,7 @@ export default TourDetail = props => {
                   </Text>
 
                   <View style={{ flexDirection: "row" }}>
-                    {listComment[0].image.map((imageUri, index) => (
+                    {listComment[0].image?.map((imageUri, index) => (
                       <Image
                         key={index}
                         source={{ uri: imageUri }}

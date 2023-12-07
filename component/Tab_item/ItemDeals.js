@@ -2,14 +2,40 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { Rating } from 'react-native-ratings'
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import AxiosIntance from '../../constant/AxiosIntance';
 
 const ItemDeals = (props) => {
   const { dulieu, navigation } = props;
-
+  const [reviews, setReviews] = useState("")
+  const [rating, setrating] = useState(0);
   const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
   });
+
+  useEffect(() => {
+    try {
+      const getAllReviews = async () => {
+        const response = await AxiosIntance().get(
+          `comment/api/listComment?tour_id=${dulieu._id}`,
+        );
+        if (response.result == true) {
+          setReviews(response.quantity);
+          //console.log(response.quantity)
+          setrating(response.averageRating)
+          //console.log(response.averageRating)
+        } else {
+          ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
+        }
+      };
+      getAllReviews()
+    } catch (e) {
+
+    }
+  })
+
 
   const clickItem = () => {
     console.log("Click Item");
@@ -25,12 +51,12 @@ const ItemDeals = (props) => {
           ratingCount={5}
           showReadOnlyText={false}
           fractions={1}
-          startingValue={dulieu.rating}
+          startingValue={rating}
           jumpValue={0.1}
           imageSize={12} />
         <View style={styles.review}>
-          <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, width: 40 }}>1000</Text>
-          <Text numberOfLines={1} style={{ color: 'black', fontSize: 14 }}> review</Text>
+          <Text numberOfLines={1} style={{ color: 'black', fontSize: 14, marginHorizontal: 7 }}>{reviews}</Text>
+          <Text numberOfLines={1} style={{ color: 'black', fontSize: 14 }}>review</Text>
         </View>
 
       </View>
@@ -69,8 +95,6 @@ const styles = StyleSheet.create({
   review: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginStart: 5,
-    margin: 4,
-    marginBottom: 5
+
   }
 })

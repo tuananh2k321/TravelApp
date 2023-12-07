@@ -113,7 +113,7 @@ export default function Home() {
 
                     <FlatList style={{ marginTop: 10 }}
                         horizontal
-                        data={TourRating.slice(0, 6)}
+                        data={TourRating}
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
