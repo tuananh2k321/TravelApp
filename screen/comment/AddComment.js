@@ -26,7 +26,7 @@ const AddComment = (props) => {
     const [cameraPhoto, setCameraPhoto] = useState()
     // const [uriFirebase, setUriFirebase] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(5)
     // const [imageCamera, setImageCamera] = useState([])
     const [selectedImage, setSelectedImage] = useState([])
     const [dataTour, setDataTour] = useState()
@@ -144,10 +144,24 @@ const AddComment = (props) => {
 
     const addNewComment = async (uriFirebase) => {
         try {
+
+            const currentDate = new Date();
+
+            // Lấy thông tin ngày, tháng, năm, giờ, phút
+            const day = currentDate.getDate().toString().padStart(2, '0');
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const year = currentDate.getFullYear();
+            const hours = currentDate.getHours().toString().padStart(2, '0');
+            const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+
+            // Tạo chuỗi định dạng dd/mm/yyyy hh:mm
+            const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}`;
+            console.log("Check data", formattedDateTime)
             const response = await AxiosIntance().post("/comment/api/add-comment", {
                 content: content,
                 image: uriFirebase,
                 rating: rating,
+                timeStamp: formattedDateTime,
                 user_id: user.user._id,
                 tour_id: tourID
             })

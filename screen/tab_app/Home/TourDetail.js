@@ -68,7 +68,9 @@ export default TourDetail = props => {
   const user = useSelector(state => state.user);
   const user2 = useSelector(state => state.user.user);
   const [idUser, setIdUser] = useState();
-  
+
+
+
   const onBooking = () => {
     if (user.user == null) {
       navigation.navigate('Login');
@@ -112,7 +114,7 @@ export default TourDetail = props => {
       if (response.result === true) {
         // API đã thêm yêu thích thành công
         setIsLiked(true);
-        // handleReloadPage();
+        handleReloadPage();
       } else {
         // Xử lý lỗi hoặc thông báo cho người dùng
         console.log('Thêm thất bại');
@@ -170,7 +172,7 @@ export default TourDetail = props => {
         // console.log("Check response commment", listData)
         if (response.result == true) {
           setListComment(response.comments)
-          
+
           console.log("listcomment top>>>>>>>>>>", listComment)
           // console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
 
@@ -575,6 +577,22 @@ export default TourDetail = props => {
 
                   </Text>
 
+                  <View style={{ flexDirection: "row" }}>
+                    {listComment[0].image?.map((imageUri, index) => (
+                      <Image
+                        key={index}
+                        source={{ uri: imageUri }}
+                        style={{
+                          width: 70,
+                          height: 70,
+                          marginRight: 20,
+                        }}
+                      />
+                    ))}
+                  </View>
+
+
+
                   <View style={{ flexDirection: 'row', marginTop: 20 }}>
                     <View
                       style={{
@@ -596,11 +614,12 @@ export default TourDetail = props => {
                           fontWeight: '400',
                           marginLeft: 10,
                         }}>
-                        10/10/2023
+                        {listComment[0].timeStamp}
                       </Text>
                     </View>
                   </View>
-                </View>}
+                </View>
+                }
 
                 <TouchableOpacity
                   onPress={() => navigation.navigate("ListComment", { id: params.id })}
@@ -702,31 +721,31 @@ export default TourDetail = props => {
                 }}>
 
               </View>
-              
+
             </SafeAreaView>
 
           </KeyboardAwareScrollView>
           <TouchableOpacity
-                onPress={onBooking}
-                style={{
-                  height: 52,
-                  backgroundColor: COLOR.primary,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 15,
-                  padding: 10,
-                  position: "absolute",
-                  bottom: 10, left: 10, right: 10
-                }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}>
-                  Đặt ngay
-                </Text>
-              </TouchableOpacity>
+            onPress={onBooking}
+            style={{
+              height: 52,
+              backgroundColor: COLOR.primary,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 15,
+              padding: 10,
+              position: "absolute",
+              bottom: 10, left: 10, right: 10
+            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'white',
+              }}>
+              Đặt ngay
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </>

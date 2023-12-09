@@ -1,4 +1,4 @@
-import { FlatList, ImageBackground, ScrollView, TouchableOpacity, ToastAndroid} from "react-native"
+import { FlatList, ImageBackground, ScrollView, TouchableOpacity, ToastAndroid } from "react-native"
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { COLOR, SIZES } from "../../../constant/Themes";
@@ -25,7 +25,7 @@ export default function Home() {
     const [TourTrung, setTourTrung] = useState([])
     const [TourNam, setTourNam] = useState([])
     const [loading, setLoading] = useState(false)
-    
+
     useEffect(() => {
         try {
             const getTour = async () => {
@@ -58,7 +58,7 @@ export default function Home() {
                     ToastAndroid.show("Lấy dữ liệu không ok", ToastAndroid.SHORT)
                 }
             }
-            
+
             getTour();
             return () => { }
         } catch (error) {
@@ -79,13 +79,13 @@ export default function Home() {
 
     if (loading) {
         return (
-            <Loading/>
+            <Loading />
         )
     }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <SafeAreaView style={{ flex: 1, backgroundColor: COLOR.white, paddingBottom: 10  }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: COLOR.white, paddingBottom: 10 }}>
                 <View>
                     <Image style={styles.image_logo} source={require('../../../assets/images/imgstart.jpg')} />
                     <Text style={styles.txt1}>Khám phá thế giới {"\n"}hôm nay</Text>
@@ -106,14 +106,14 @@ export default function Home() {
                 <View style={styles.txtpack1}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Tour được yêu thích nhất</Text>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                             <Text style={{ color: '#0FA3E2', fontSize: 18, fontWeight: 'bold' }}>Xem thêm</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
 
                     <FlatList style={{ marginTop: 10 }}
                         horizontal
-                        data={TourRating.slice(0, 6)}
+                        data={TourRating}
                         renderItem={({ item }) => <ItemPopular dulieu={item} navigation={navigation} />}
                         keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     txtpack1: {
-        marginTop:15 ,
+        marginTop: 15,
         marginStart: 15, marginEnd: 15
     },
     viewOverlay: {

@@ -12,7 +12,7 @@ const Item_wishlist = ({ data, handleDelete, navigation }) => {
     const VND = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
-      });
+    });
     const rightSwipe = () => {
         return (
             <TouchableOpacity onPress={handleDelete} style={{
@@ -28,34 +28,35 @@ const Item_wishlist = ({ data, handleDelete, navigation }) => {
     }
     useEffect(() => {
         try {
-          const getAllReviews = async () => {
-            const response = await AxiosIntance().get(
-              `comment/api/listComment?tour_id=${data._id}`,
-            );
-            if (response.result == true) {
-              //setReviews(response.quantity);
-              //console.log(response.quantity)
-              setrating(response.averageRating)
-              //console.log(response.averageRating)
-            } else {
-              ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
-            }
-          };
-          getAllReviews()
+            const getAllReviews = async () => {
+                const response = await AxiosIntance().get(
+                    `comment/api/listComment?tour_id=${data._id}`,
+                );
+                if (response.result == true) {
+                    //setReviews(response.quantity);
+                    //console.log(response.quantity)
+                    setrating(response.averageRating)
+                    //console.log(response.averageRating)
+                } else {
+                    ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
+                }
+            };
+            getAllReviews()
         } catch (e) {
-    
+
         }
-      })
+    })
     return (
-            <GestureHandlerRootView >
-            <Swipeable renderRightActions={rightSwipe} >
-                
-                <View style={styles.item}>
-                    <Image style={styles.item_left} source={{ uri: data.tourImage?.[0] }}></Image>
-                    <View style={styles.item_right}>
-                        <Text numberOfLines={2} style={styles.item_title}>{data.tourName}</Text>
-                        <View style={styles.item_start_view}>
-                        {/* <Rating
+        <GestureHandlerRootView >
+            <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("TourDetail", { id: data.tour_id._id })}>
+                <Swipeable renderRightActions={rightSwipe} >
+
+                    <View style={styles.item}>
+                        <Image style={styles.item_left} source={{ uri: data.tour_id.tourImage?.[0] }}></Image>
+                        <View style={styles.item_right}>
+                            <Text numberOfLines={2} style={styles.item_title}>{data.tour_id.tourName}</Text>
+                            <View style={styles.item_start_view}>
+                                {/* <Rating
           readonly
           ratingCount={5}
           showReadOnlyText={false}
@@ -65,21 +66,22 @@ const Item_wishlist = ({ data, handleDelete, navigation }) => {
           imageSize={12} />
                             <Text style={styles.item_start}>{data.start}</Text>
                             <Text style={styles.item_view}>{data.view}{data.rating} review</Text> */}
-                        </View>
-                        <Text style={styles.item_address}>{data.address}</Text>
-                        <View style={{ flexDirection: 'column' }}>
+                            </View>
+                            <Text style={styles.item_address}>{data.address}</Text>
+                            <View style={{ flexDirection: 'column' }}>
 
-                            <Text style={styles.item_price}>{VND.format(data.adultPrice)}/Người lớn </Text>
-                            <Text style={styles.item_price}>{VND.format(data.childrenPrice)}/Trẻ em</Text>
-                            {/* <Text style={styles.person}></Text> */}
-                        </View>
-                        <View style={styles.item_days}>
-                            <Text style={styles.item_days_text}>{data.limitedDay}</Text>
+                                <Text style={styles.item_price}>{VND.format(data.tour_id.adultPrice)}/Người lớn </Text>
+                                <Text style={styles.item_price}>{VND.format(data.tour_id.childrenPrice)}/Trẻ em</Text>
+                                {/* <Text style={styles.person}></Text> */}
+                            </View>
+                            <View style={styles.item_days}>
+                                <Text style={styles.item_days_text}>{data.tour_id.limitedDay}</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
 
-            </Swipeable >
+                </Swipeable >
+            </TouchableOpacity>
         </GestureHandlerRootView >
     )
 }

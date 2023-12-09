@@ -22,9 +22,27 @@ import { AirbnbRating, Rating } from 'react-native-ratings';
 
 const ListComment = ({ navigation, route }) => {
     const [comments, setComments] = useState([])
+    const [isLoading, setLoading] = useState(true)
 
+    const [refreshing, setRefreshing] = useState(false);
     const { id } = route.params
     console.log('id>>>>', id)
+
+    const handleRefresh = () => {
+        setRefreshing(true);
+
+
+        getComment()
+
+        setRefreshing(false);
+
+
+        // Thực hiện các công việc làm mới dữ liệu ở đây, sau đó cập nhật state data
+
+        // Ví dụ: Sau 2 giây, dừng làm mới và cập nhật dữ liệu
+
+
+    };
 
 
     const getComment = async () => {
@@ -102,9 +120,6 @@ const ListComment = ({ navigation, route }) => {
                     {item.content}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
-
-
-
                     {images.map((imageUri, index) => (
                         <Image
                             key={index}
@@ -154,6 +169,8 @@ const ListComment = ({ navigation, route }) => {
                 data={comments}
                 keyExtractor={item => item._id}
                 renderItem={renderItem}
+                onRefresh={handleRefresh}
+                refreshing={refreshing}
             />
         </View>
 
