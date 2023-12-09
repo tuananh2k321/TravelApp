@@ -42,6 +42,7 @@ import NotifiSuccess from './tab_app/Notification/NotifiSuccess';
 import NotifiCancel from './tab_app/Notification/NotifiCancel';
 import TestZalopay from '../screen/booking/TestZalopay'
 import CancelMyBooking from './tab_app/Profile/CancelMyBooking';
+import TestZalopay2 from './booking/TestZalopay2';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -76,7 +77,7 @@ const StackHomes = () => {
       <Stack.Screen name="AddCard" component={AddCard} />
       <Stack.Screen name="Available_Date" component={Available_Date} />
       <Stack.Screen name="TestZalopay" component={TestZalopay} />
-
+      <Stack.Screen name="TestZalopay2" component={TestZalopay2} />
     </Stack.Navigator>
   )
 }
