@@ -63,8 +63,8 @@ const Profile = props => {
   }
   try {
     return (
-      <ScrollView>
-        <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator = {false}>
           <View style={styles.infomation}>
             <Image style={styles.image} source={{ uri: user.avatar }} resizeMode='contain'></Image>
             <View style={styles.info}>
@@ -256,8 +256,8 @@ const Profile = props => {
           {/* <View>
                   <Text style={styles.version}>Verion 3.0.0</Text>
               </View> */}
-        </SafeAreaView>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     );
   } catch (e) {
   }
@@ -271,7 +271,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     width: SIZES.width,
-    height: SIZES.height,
     flexDirection: 'column',
     backgroundColor: COLOR.white,
   },
@@ -369,7 +368,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button_logout: {
-    marginTop: 40,
+    marginTop: 30,
     borderWidth: 1,
     justifyContent: 'center',
     borderColor: 'rgba(0, 0, 0, 0.1)',

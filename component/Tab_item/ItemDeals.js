@@ -81,16 +81,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     width: 380,
     height: 'auto',
-    borderWidth: 0.19,
-    borderRadius: 6,
+    borderWidth: 0.5,
+    borderRadius: 15,
     borderColor: 'gray',
-    marginTop: 10,
-    backgroundColor: "white"
+    marginVertical: 5,
+    backgroundColor: "white",
+    padding: 10,
+    overflow: 'hidden',
   },
   image: {
-    width: 370,
+    width: '100%',
     height: 180,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    borderRadius: 5
   },
   review: {
     flexDirection: 'row',

@@ -89,7 +89,7 @@ export default function Home() {
                 <View>
                     <Image style={styles.image_logo} source={require('../../../assets/images/imgstart.jpg')} />
                     <Text style={styles.txt1}>Khám phá thế giới {"\n"}hôm nay</Text>
-                    <Text style={styles.txt2}>{<Text style={{ fontWeight: 'bold' }}>Khám phá</Text>} - du lịch đến muôn nơi</Text>
+                    <Text style={styles.txt2}>{<Text style={{ fontWeight: 'bold' }}>Khám phá - du lịch đến muôn nơi</Text>}</Text>
 
                     <View style={styles.searchContainer}>
                         <TextInput

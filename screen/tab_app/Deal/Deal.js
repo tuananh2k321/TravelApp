@@ -40,7 +40,7 @@ const Deal = (props) => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, marginBottom: 10 }}>
+    <SafeAreaView style={{ flex: 1, paddingBottom: 10, backgroundColor: 'white' }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 10, marginTop: 10 }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black', color: '#0FA3E2' }}>Giảm Giá</Text>
         <View style={{ marginEnd: 20 }} />

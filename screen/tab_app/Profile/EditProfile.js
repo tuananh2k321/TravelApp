@@ -294,7 +294,7 @@ const EditProfile = (props) => {
               fontSize: 16,
               fontWeight: '400',
               color: COLOR.detail,
-              marginTop: 20,
+              marginTop: 10,
             }}>
             Tên
           </Text>
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
     width: SIZES.width,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 35,
+    marginTop: 20,
   },
   settings: {
     backgroundColor: '#0FA3E2',

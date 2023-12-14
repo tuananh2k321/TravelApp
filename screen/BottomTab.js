@@ -138,7 +138,6 @@ const StackProfile = () => {
       <Stack.Screen name="CancelMyBooking" component={CancelMyBooking} options={header("Tour đã hủy")} />
       <Stack.Screen name="DetailCancelBooking" component={DetailCancelBooking} />
       <Stack.Screen name="TourDetail" component={TourDetail} />
-      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   )
 }

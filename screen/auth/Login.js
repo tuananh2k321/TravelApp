@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   Image,
@@ -8,24 +8,24 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import {COLOR, ICON, IMAGES, SIZES} from '../../constant/Themes';
+import { COLOR, ICON, IMAGES, SIZES } from '../../constant/Themes';
 import UITextInput from '../../component/UITextInput';
 import UIButtonPrimary from '../../component/UIButtonPrimary';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk-next';
 import {
   isValidEmpty,
   validateEmail,
 } from '../../constant/Validation';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../Loading'
 
 
 export default Login = props => {
 
-  const {navigation} = props;
+  const { navigation } = props;
   const [isHidePassword, setIsHidePassword] = useState(true);
   const [errorEmail, setErrorEmail] = useState(true);
   const [errorPassword, setErrorPassword] = useState(true);
@@ -46,18 +46,18 @@ export default Login = props => {
     try {
       // Thực hiện đăng nhập với quyền truy cập 'public_profile' và 'email'
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_photos']);
-      
+
       if (result.isCancelled) {
         throw new Error('User cancelled the login process');
       }
-  
+
       // Lấy AccessToken
       const data = await AccessToken.getCurrentAccessToken();
-  
+
       if (!data) {
         throw new Error('Something went wrong obtaining access token');
       }
-  
+
       // Lấy thông tin người dùng từ Facebook
       const responseInfoCallback = (error, result) => {
         if (error) {
@@ -71,7 +71,7 @@ export default Login = props => {
           setIsLoading(true)
         }
       };
-  
+
       const infoRequest = new GraphRequest('/me', {
         parameters: {
           fields: {
@@ -79,9 +79,9 @@ export default Login = props => {
           }
         }
       }, responseInfoCallback);
-  
+
       new GraphRequestManager().addRequest(infoRequest).start();
-  
+
       return data;
     } catch (error) {
       console.error('Facebook login error:', error);
@@ -93,20 +93,20 @@ export default Login = props => {
   GoogleSignin.configure({
     webClientId: '579542678002-r834j996aqj9nst5gmqf09kmh93n54or.apps.googleusercontent.com',
   });
-  
 
 
-  
+
+
   async function handleGoogleSignIn() {
     try {
       // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      // Get the users ID token
+      const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
     } catch (error) {
       // Xử lý lỗi đăng nhập
       disPath({
@@ -184,17 +184,19 @@ export default Login = props => {
   }
 
   return (
-    <KeyboardAwareScrollView>
-      <SafeAreaView
-        style={{
-          backgroundColor: COLOR.white,
-          padding: 15,
-          width: SIZES.width,
-          //height: SIZES.height,
-          justifyContent: 'center',
-          paddingVertical: 20,
-        }}>
-        <Image source={IMAGES.logo} style={{alignSelf: 'center'}} />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: COLOR.white,
+        padding: 15,
+        width: SIZES.width,
+        //height: SIZES.height,
+        justifyContent: 'center',
+        paddingVertical: 20,
+      }}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator = {false}>
+
+        <Image source={IMAGES.logo} style={{ alignSelf: 'center' }} />
 
         <Text
           style={{
@@ -207,7 +209,7 @@ export default Login = props => {
           Chào mừng đến với Discover
         </Text>
 
-        <View style={{width: 300, alignSelf: 'center'}}>
+        <View style={{ width: 300, alignSelf: 'center' }}>
           <Text
             style={{
               textAlign: 'center',
@@ -300,7 +302,7 @@ export default Login = props => {
           </Text>
         </TouchableOpacity>
 
-        <View style={{marginTop: 30}}>
+        <View style={{ marginTop: 30 }}>
           <UIButtonPrimary
             text="Đăng Nhập"
             onPress={() => {
@@ -322,10 +324,10 @@ export default Login = props => {
         </Text>
 
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-          <View style={{flex: 1, height: 1, backgroundColor: COLOR.border}} />
-          <Text style={{paddingHorizontal: 10}}>Hoặc đăng nhập với</Text>
-          <View style={{flex: 1, height: 1, backgroundColor: COLOR.border}} />
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+          <View style={{ flex: 1, height: 1, backgroundColor: COLOR.border }} />
+          <Text style={{ paddingHorizontal: 10 }}>Hoặc đăng nhập với</Text>
+          <View style={{ flex: 1, height: 1, backgroundColor: COLOR.border }} />
         </View>
 
         <View
@@ -337,7 +339,7 @@ export default Login = props => {
           }}>
           <TouchableOpacity
             onPress={() => handleGoogleSignIn()}
-            style={{flex: 1, marginRight: 10}}>
+            style={{ flex: 1, marginRight: 10 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -362,9 +364,9 @@ export default Login = props => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-          onPress={() => onFacebookButtonPress()}
-          style={{flex: 1}}>
+          <TouchableOpacity
+            onPress={() => onFacebookButtonPress()}
+            style={{ flex: 1 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -391,7 +393,7 @@ export default Login = props => {
         </View>
 
         <View
-          style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+          style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
           <Text>Bạn chưa có tài khoản?</Text>
 
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -405,7 +407,7 @@ export default Login = props => {
             </Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView >
+    </SafeAreaView>
   );
 };
