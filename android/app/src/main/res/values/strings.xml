@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TravelApp</string>
+    <string name="app_name">Discover</string>
     <string name="facebook_app_id">365631462711841</string>
 <string name="fb_login_protocol_scheme">fb1234</string>
 <string name="facebook_client_token">815827302e53277af34e6f44f3a6053e</string>
