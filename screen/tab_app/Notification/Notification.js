@@ -32,7 +32,7 @@ const Notification = (props) => {
   const getNotifi = async () => {
     try {
       const response = await AxiosIntance().get("/notification/api/getNotification?userId=" + user.user._id);
-      console.log("Check userId: >" + user.user_id)
+      console.log("Check userId: >" + user.user._id)
       //console.log(response);
       if (response.result == true) {
         setDataNotification(response.notify);
@@ -58,8 +58,8 @@ const Notification = (props) => {
     try {
       getToken()
       console.log("Check tokendevide >>>>>>>", token);
-      const response = await AxiosIntance().get("/tokenNotification/api/addToken?token=" + token + "&&userId=" + user.user_id);
-      console.log("Check userId: >>>>>>>>>>>" + user.user_id)
+      const response = await AxiosIntance().get("/tokenNotification/api/addToken?token=" + token + "&userId=" + user.user._id);
+      console.log("Check userId: >>>>>>>>>>>" + user.user._id)
       console.log(response);
       if (response.result == true) {
         // setDataNotification(response.notify);
@@ -74,7 +74,7 @@ const Notification = (props) => {
     }
   }
   useEffect(() => {
-
+    //console.log("user: "+JSON.stringify(user.user._id))
     getNotifi();
     addTokenNotifi()
 

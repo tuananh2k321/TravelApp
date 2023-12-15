@@ -111,6 +111,7 @@ export default function TestZalopay2(props) {
         console.log('Successfully')
       } else {
         console.log('fail')
+        onBooking()
       }
     } catch (e) {
       console.error('Error order:', e);
