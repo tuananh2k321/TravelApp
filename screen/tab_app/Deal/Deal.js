@@ -16,7 +16,7 @@ const Deal = (props) => {
     try {
       const getTourDeal = async () => {
         setLoading(true);
-        const respone = await AxiosIntance().get("/tour/api/get-all-tour");
+        const respone = await AxiosIntance().get("/tour/api/get-offer-tour");
         if (respone.result) {
           setTourDeal(respone.tours);
           setLoading(false)

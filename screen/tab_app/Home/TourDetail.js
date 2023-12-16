@@ -10,26 +10,26 @@ import {
   Button,
   FlatList,
 } from 'react-native';
-import { ScrollView } from 'react-native-virtualized-view';
-import { AirbnbRating, Rating } from 'react-native-ratings';
+import {ScrollView} from 'react-native-virtualized-view';
+import {AirbnbRating, Rating} from 'react-native-ratings';
 
-import React, { useState, useEffect } from 'react';
-import { SIZES, COLOR, ICON } from '../../../constant/Themes';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, {useState, useEffect} from 'react';
+import {SIZES, COLOR, ICON} from '../../../constant/Themes';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import ItemIncluded from '../../../component/Tab_item/Item_included';
 import AxiosIntance from '../../../constant/AxiosIntance';
 import ItemLink from '../../../component/Tab_item/Item_link';
-import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import Loading from '../../Loading';
-import { useSelector } from 'react-redux';
-import { log } from 'console';
-import { set } from 'immer/dist/internal';
+import {useSelector} from 'react-redux';
+import {log} from 'console';
+import {set} from 'immer/dist/internal';
 
 export default TourDetail = props => {
-  const { navigation, route } = props;
-  const { params } = route;
+  const {navigation, route} = props;
+  const {params} = route;
   const [tourName, settourName] = useState('');
   const [adultPrice, setadultPrice] = useState('');
   const [childrenPrice, setchildrenPrice] = useState('');
@@ -55,7 +55,7 @@ export default TourDetail = props => {
   const [tourImage, settourImage] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [listComment, setListComment] = useState([])
+  const [listComment, setListComment] = useState([]);
   const maxChars = 200; // Số ký tự tối đa trước khi ẩn nội dung
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -70,8 +70,6 @@ export default TourDetail = props => {
   const user2 = useSelector(state => state.user.user);
   const [idUser, setIdUser] = useState();
 
-
-
   const onBooking = () => {
     if (user.user == null) {
       navigation.navigate('Login');
@@ -85,7 +83,7 @@ export default TourDetail = props => {
         limitedPerson: limitedPerson,
         adultAge: adultAge,
         childrenAge: childrenAge,
-        availablePerson: availablePerson
+        availablePerson: availablePerson,
       });
     }
   };
@@ -130,8 +128,6 @@ export default TourDetail = props => {
     setrating(ratedValue);
   };
 
-
-
   useEffect(() => {
     try {
       const getTour = async () => {
@@ -141,8 +137,13 @@ export default TourDetail = props => {
         // console.log('tour ', params.id);
         if (response.result == true) {
           settourName(response.tour.tourName);
-          setadultPrice(response.tour.adultPrice);
-          setchildrenPrice(response.tour.childrenPrice);
+          setadultPrice(
+            response.tour.adultPrice - (response.tour.adultPrice * response.tour.offer) / 100,
+          );
+          setchildrenPrice(
+            response.tour.childrenPrice -
+              (response.tour.childrenPrice * response.tour.offer) / 100,
+          );
           setadultAge(response.tour.adultAge);
           setchildrenAge(response.tour.childrenAge);
           setdepartmentPlace(response.tour.departmentPlace);
@@ -168,18 +169,19 @@ export default TourDetail = props => {
       const getTopComment = async () => {
         const tourId = params.id;
         // console.log("tourId>>>>", tourId);
-        const response = await AxiosIntance().get(`comment/api/topListComment?tour_id=${tourId}`,);
+        const response = await AxiosIntance().get(
+          `comment/api/topListComment?tour_id=${tourId}`,
+        );
 
         // const listData = response.comments
         // console.log("Check response commment", listData)
         if (response.result == true) {
-          setListComment(response.comments)
+          setListComment(response.comments);
 
-          console.log("listcomment top>>>>>>>>>>", listComment)
+          console.log('listcomment top>>>>>>>>>>', listComment);
           // console.log("listcomment top>>>>>>>>>>", listComment[0].user_id.avatar)
-
         }
-      }
+      };
 
       const getAllBooking = async () => {
         const response = await AxiosIntance().get(
@@ -198,19 +200,16 @@ export default TourDetail = props => {
         );
         if (response.result == true) {
           setReviews(response.quantity);
-          setrating(response.averageRating)
+          setrating(response.averageRating);
         } else {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
         }
       };
 
-
       getTour();
-      getTopComment()
+      getTopComment();
       // getAllBooking();
       getAllReviews();
-
-
     } catch (error) {
       console.log('errrrrrrror', error);
     }
@@ -227,11 +226,11 @@ export default TourDetail = props => {
               style={{
                 width: SIZES.width,
                 backgroundColor: COLOR.white,
-                paddingBottom: 10
+                paddingBottom: 10,
               }}>
               <ImageBackground
-                source={{ uri: tourImage[0] !== '' ? tourImage[0] : undefined }}
-                style={{ width: SIZES.width, height: 300, padding: 15 }}>
+                source={{uri: tourImage[0] !== '' ? tourImage[0] : undefined}}
+                style={{width: SIZES.width, height: 300, padding: 15}}>
                 <View
                   style={{
                     justifyContent: 'space-between',
@@ -247,10 +246,14 @@ export default TourDetail = props => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <FontAwesome5 name={'arrow-left'} size={16} color="#000000" />
+                    <FontAwesome5
+                      name={'arrow-left'}
+                      size={16}
+                      color="#000000"
+                    />
                   </TouchableOpacity>
 
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{flexDirection: 'row'}}>
                     <View
                       style={{
                         width: 36,
@@ -279,7 +282,7 @@ export default TourDetail = props => {
                       }}>
                       <TouchableOpacity
                         onPress={handleLike}
-                      // style={[styles.heart, isLiked && styles.heartFilled]}
+                        // style={[styles.heart, isLiked && styles.heartFilled]}
                       >
                         <FontAwesome
                           name={isLiked ? 'heart' : 'heart-o'}
@@ -306,7 +309,7 @@ export default TourDetail = props => {
                   {tourName}
                 </Text>
 
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Rating
                     readonly
                     ratingCount={5}
@@ -391,7 +394,7 @@ export default TourDetail = props => {
                   Bao gồm
                 </Text>
                 {/* Bao gồm */}
-                <View style={{ flexDirection: 'column' }}>
+                <View style={{flexDirection: 'column'}}>
                   <ItemIncluded
                     icon={'bus-alt'}
                     title={vehicle}
@@ -437,7 +440,6 @@ export default TourDetail = props => {
                   }}>
                   Xe du lịch và hướng dẫn viên sẽ đợi bạn tại {departmentPlace}
                 </Text>
-
 
                 <View
                   style={{
@@ -490,8 +492,8 @@ export default TourDetail = props => {
                     }}
                     key={index}>
                     <Image
-                      source={{ uri: item.destinationImage }}
-                      style={{ width: '100%', height: 300 }}
+                      source={{uri: item.destinationImage}}
+                      style={{width: '100%', height: 300}}
                     />
                     <Text
                       style={{
@@ -523,108 +525,107 @@ export default TourDetail = props => {
                   Đánh giá
                 </Text>
 
-                {listComment.length > 0 && <View
-                  style={{
-                    borderRadius: 6,
-                    borderWidth: 1,
-                    borderColor: COLOR.lightBlack2,
-                    padding: 15,
-                    marginBottom: 20,
-                    backgroundColor: 'white',
-                  }}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image
-                      source={{
-                        uri: listComment[0].user_id.avatar
-                      }}
-                      style={{
-                        width: 70,
-                        height: 70,
-                        borderRadius: 50,
-                        marginRight: 20,
-                      }}
-                    />
-                    <View style={{ justifyContent: 'center' }}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: 'bold',
-                          color: COLOR.title,
-                        }}>
-                        {listComment[0].user_id.name}
-                      </Text>
-                      <Rating
-                        readonly
-                        ratingCount={5}
-                        showReadOnlyText={false}
-                        fractions={1}
-                        startingValue={listComment[0].rating}
-                        jumpValue={0.1}
-                        imageSize={12} />
-
-
-                    </View>
-                  </View>
-
-                  <Text
+                {listComment.length > 0 && (
+                  <View
                     style={{
-                      fontSize: 17,
-                      fontWeight: '400',
-                      color: COLOR.detail,
-                      marginTop: 20,
+                      borderRadius: 6,
+                      borderWidth: 1,
+                      borderColor: COLOR.lightBlack2,
+                      padding: 15,
+                      marginBottom: 20,
+                      backgroundColor: 'white',
                     }}>
-                    {listComment[0].content}
-                    {/* adasdasdsd */}
-                    {/* Content */}
-
-                  </Text>
-
-                  <View style={{ flexDirection: "row" }}>
-                    {listComment[0].image?.map((imageUri, index) => (
+                    <View style={{flexDirection: 'row'}}>
                       <Image
-                        key={index}
-                        source={{ uri: imageUri }}
+                        source={{
+                          uri: listComment[0].user_id.avatar,
+                        }}
                         style={{
                           width: 70,
                           height: 70,
+                          borderRadius: 50,
                           marginRight: 20,
                         }}
                       />
-                    ))}
-                  </View>
+                      <View style={{justifyContent: 'center'}}>
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            color: COLOR.title,
+                          }}>
+                          {listComment[0].user_id.name}
+                        </Text>
+                        <Rating
+                          readonly
+                          ratingCount={5}
+                          showReadOnlyText={false}
+                          fractions={1}
+                          startingValue={listComment[0].rating}
+                          jumpValue={0.1}
+                          imageSize={12}
+                        />
+                      </View>
+                    </View>
 
-
-
-                  <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                    <View
+                    <Text
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
+                        fontSize: 17,
+                        fontWeight: '400',
+                        color: COLOR.detail,
+                        marginTop: 20,
                       }}>
-                      <Text
+                      {listComment[0].content}
+                      {/* adasdasdsd */}
+                      {/* Content */}
+                    </Text>
+
+                    <View style={{flexDirection: 'row'}}>
+                      {listComment[0].image?.map((imageUri, index) => (
+                        <Image
+                          key={index}
+                          source={{uri: imageUri}}
+                          style={{
+                            width: 70,
+                            height: 70,
+                            marginRight: 20,
+                          }}
+                        />
+                      ))}
+                    </View>
+
+                    <View style={{flexDirection: 'row', marginTop: 20}}>
+                      <View
                         style={{
-                          color: COLOR.detail,
-                          fontSize: 14,
-                          fontWeight: '400',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
                         }}>
-                        Đã đăng
-                      </Text>
-                      <Text
-                        style={{
-                          color: COLOR.detail,
-                          fontSize: 14,
-                          fontWeight: '400',
-                          marginLeft: 10,
-                        }}>
-                        {listComment[0].timeStamp}
-                      </Text>
+                        <Text
+                          style={{
+                            color: COLOR.detail,
+                            fontSize: 14,
+                            fontWeight: '400',
+                          }}>
+                          Đã đăng
+                        </Text>
+                        <Text
+                          style={{
+                            color: COLOR.detail,
+                            fontSize: 14,
+                            fontWeight: '400',
+                            marginLeft: 10,
+                          }}>
+                          {listComment[0].timeStamp}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-                }
+                )}
 
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("ListComment", { id: params.id })}
+                  onPress={() =>
+                    navigation.navigate('ListComment', {id: params.id})
+                  }
                   style={{
                     flexDirection: 'row',
                     width: 200,
@@ -664,7 +665,7 @@ export default TourDetail = props => {
                   paddingVertical: 20,
                 }}>
                 <Text
-                  style={{ fontSize: 18, color: COLOR.title, fontWeight: '600' }}>
+                  style={{fontSize: 18, color: COLOR.title, fontWeight: '600'}}>
                   Độ tuổi qui định
                 </Text>
                 <View
@@ -720,44 +721,43 @@ export default TourDetail = props => {
                   backgroundColor: 'white',
                   paddingVertical: 20,
                   paddingHorizontal: 10,
-                }}>
-
-              </View>
-
+                }}></View>
             </SafeAreaView>
-
           </KeyboardAwareScrollView>
           <TouchableOpacity
             onPress={onBooking}
             style={{
               height: 52,
-              backgroundColor: isTraveling?'gray':COLOR.primary,
+              backgroundColor: isTraveling ? 'gray' : COLOR.primary,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 15,
               padding: 10,
-              position: "absolute",
-              bottom: 10, left: 10, right: 10
+              position: 'absolute',
+              bottom: 10,
+              left: 10,
+              right: 10,
             }}
             disabled={isTraveling}>
-            {isTraveling?<Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                color: 'white',
-              }}>
-              Tour đang diễn ra
-            </Text>
-            :
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                color: 'white',
-              }}>
-              Đặt ngay
-            </Text>
-          }
+            {isTraveling ? (
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}>
+                Tour đang diễn ra
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}>
+                Đặt ngay
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
       )}
