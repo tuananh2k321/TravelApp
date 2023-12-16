@@ -51,6 +51,7 @@ export default TourDetail = props => {
   const [tourGuide_id, settourGuide_id] = useState({});
   const [destination_id, setdestination_id] = useState([]);
   const [description, setdescription] = useState('');
+  const [isTraveling, setIsTraveling] = useState('');
   const [tourImage, settourImage] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -158,6 +159,7 @@ export default TourDetail = props => {
           setdestination_id(response.dataDestination.content.data);
           setdescription(response.tour.description);
           settourImage(response.tour.tourImage);
+          setIsTraveling(response.tour.isTraveling);
           setIsLoading(false);
         } else {
           ToastAndroid.show('Lấy dữ liệu không ok', ToastAndroid.SHORT);
@@ -729,14 +731,24 @@ export default TourDetail = props => {
             onPress={onBooking}
             style={{
               height: 52,
-              backgroundColor: COLOR.primary,
+              backgroundColor: isTraveling?'gray':COLOR.primary,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 15,
               padding: 10,
               position: "absolute",
               bottom: 10, left: 10, right: 10
-            }}>
+            }}
+            disabled={isTraveling}>
+            {isTraveling?<Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'white',
+              }}>
+              Tour đang diễn ra
+            </Text>
+            :
             <Text
               style={{
                 fontSize: 18,
@@ -745,6 +757,7 @@ export default TourDetail = props => {
               }}>
               Đặt ngay
             </Text>
+          }
           </TouchableOpacity>
         </View>
       )}
