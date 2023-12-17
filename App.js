@@ -1,4 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import {
+  SafeAreaView,
+  Image,
+  View,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Button,
+  FlatList,
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTab from './screen/BottomTab';
@@ -22,7 +34,6 @@ import { getToken, notificationListeners, requestUserPermission } from './consta
 import { Alert } from 'react-native';
 import Booking_Successfully from './screen/booking/Booking_Successfully';
 
-
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -31,7 +42,10 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      //Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      Alert.alert('Bạn có thông báo mới!', remoteMessage.notification.title);
+      
+      console.log(remoteMessage.notification.body);
+      console.log(remoteMessage.notification.title);
     });
 
     return unsubscribe;
@@ -111,6 +125,7 @@ const App = () => {
         </NavigationContainer>
       </StripeProvider>
     </Provider>
+    
   );
 };
 

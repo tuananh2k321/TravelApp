@@ -34,7 +34,7 @@ const AddComment = (props) => {
     // const [user, setUser] = useState();
     // const [tourId, setTourId] = useState()
     const user = useSelector((state) => state.user);
-    const { tourID } = route.params;
+    const { tourID, notifiID } = route.params;
 
     useEffect(() => {
         const getTour = async () => {
@@ -166,6 +166,7 @@ const AddComment = (props) => {
                 tour_id: tourID
             })
             if (response.result) {
+                await AxiosIntance().get("/notification/api/deleteNotifi?id=" + notifiID);
                 navigation.pop();
                 console.log(response.result)
             }

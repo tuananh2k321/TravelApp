@@ -13,6 +13,7 @@ import Loading from '../../Loading'
 import { addNotificationAction } from '../../../redux/action/NotificationAction'
 import { getToken } from '../../../constant/Util'
 import messaging from '@react-native-firebase/messaging';
+import { ScrollView } from 'react-native-virtualized-view'
 
 
 handleDelete = (itemId) => {
@@ -115,7 +116,8 @@ const Notification = (props) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView>
+      <SafeAreaView style={styles.container}>
       {
         isLogin == false ?
           (
@@ -175,6 +177,8 @@ const Notification = (props) => {
       }
 
     </SafeAreaView>
+    </ScrollView>
+    
   )
 }
 
@@ -186,6 +190,7 @@ const styles = StyleSheet.create({
     width: SIZES.width,
     height: SIZES.height,
     backgroundColor: COLOR.white,
+    paddingBottom: 50
   },
   notification: {
     fontStyle: 'normal',
