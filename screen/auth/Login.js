@@ -403,7 +403,7 @@ export default Login = props => {
                 fontWeight: 'bold',
                 marginLeft: 5,
               }}>
-              Đăng kí
+              Đăng ký
             </Text>
           </TouchableOpacity>
         </View>

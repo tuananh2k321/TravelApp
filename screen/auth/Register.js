@@ -492,7 +492,7 @@ export default Register = props => {
 
         <View
           style={{flexDirection: 'row', alignSelf: 'center', marginTop: 15}}>
-          <Text>Already have an account?</Text>
+          <Text>Đã có sẵn 1 tài khoản?</Text>
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text
@@ -501,7 +501,7 @@ export default Register = props => {
                 fontWeight: 'bold',
                 marginLeft: 5,
               }}>
-              Login
+              Đăng nhập
             </Text>
           </TouchableOpacity>
         </View>

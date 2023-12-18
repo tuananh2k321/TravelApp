@@ -48,7 +48,7 @@ const SearchTourName = (props) => {
 
   return (
 
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10 }}>
         <TouchableOpacity style={{ marginStart: 20 }} onPress={() => navigation.goBack(null)}>
           <FontAwesome5 name={"arrow-left"} size={16} color="#000000" />
